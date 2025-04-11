@@ -1,2 +1,2 @@
-# Class Hiearchy Analyzer
-A class hiearchy analyzer for python projects. 
+# Class Hierarchy Analyzer
+A class hierarchy analyzer for Python projects. 

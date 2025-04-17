@@ -93,6 +93,9 @@ if "selected_classes" not in st.session_state:
 if "selected_class_detail" not in st.session_state:
     st.session_state.selected_class_detail = None
 
+if "class_hierachy_network_graph" not in st.session_state:
+    st.session_state.class_hierachy_network_graph = None
+    
 # -------------------------------------
 # Mock Data
 # -------------------------------------
@@ -158,6 +161,7 @@ st.markdown("Visualize and analyze class relationships across modules.")
 
 # Build context from session_state
 context = {
+    "class_hierachy_network_graph": st.session_state.class_hierachy_network_graph,
     "selected_cluster": st.session_state.selected_cluster,
     "selected_classes": st.session_state.selected_classes,
     "selected_class_detail": st.session_state.selected_class_detail,
@@ -169,7 +173,9 @@ top_left, top_right = st.columns(2)
 
 
 with top_left:
-    render_global_graph_panel(context)
+    result = render_global_graph_panel(context)
+    if result:
+        st.session_state.update(result)
 
 with top_right:
     result = render_subgraph_panel(context)

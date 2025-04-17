@@ -1,6 +1,6 @@
 import streamlit as st
 import random
-from flask import Flask, request
+from flask import Flask, request, jsonify
 from flask_cors import CORS
 from inheritscan.tools.global_graph import render_global_graph_panel
 import threading
@@ -11,46 +11,72 @@ selected_nodes = []
 flask_app = Flask(__name__)
 CORS(flask_app)  # 💥 允许任何来源访问
 
+# clear runtime data
+import shutil
+import os
+
+runtime_dir = "./.run_time"
+if os.path.exists(runtime_dir):
+    shutil.rmtree(runtime_dir)
+    print(f"🗑️ Deleted: {runtime_dir}")
+else:
+    print(f"⚠️ Path does not exist: {runtime_dir}")
+
+
 st.set_page_config(page_title="Class Hierarchy Explorer", layout="wide")
 if "flask_started" not in st.session_state:
+
     @flask_app.route("/receive_selection", methods=["POST"])
     def receive_selection():
         nodes = request.json.get("nodes", [])
         new_entry = nodes[0]
         path = ".run_time/selected_nodes.json"
+
         os.makedirs(".run_time", exist_ok=True)
-        
+
         if not os.path.exists(path):
-            # First time: create file with a full list
+            # First time: create file with one entry in a list
             with open(path, "w") as f:
-                f.write("[\n")
-                json.dump(new_entry, f, indent=2)
-                f.write("\n]")
+                json.dump([new_entry], f, indent=2)
         else:
-            with open(path, "rb+") as f:
-                f.seek(-1, os.SEEK_END)
-                last = f.read(1)
+            with open(path, "r") as f:
+                try:
+                    current_nodes = json.load(f)
+                except json.JSONDecodeError:
+                    current_nodes = []
 
-                # If file ends with "]", remove it
-                if last == b"]":
-                    f.seek(-1, os.SEEK_END)
-                    while f.read(1) != b"\n":  # rewind to last newline
-                        f.seek(-2, os.SEEK_CUR)
-                    f.seek(-1, os.SEEK_CUR)
-                    f.truncate()
+            # Build set of (id, full_mod) for fast lookup
+            node_set = {(n["id"], n["full_mod"]): n for n in current_nodes}
+            key = (new_entry["id"], new_entry["full_mod"])
 
-                # Now append new object with comma + final ]
-                f.write(b",\n")
-                f.write(json.dumps(new_entry, indent=2).encode("utf-8"))
-                f.write(b"\n]")
+            # Toggle behavior
+            if key in node_set:
+                del node_set[key]  # deselect
+            else:
+                node_set[key] = new_entry  # select
 
-        print(f"[Flask] ✅ Appended to {path}: {new_entry}")
+            # Write updated list
+            updated_nodes = list(node_set.values())
+            with open(path, "w") as f:
+                json.dump(updated_nodes, f, indent=2)
+
+        print(f"[Flask] ✅ Toggled in {path}: {new_entry}")
         return {"status": "ok"}
 
+    @flask_app.route("/selected_nodes.json", methods=["GET"])
+    def get_selected_nodes():
+        try:
+            with open(".run_time/selected_nodes.json", "r") as f:
+                data = json.load(f)
+            print("📤 [Flask] Returning selected nodes:", data)
+        except Exception as e:
+            print("❌ Error loading selected nodes:", e)
+            data = []
+        return jsonify(data)
 
     def run_flask():
         flask_app.run(port=5555, host="127.0.0.1")
-    
+
     threading.Thread(target=run_flask, daemon=True).start()
     st.session_state["flask_started"] = True
     print("🚀 Flask service started.")
@@ -79,7 +105,6 @@ mock_clusters = {
 mock_methods = [f"method_{i}()" for i in range(1, 6)]
 
 
-
 def render_subgraph_panel(context: dict) -> dict:
     st.markdown("### 📎 Subgraph View")
 
@@ -92,7 +117,9 @@ def render_subgraph_panel(context: dict) -> dict:
     st.markdown(f"Classes in `{cluster}`:")
 
     current = context.get("selected_classes", [])
-    selected = st.multiselect("Select classes to view in detail:", class_list, default=current)
+    selected = st.multiselect(
+        "Select classes to view in detail:", class_list, default=current
+    )
 
     if selected != current:
         return {"selected_classes": selected}
@@ -121,6 +148,7 @@ def render_detail_llm_panel(context: dict) -> dict:
     if selected_class != context.get("selected_class_detail"):
         return {"selected_class_detail": selected_class}
     return {}
+
 
 # -------------------------------------
 # Page Layout

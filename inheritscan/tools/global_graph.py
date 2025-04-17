@@ -8,6 +8,7 @@ import numpy as np
 from collections import deque
 
 from inheritscan.lcgraphs.class_hierarchy import ClassHierarchyGraphBuilder
+from inheritscan.tools.interactive_pyvisg import interactive_pyvis_graph
 from inheritscan.tools.mock_graphs import get_mock_graph, get_mock_graph_class_inheritance
 from inheritscan.tools.radial_tree import radial_tree_layout
 from inheritscan.tools.render_graph import get_class_hierarchy_pyvis_network
@@ -19,7 +20,7 @@ def render_global_graph_panel(context: dict) -> dict:
 
 
 def render_pyvis_graph(context: dict) -> dict:
-    st.markdown("#### 🟣 Pyvis Graph View")
+    st.markdown(" Pyvis Graph View")
 
     physics_enabled = st.checkbox("Enable physics layout (force-based radial)", value=True)
     # disable_after_stabilization = st.checkbox("Disable physics after layout stabilization", value=True)
@@ -29,9 +30,9 @@ def render_pyvis_graph(context: dict) -> dict:
     def get_class_hierarchy_network_graph():
         # 1. Initialize state
         state = {
-            'codebase_path': '/Users/xiyuyi/github_repos/NeMo/nemo',
+            'codebase_path': '/Users/xiyuyi/github_repos/OpenHands/openhands',
             'module_cluster_levels': 1,
-            'package_name': 'nemo'
+            'package_name': 'openhands'
         }
         builder = ClassHierarchyGraphBuilder()
         class_hierachy_graph = builder.compile_graph()
@@ -79,29 +80,28 @@ def render_pyvis_graph(context: dict) -> dict:
             "gravitationalConstant": -50,
             "centralGravity": 0.002,
             "springLength": 10,
-            "springConstant": 0.3,
+            "springConstant": 0.2,
             "avoidOverlap": 1
             },
             "minVelocity": 1.0,
-            "timestep": 0.02,
+            "timestep": 0.2,
             "stabilization": {
             "enabled": true,
-            "iterations": 1500,
-            "updateInterval": 100,
+            "iterations": 150,
+            "updateInterval": 10,
             "fit": false
             }
         }
         }''')
 
 
-    with tempfile.NamedTemporaryFile(delete=False, suffix=".html") as tmp:
-        pyvis_g.save_graph(tmp.name)
-        html = open(tmp.name, 'r', encoding='utf-8').read()
-        components.html(html, height=600, scrolling=True)
+    # with tempfile.NamedTemporaryFile(delete=False, suffix=".html") as tmp:
+    #     pyvis_g.save_graph(tmp.name)
+    #     html = open(tmp.name, 'r', encoding='utf-8').read()
+    #     components.html(html, height=600, scrolling=True)
 
-    selected_group = st.multiselect("Select group of nodes (by prefix)", ["core", "vision", "nlp", "audio"])
-
-    return {"selected_cluster": selected_group}
+    selected_node = interactive_pyvis_graph(pyvis_g)
+    return {"selected_cluster": selected_node}
 
 
 

@@ -7,7 +7,6 @@ def get_class_hierarchy_pyvis_network(nx_graph):
         pyvis_g.add_node(node[0][1], title=full_mod)
 
     for edge in nx_graph.edges():
-        print(edge)
         pyvis_g.add_edge(edge[0][1], edge[1][1], arrows="to")
 
     return pyvis_g

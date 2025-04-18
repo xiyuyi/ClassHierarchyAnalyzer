@@ -1,0 +1,30 @@
+import networkx as nx
+import json
+
+def extract_subgraph_from_global(global_nx_graph: nx.DiGraph, selected_nodes_from_gg_fpath):
+    import json
+
+    print("📦 Loading selected nodes...")
+    with open(selected_nodes_from_gg_fpath, 'r') as f:
+        selected_nodes = json.load(f)
+
+    selected_node_keys = {
+        tuple(node["full_mod"].rsplit(".", 1)) for node in selected_nodes
+    }
+
+    print(f"\n✅ Selected {len(selected_node_keys)} nodes:")
+    for node in selected_node_keys:
+        print(f"   - {node}")
+
+    print(f"\n🌐 Inspecting edges from global graph (showing up to 30)...")
+    all_edges = list(global_nx_graph.edges())
+    for i, (u, v) in enumerate(all_edges[:30]):
+        edge_info = f"({u}) -> ({v})"
+        match_info = ""
+        if u in selected_node_keys and v in selected_node_keys:
+            match_info = "✅ MATCH"
+        print(f"{i+1:>2}. {edge_info} {match_info}")
+
+    print(f"\n📊 Global Graph: {len(global_nx_graph.nodes)} nodes, {len(global_nx_graph.edges)} edges")
+
+    return global_nx_graph.subgraph(selected_node_keys).copy()

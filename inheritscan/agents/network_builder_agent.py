@@ -17,8 +17,10 @@ class NetworkBuilderAgent:
             if 'class_inheritances' in state['modules_details'][mod]:
                 ch = state['modules_details'][mod]['class_inheritances']
                 for node in ch:
-                    for child in ch[node]['inherits']:
-                        G.add_edge(node, child, relation='inherits')
+                    for child_info in ch[node]['inherits']:
+                        child = (child_info[0].split('.', 1)[1], child_info[1])
+                        if child in G:
+                            G.add_edge(node, child, relation='inherits')
 
         state['class_hierachy_network_graph'] = G
         return state

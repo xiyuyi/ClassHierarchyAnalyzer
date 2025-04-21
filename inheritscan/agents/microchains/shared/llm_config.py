@@ -1,4 +1,4 @@
-from myagents.microchains.shared.stateless_tinyllama import StatelessOllamaLLM
+from inheritscan.agents.microchains.shared.stateless_tinyllama import StatelessOllamaLLM
 
 
 def get_tinyllm150():

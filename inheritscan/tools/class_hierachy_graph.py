@@ -15,4 +15,3 @@ def get_class_hierarchy_network_graph():
     state = class_hierachy_graph.invoke(state)
     return state['class_hierachy_network_graph']
 
-nx_graph = get_class_hierarchy_network_graph()

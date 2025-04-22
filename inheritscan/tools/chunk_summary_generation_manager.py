@@ -73,11 +73,11 @@ class ChunkSummary:
 
     def summarize_chunks_for_all_methods(self):
         while self.invoke_queue:
-            self.summarize_chunk_for_1_method()
+            self._summarize_chunk_for_1_method()
 
         self.aggregated_classinfo_queue = list(self.aggregated_summaries.keys())
 
-    def summarize_chunk_for_1_method(self):
+    def _summarize_chunk_for_1_method(self):
         mod, class_name, method = self.invoke_queue.pop()
         method_code = self.aggregated_methods_code[(mod, class_name, method)]
         snippets = chunk_method_code(method_code)
@@ -91,9 +91,9 @@ class ChunkSummary:
 
     def update_all_classinfo(self):
         while self.aggregated_classinfo_queue:
-            self.update_1_classinfo()
+            self._update_1_classinfo()
 
-    def update_1_classinfo(self):
+    def _update_1_classinfo(self):
         """Get one (mod, class name) info, then update the corresponding classinfo to file"""
         mod, class_name = self.aggregated_classinfo_queue.pop()
         class_code = self.aggregated_classes_code[(mod, class_name)]

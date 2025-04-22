@@ -241,12 +241,11 @@ with bottom:
         
         mod_class_method_list = get_mod_class_method_list(context)
 
-        L = len(mod_class_method_list)
 
 
         # Example usage:
         task_lists = separate_list(mod_class_method_list, chunk_size=5)
-        
+        L = len(task_lists)        
         for i, tasks_dlist in enumerate(task_lists):
             for t in tasks_dlist:
                 print("currently handling " + str(t))

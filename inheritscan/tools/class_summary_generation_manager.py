@@ -13,7 +13,7 @@ from inheritscan.tools.class_code_parse import (
 from inheritscan.tools.method_code_chunker import chunk_method_code
 
 
-class MethodSummary:
+class ClassSummary:
     # given a list of (modules, classes, method):
     # generate the summaries for them using a minichain.
     # update the summarries in method at the class level.
@@ -34,7 +34,7 @@ class MethodSummary:
         # self.aggregated_classinfo_queue = []
         self.class_summary_chain_name = summary_manager.summary_chain_name
         self.class_summary_chain = get_methods2class_chain(
-            self.snippet_summary_chain_name
+            self.class_summary_chain_name
         )
         # self._aggretate_tasks()
         # self._aggretate_methods()

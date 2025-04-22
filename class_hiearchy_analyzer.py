@@ -9,6 +9,7 @@ import os
 from inheritscan.tools.ai_summaries_for_methods import generate_ai_summaries_for_method
 from inheritscan.tools.global_graph import render_global_graph_panel
 from inheritscan.tools.parse_subgraph_selected_nodes import get_mod_class_method_list
+from inheritscan.tools.separate_list2smallerlist import separate_list
 from inheritscan.tools.sub_graph import render_sub_graph_panel
 
 selected_nodes = []
@@ -159,6 +160,12 @@ if "selected_class_detail" not in st.session_state:
 if "class_hierachy_network_graph" not in st.session_state:
     st.session_state.class_hierachy_network_graph = None
 
+if "modules_name2path" not in st.session_state:
+    st.session_state.modules_name2path = None
+
+if "modules_details" not in st.session_state:
+    st.session_state.modules_details = None
+
 
 
 def render_detail_llm_panel(context: dict) -> dict:
@@ -187,6 +194,8 @@ context = {
     "selected_cluster": st.session_state.selected_cluster,
     "selected_classes": st.session_state.selected_classes,
     "selected_class_detail": st.session_state.selected_class_detail,
+    "modules_name2path": st.session_state.modules_name2path,
+    "modules_details": st.session_state.modules_details
 }
 
 # --- Top panels: global + subgraph ---
@@ -231,10 +240,19 @@ with bottom:
         progress_bar = st.progress(0, text="Generating AI summaries...")
         
         mod_class_method_list = get_mod_class_method_list(context)
+
         L = len(mod_class_method_list)
-        # Example: Simulate a backend process
-        for i, mod_class_method in enumerate(mod_class_method_list):
-            generate_ai_summaries_for_method(mod_class_method)
+
+
+        # Example usage:
+        task_lists = separate_list(mod_class_method_list, chunk_size=5)
+        
+        for i, tasks_dlist in enumerate(task_lists):
+            for t in tasks_dlist:
+                print("currently handling " + str(t))
+
+            tasks = [(d["mod"], d["class_name"], d["method"]) for d in tasks_dlist]
+            generate_ai_summaries_for_method(tasks)
             st.session_state["ai_summary_progress"] = i + 1
             progress_bar.progress((i + 1)/L, text=f"Generating AI summaries... {(i+1)/L*100}%")
         

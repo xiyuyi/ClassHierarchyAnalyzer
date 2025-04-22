@@ -35,9 +35,9 @@ def render_pyvis_graph(context: dict) -> dict:
         builder = ClassHierarchyGraphBuilder()
         class_hierachy_graph = builder.compile_graph()
         state = class_hierachy_graph.invoke(state)
-        return state['class_hierachy_network_graph']
+        return state['class_hierachy_network_graph'], state['modules_name2path'], state['modules_details']
 
-    nx_graph = get_class_hierarchy_network_graph()
+    nx_graph, modules_name2path, modules_details = get_class_hierarchy_network_graph()
     pyvis_g = get_class_hierarchy_pyvis_network(nx_graph)
 
 
@@ -46,8 +46,10 @@ def render_pyvis_graph(context: dict) -> dict:
         config_json_str = json.dumps(json.load(f))  # Pyvis needs str，not dict. json.dumps() converts a dict into tr.
     pyvis_g.set_options(config_json_str)
 
-    selected_node = interactive_pyvis_graph(pyvis_g)
-    return {"class_hierachy_network_graph": nx_graph}
+    interactive_pyvis_graph(pyvis_g)
+    return {"class_hierachy_network_graph": nx_graph, 
+            "modules_name2path": modules_name2path,
+            "modules_details": modules_details}
 
 
 

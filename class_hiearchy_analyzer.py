@@ -6,12 +6,14 @@ import threading
 import json
 import os
 
+from inheritscan.tools.ai_summaries_for_methods import generate_ai_summaries_for_method
 from inheritscan.tools.global_graph import render_global_graph_panel
+from inheritscan.tools.parse_subgraph_selected_nodes import get_mod_class_method_list
 from inheritscan.tools.sub_graph import render_sub_graph_panel
 
 selected_nodes = []
 flask_app = Flask(__name__)
-CORS(flask_app)  # 💥 允许任何来源访问
+CORS(flask_app)  
 
 # clear runtime data
 import shutil
@@ -22,11 +24,6 @@ import inheritscan
 package_root = Path(inheritscan.__file__).parent
 runtime_folder = Path(inheritscan.__file__).parent.parent / ".run_time"
 
-# if os.path.exists(runtime_folder):
-#     shutil.rmtree(runtime_folder)
-#     print(f"🗑️ Deleted: {runtime_folder}")
-# else:
-#     print(f"⚠️ Path does not exist: {runtime_folder}")
 if "runtime_initialized" not in st.session_state:
     if runtime_folder.exists():
         shutil.rmtree(runtime_folder)
@@ -165,8 +162,6 @@ if "class_hierachy_network_graph" not in st.session_state:
 
 
 def render_detail_llm_panel(context: dict) -> dict:
-    st.markdown("### 🔍 Detailed Class View")
-
     selected_classes = context.get("selected_classes", [])
     if not selected_classes:
         st.info("No class selected. Please pick one in subgraph.")
@@ -197,7 +192,8 @@ context = {
 # --- Top panels: global + subgraph ---
 print("render")
 top_left, top_right = st.columns(2)
-
+st.divider()
+bottom = st.container()
 
 with top_left:
     result = render_global_graph_panel(context)
@@ -207,11 +203,11 @@ with top_left:
 with top_right:
     st.markdown("### 📎 Subgraph View")
 
-    # ✅ Button always stays fixed
+    # Button always stays fixed
     if st.button("🔁 Render Subgraph", use_container_width=True):
         st.session_state["rerender_subgraph"] = True
 
-    # ✅ Render area isolated from button
+    # Render area isolated from button
     subgraph_container = st.container()
     with subgraph_container:
         if st.session_state.get("rerender_subgraph", True):
@@ -222,7 +218,31 @@ with top_right:
 
 
 # --- Bottom full-width panel: detail + LLM ---
-st.divider()
-result = render_detail_llm_panel(context)
-if result:
-    st.session_state.update(result)
+with bottom:
+    st.markdown("### 🔍 Detailed Class View")
+
+    # Button triggers backend process
+    if st.button("🔁 Generate AI summaries", use_container_width=True):
+        st.session_state["generate_ai_summaries"] = True
+        st.session_state["ai_summary_progress"] = 0  # Reset progress
+
+    # If generation is triggered, run process and show progress
+    if st.session_state.get("generate_ai_summaries", False):
+        progress_bar = st.progress(0, text="Generating AI summaries...")
+        
+        mod_class_method_list = get_mod_class_method_list(context)
+        L = len(mod_class_method_list)
+        # Example: Simulate a backend process
+        for i, mod_class_method in enumerate(mod_class_method_list):
+            generate_ai_summaries_for_method(mod_class_method)
+            st.session_state["ai_summary_progress"] = i + 1
+            progress_bar.progress((i + 1)/L, text=f"Generating AI summaries... {(i+1)/L*100}%")
+        
+        # Done generating
+        st.success("AI summaries generated!")
+        st.session_state["generate_ai_summaries"] = False  # Reset the trigger
+
+    # Render the panel normally
+    result = render_detail_llm_panel(context)
+    if result:
+        st.session_state.update(result)

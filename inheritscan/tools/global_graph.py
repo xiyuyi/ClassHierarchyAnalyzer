@@ -42,7 +42,7 @@ def render_pyvis_graph(context: dict) -> dict:
 
     pyvis_config_path = package_root / "configs" / "globalgraph_pyvis.txt"
     with open(pyvis_config_path, "r") as f:
-        config_json_str = json.dumps(json.load(f))  # 👈 Pyvis 需要 str，不是 dict
+        config_json_str = json.dumps(json.load(f))  # Pyvis needs str，not dict. json.dumps() converts a dict into tr.
     pyvis_g.set_options(config_json_str)
 
     selected_node = interactive_pyvis_graph(pyvis_g)

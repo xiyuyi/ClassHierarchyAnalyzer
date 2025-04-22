@@ -7,11 +7,11 @@ from inheritscan.agents.microchains.prompts.chunk_summary import (
 )
 
 
-def get_chunk_summary_chain():
+def get_chunk_summary_chain(chain_name):
     llm = get_tinyllm150()
-
-    # Wrap in a single output parser to maintain JSON formatting
-    chunk_summary_chain = chunk_summary_prompt_korean | llm | StrOutputParser()
+    if chain_name == "tinyllama150_korean":
+        # Wrap in a single output parser to maintain JSON formatting
+        chunk_summary_chain = chunk_summary_prompt_korean | llm | StrOutputParser()
 
     # Wrap in RunnableMap so it's consistent with other chains
     composed_chain = RunnableMap({"chunk_summary": chunk_summary_chain})

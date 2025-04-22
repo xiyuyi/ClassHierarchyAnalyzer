@@ -26,6 +26,7 @@ def render_pyvis_graph(context: dict) -> dict:
 
     @st.cache_resource
     def get_class_hierarchy_network_graph():
+        # TODO #4: expose user input of the initial state info for code base path selection.
         state = {
             'codebase_path': '/Users/xiyuyi/github_repos/OpenHands/openhands',
             'module_cluster_levels': 1,

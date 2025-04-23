@@ -9,6 +9,7 @@ import os
 from inheritscan.tools.ai_summaries_for_methods import generate_ai_summaries_for_method
 from inheritscan.tools.global_graph import render_global_graph_panel
 from inheritscan.tools.parse_subgraph_selected_nodes import get_mod_class_method_list
+from inheritscan.tools.render_class_uml import render_detailed_class_uml
 from inheritscan.tools.separate_list2smallerlist import separate_list
 from inheritscan.tools.sub_graph import render_sub_graph_panel
 
@@ -168,18 +169,7 @@ if "modules_details" not in st.session_state:
 
 
 
-def render_detail_llm_panel(context: dict) -> dict:
-    selected_classes = context.get("selected_classes", [])
-    if not selected_classes:
-        st.info("No class selected. Please pick one in subgraph.")
-        return {}
 
-    selected_class = selected_classes[0]
-    st.markdown(f"**Class:** `{selected_class}`")
-
-    if selected_class != context.get("selected_class_detail"):
-        return {"selected_class_detail": selected_class}
-    return {}
 
 
 # -------------------------------------
@@ -241,9 +231,6 @@ with bottom:
         
         mod_class_method_list = get_mod_class_method_list(context)
 
-
-
-        # Example usage:
         task_lists = separate_list(mod_class_method_list, chunk_size=5)
         L = len(task_lists)        
         for i, tasks_dlist in enumerate(task_lists):
@@ -260,6 +247,11 @@ with bottom:
         st.session_state["generate_ai_summaries"] = False  # Reset the trigger
 
     # Render the panel normally
-    result = render_detail_llm_panel(context)
-    if result:
-        st.session_state.update(result)
+    uml_diagram_container = st.container()
+    with uml_diagram_container:
+        if st.session_state.get("render_uml_diagram", True):
+            result = render_detailed_class_uml(context)
+            if result:
+                st.session_state.update(result)
+
+

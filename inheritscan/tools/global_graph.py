@@ -26,6 +26,7 @@ def render_pyvis_graph(context: dict) -> dict:
 
     @st.cache_resource
     def get_class_hierarchy_network_graph():
+        # TODO #4: expose user input of the initial state info for code base path selection.
         state = {
             'codebase_path': '/Users/xiyuyi/github_repos/OpenHands/openhands',
             'module_cluster_levels': 1,
@@ -34,19 +35,21 @@ def render_pyvis_graph(context: dict) -> dict:
         builder = ClassHierarchyGraphBuilder()
         class_hierachy_graph = builder.compile_graph()
         state = class_hierachy_graph.invoke(state)
-        return state['class_hierachy_network_graph']
+        return state['class_hierachy_network_graph'], state['modules_name2path'], state['modules_details']
 
-    nx_graph = get_class_hierarchy_network_graph()
+    nx_graph, modules_name2path, modules_details = get_class_hierarchy_network_graph()
     pyvis_g = get_class_hierarchy_pyvis_network(nx_graph)
 
 
     pyvis_config_path = package_root / "configs" / "globalgraph_pyvis.txt"
     with open(pyvis_config_path, "r") as f:
-        config_json_str = json.dumps(json.load(f))  # 👈 Pyvis 需要 str，不是 dict
+        config_json_str = json.dumps(json.load(f))  # Pyvis needs str，not dict. json.dumps() converts a dict into tr.
     pyvis_g.set_options(config_json_str)
 
-    selected_node = interactive_pyvis_graph(pyvis_g)
-    return {"class_hierachy_network_graph": nx_graph}
+    interactive_pyvis_graph(pyvis_g)
+    return {"class_hierachy_network_graph": nx_graph, 
+            "modules_name2path": modules_name2path,
+            "modules_details": modules_details}
 
 
 

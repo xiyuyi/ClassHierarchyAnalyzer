@@ -6,12 +6,16 @@ import threading
 import json
 import os
 
+from inheritscan.tools.ai_summaries_for_methods import generate_ai_summaries_for_method
 from inheritscan.tools.global_graph import render_global_graph_panel
+from inheritscan.tools.parse_subgraph_selected_nodes import get_mod_class_method_list
+from inheritscan.tools.render_class_uml import render_detailed_class_uml
+from inheritscan.tools.separate_list2smallerlist import separate_list
 from inheritscan.tools.sub_graph import render_sub_graph_panel
 
 selected_nodes = []
 flask_app = Flask(__name__)
-CORS(flask_app)  # 💥 允许任何来源访问
+CORS(flask_app)  
 
 # clear runtime data
 import shutil
@@ -22,11 +26,6 @@ import inheritscan
 package_root = Path(inheritscan.__file__).parent
 runtime_folder = Path(inheritscan.__file__).parent.parent / ".run_time"
 
-# if os.path.exists(runtime_folder):
-#     shutil.rmtree(runtime_folder)
-#     print(f"🗑️ Deleted: {runtime_folder}")
-# else:
-#     print(f"⚠️ Path does not exist: {runtime_folder}")
 if "runtime_initialized" not in st.session_state:
     if runtime_folder.exists():
         shutil.rmtree(runtime_folder)
@@ -162,22 +161,15 @@ if "selected_class_detail" not in st.session_state:
 if "class_hierachy_network_graph" not in st.session_state:
     st.session_state.class_hierachy_network_graph = None
 
+if "modules_name2path" not in st.session_state:
+    st.session_state.modules_name2path = None
+
+if "modules_details" not in st.session_state:
+    st.session_state.modules_details = None
 
 
-def render_detail_llm_panel(context: dict) -> dict:
-    st.markdown("### 🔍 Detailed Class View")
 
-    selected_classes = context.get("selected_classes", [])
-    if not selected_classes:
-        st.info("No class selected. Please pick one in subgraph.")
-        return {}
 
-    selected_class = selected_classes[0]
-    st.markdown(f"**Class:** `{selected_class}`")
-
-    if selected_class != context.get("selected_class_detail"):
-        return {"selected_class_detail": selected_class}
-    return {}
 
 
 # -------------------------------------
@@ -192,12 +184,15 @@ context = {
     "selected_cluster": st.session_state.selected_cluster,
     "selected_classes": st.session_state.selected_classes,
     "selected_class_detail": st.session_state.selected_class_detail,
+    "modules_name2path": st.session_state.modules_name2path,
+    "modules_details": st.session_state.modules_details
 }
 
 # --- Top panels: global + subgraph ---
 print("render")
 top_left, top_right = st.columns(2)
-
+st.divider()
+bottom = st.container()
 
 with top_left:
     result = render_global_graph_panel(context)
@@ -207,11 +202,11 @@ with top_left:
 with top_right:
     st.markdown("### 📎 Subgraph View")
 
-    # ✅ Button always stays fixed
+    # Button always stays fixed
     if st.button("🔁 Render Subgraph", use_container_width=True):
         st.session_state["rerender_subgraph"] = True
 
-    # ✅ Render area isolated from button
+    # Render area isolated from button
     subgraph_container = st.container()
     with subgraph_container:
         if st.session_state.get("rerender_subgraph", True):
@@ -222,7 +217,41 @@ with top_right:
 
 
 # --- Bottom full-width panel: detail + LLM ---
-st.divider()
-result = render_detail_llm_panel(context)
-if result:
-    st.session_state.update(result)
+with bottom:
+    st.markdown("### 🔍 Detailed Class View")
+
+    # Button triggers backend process
+    if st.button("🔁 Generate AI summaries", use_container_width=True):
+        st.session_state["generate_ai_summaries"] = True
+        st.session_state["ai_summary_progress"] = 0  # Reset progress
+
+    # If generation is triggered, run process and show progress
+    if st.session_state.get("generate_ai_summaries", False):
+        progress_bar = st.progress(0, text="Generating AI summaries...")
+        
+        mod_class_method_list = get_mod_class_method_list(context)
+
+        task_lists = separate_list(mod_class_method_list, chunk_size=5)
+        L = len(task_lists)        
+        for i, tasks_dlist in enumerate(task_lists):
+            for t in tasks_dlist:
+                print("currently handling " + str(t))
+
+            tasks = [(d["mod"], d["class_name"], d["method"]) for d in tasks_dlist]
+            generate_ai_summaries_for_method(tasks)
+            st.session_state["ai_summary_progress"] = i + 1
+            progress_bar.progress((i + 1)/L, text=f"Generating AI summaries... {(i+1)/L*100}%")
+        
+        # Done generating
+        st.success("AI summaries generated!")
+        st.session_state["generate_ai_summaries"] = False  # Reset the trigger
+
+    # Render the panel normally
+    uml_diagram_container = st.container()
+    with uml_diagram_container:
+        if st.session_state.get("render_uml_diagram", True):
+            result = render_detailed_class_uml(context)
+            if result:
+                st.session_state.update(result)
+
+

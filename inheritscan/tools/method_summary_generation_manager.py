@@ -14,6 +14,7 @@ from inheritscan.tools.method_code_chunker import chunk_method_code
 
 
 class MethodSummary:
+    # TODO #5: finishi this class.
     # given a list of (modules, classes, method):
     # generate the summaries for them using a minichain.
     # update the summarries in method at the class level.

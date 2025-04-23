@@ -1,8 +1,5 @@
-from typing import Any, Dict
-from langchain_core.output_parsers import StrOutputParser
 from langchain_core.runnables import RunnableMap
-from langchain.schema.runnable import Runnable
-from typing import Any, Dict, Optional
+from langchain_core.output_parsers import StrOutputParser
 
 from inheritscan.agents.microchains.chains.mock import MockChain
 from inheritscan.agents.microchains.shared.llm_config import get_qwen_coder_instruct500, get_tinyllm150

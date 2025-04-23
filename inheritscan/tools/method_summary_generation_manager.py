@@ -15,6 +15,9 @@ from inheritscan.tools.method_code_chunker import chunk_method_code
 
 class MethodSummary:
     # TODO #5: finishi this class.
+    # work on TODO #5-1 first:
+    # TODO #5-1: scratch and design a good way to aggregate the summaries.
+    
     # given a list of (modules, classes, method):
     # generate the summaries for them using a minichain.
     # update the summarries in method at the class level.
@@ -26,9 +29,11 @@ class MethodSummary:
         """
         tasks: [(mod, class_name, method name)]
         """
-        # self.summary_manager = summary_manager
-        # self.tasks = tasks
-        # self.aggregated_tasks = defaultdict(list)
+        # keep tasks the same format across ClassSummary, MethodSummary and ChunkSummary classes.
+
+        self.summary_manager = summary_manager
+        self.tasks = tasks
+        self.aggregated_tasks = defaultdict(list)
         # self.aggregated_classes_code = defaultdict(str)
         # self.aggregated_methods_code = defaultdict(str)
         # self.aggregated_summaries = defaultdict(dict)
@@ -37,15 +42,15 @@ class MethodSummary:
         self.method_summary_chain = get_chunks2method_chain(
             self.method_summary_chain_name
         )
-        # self._aggretate_tasks()
+        self._aggretate_tasks()
         # self._aggretate_methods()
         # self.invoke_queue = [k for k in self.aggregated_methods_code]
         pass
 
     def _aggretate_tasks(self):
-        # "aggregate list of tasks into {(mod, class_name): list of methods}"
-        # for mod, class_name, method_name in self.tasks:
-        #     self.aggregated_tasks[(mod, class_name)].append(method_name)
+        "aggregate list of tasks into {(mod, class_name): list of methods}"
+        for mod, class_name, method_name in self.tasks:
+            self.aggregated_tasks[(mod, class_name)].append(method_name)
         pass
 
     def _aggretate_methods(self):

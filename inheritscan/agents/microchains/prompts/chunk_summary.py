@@ -19,13 +19,18 @@ chunk_summary_prompt_english = PromptTemplate(
     template="""
 You are an experienced software engineer.
 
-Summarize the following Python code chunk at a high level, focusing on what it does and why it exists.
-Use a concise, dev-oriented style. Skip low-level implementation details unless they're critical.
-
+- Summarize the following Python code chunk at low-level, give short, concise and punctual 
+bulletin points of what it does at low level without too much details.
+- Contain details to the level of this chunk such that it would make sense with other chunks 
+with the same level of details, I will use it for summarizaiton later.
+- If you see multiple lines can be explained and summarized together, summarize them together.
+- Use a concise, dev-oriented style. 
+- Please reply in English.
 
 Code chunk:
 ```python
 {input_chunk}
+```
 """,
 )
 

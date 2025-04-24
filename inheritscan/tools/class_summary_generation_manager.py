@@ -75,14 +75,14 @@ class ClassSummary:
         #     }
         pass
 
-    def summarize_classes_for_all_classes(self):
+    def summarize_all_classes(self):
         # while self.invoke_queue:
         #     self._summarize_classes_for_1_class()
 
         # self.aggregated_classinfo_queue = list(self.aggregated_summaries.keys())
         pass
 
-    def _summarize_classes_for_1_class(self):
+    def _summarize_1_class(self):
         # mod, class_name, method = self.invoke_queue.pop()
         # method_code = self.aggregated_methods_code[(mod, class_name, method)]
         # snippets = chunk_method_code(method_code)

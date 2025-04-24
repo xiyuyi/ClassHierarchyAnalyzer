@@ -31,6 +31,13 @@ if "runtime_initialized" not in st.session_state:
         shutil.rmtree(runtime_folder)
         print(f"🗑️ Deleted runtime folder at: {runtime_folder}")
     runtime_folder.mkdir(exist_ok=True)
+    p1 = runtime_folder / "selected_nodes.json"
+    p2 = runtime_folder / "selected_nodes_subgraph.json"
+    for p in [p1, p2]:
+        if not os.path.exists(p):
+            with open(p, "w") as f:
+                json.dump([], f, indent=2)
+                
     print(f"📁 Recreated runtime folder at: {runtime_folder}")
     st.session_state["runtime_initialized"] = True
 

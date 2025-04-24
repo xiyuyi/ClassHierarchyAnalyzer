@@ -47,8 +47,8 @@ def get_summaries_for_method_chunks(tasks: List[dict]):
     k={
     "code_base_dir": "/Users/xiyuyi/github_repos/OpenHands/openhands",
     "root_dir": "/Users/xiyuyi/github_repos/ClassHierarchyAnalyzer/sumarry_root",  
-    "chain_name": "qwen_coder_32b_instruct500_engilsh"
-    # "chain_name": "mock_chain",
+    # "chain_name": "qwen_coder_32b_instruct500_engilsh"
+    "chain_name": "mock_chain",
     }
     sm = get_summary_manager(**k)
     chunk_summary = ChunkSummary(summary_manager=sm, tasks = tasks)
@@ -64,8 +64,8 @@ def get_summaries_for_method(tasks: List[dict]):
     k={
     "code_base_dir": "/Users/xiyuyi/github_repos/OpenHands/openhands",
     "root_dir": "/Users/xiyuyi/github_repos/ClassHierarchyAnalyzer/sumarry_root",  
-    "chain_name": "qwen_coder_32b_instruct500_engilsh"
-    # "chain_name": "mock_chain",
+    # "chain_name": "qwen_coder_32b_instruct500_engilsh"
+    "chain_name": "mock_chain",
     }
     sm = get_summary_manager(**k)
     method_summary = MethodSummary(summary_manager=sm, tasks = tasks)
@@ -78,8 +78,8 @@ def get_summaries_for_class(tasks: List[dict]):
     k={
     "code_base_dir": "/Users/xiyuyi/github_repos/OpenHands/openhands",
     "root_dir": "/Users/xiyuyi/github_repos/ClassHierarchyAnalyzer/sumarry_root",  
-    "chain_name": "qwen_coder_32b_instruct2000_engilsh"
-    # "chain_name": "mock_chain",
+    # "chain_name": "qwen_coder_32b_instruct2000_engilsh"
+    "chain_name": "mock_chain",
     }
     sm = get_summary_manager(**k)
     method_summary = ClassSummary(summary_manager=sm, tasks = tasks)

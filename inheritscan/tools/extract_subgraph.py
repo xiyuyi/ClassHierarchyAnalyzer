@@ -1,8 +1,10 @@
+import time
 import networkx as nx
 import json
 
 def extract_subgraph_from_global(global_nx_graph: nx.DiGraph, selected_nodes_from_gg_fpath):
-    import json
+    while not global_nx_graph:
+        time.sleep(0.01)
 
     print("📦 Loading selected nodes...")
     with open(selected_nodes_from_gg_fpath, 'r') as f:
@@ -17,6 +19,9 @@ def extract_subgraph_from_global(global_nx_graph: nx.DiGraph, selected_nodes_fro
         print(f"   - {node}")
 
     print(f"\n🌐 Inspecting edges from global graph...")
+
+
+
     all_edges = list(global_nx_graph.edges())
     for i, (u, v) in enumerate(all_edges):
         edge_info = f"({u}) -> ({v})"

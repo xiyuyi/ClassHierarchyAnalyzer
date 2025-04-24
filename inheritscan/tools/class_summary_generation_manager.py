@@ -26,133 +26,92 @@ class ClassSummary:
         """
         tasks: [(mod, class_name, method name)]
         """
-        # self.summary_manager = summary_manager
-        # self.tasks = tasks
-        # self.aggregated_tasks = defaultdict(list)
-        # self.aggregated_classes_code = defaultdict(str)
-        # self.aggregated_methods_code = defaultdict(str)
-        # self.aggregated_summaries = defaultdict(dict)
+        self.summary_manager = summary_manager
+        self.tasks = tasks
+        self.aggregated_tasks = defaultdict(list)
+        self.aggregated_class_methods_summaries = defaultdict(str)
+        # self.aggregated_class_methods_summaries[
+        #                     (mod, class_name)
+        #                 ] = aggregated_summary
+
+        self.aggregated_class_summaries = defaultdict(dict)
         # self.aggregated_classinfo_queue = []
         self.class_summary_chain_name = summary_manager.summary_chain_name
         self.class_summary_chain = get_methods2class_chain(
             self.class_summary_chain_name
         )
-        # self._aggretate_tasks()
-        # self._aggretate_methods()
-        # self.invoke_queue = [k for k in self.aggregated_methods_code]
+        self._aggretate_tasks()
+        self._aggretate_classes()
+        self.invoke_queue = [k for k in self.aggregated_class_methods_summaries]
         pass
 
     def _aggretate_tasks(self):
-        # "aggregate list of tasks into {(mod, class_name): list of methods}"
-        # for mod, class_name, method_name in self.tasks:
-        #     self.aggregated_tasks[(mod, class_name)].append(method_name)
+        "aggregate list of tasks into {(mod, class_name): ""}"
+        for mod, class_name, _ in self.tasks:
+            self.aggregated_tasks[(mod, class_name)] = []
         pass
 
-    def _aggretate_methods(self):
-        # "aggregate list of tasks into {(mod, class_name, method): code}"
-        # code_base_dir = self.summary_manager.code_base_dir
-        # for mod, class_name in self.aggregated_tasks:
-        #     # get class code.
-        #     method_names = self.aggregated_tasks[mod, class_name]
-        #     mod_list = mod.split(".")
-        #     mod_list[-1] += ".py"
-        #     file_path = os.path.join(code_base_dir, *mod_list)
-        #     class_code = extract_class_code(file_path, class_name)
-        #     self.aggregated_classes_code[(mod, class_name)] = class_code
+    def _aggretate_classes(self):
+        "aggregate list of tasks into {(mod, class_name): aggregated_class_methods_summaries}"
+        for mod, class_name in self.aggregated_tasks:
+            #TODO #6 implement aggregate summary logic (aggregate all emthod summaries)
+            class_info = self.summary_manager.load_classinfo(mod, class_name)
 
-        #     # parse class code into method code
-        #     methods_name2code_map = extract_methods_from_class_code(class_code)
+            # Aggregate the summaries for all the method information within this class.
+            method_names = class_info.methods.keys()
+            aggregated_summary = ""
+            for method_name in method_names:
+                method_info = class_info.methods[method_name]
+                summary = method_info.summary
+                aggregated_summary += f"\n\n## Method Name:  {method_name}"
+                aggregated_summary += "\n"
+                aggregated_summary += summary
 
-        #     # assign method codes
-        #     for method_name in method_names:
-        #         self.aggregated_methods_code[(mod, class_name, method_name)] = (
-        #             methods_name2code_map[method_name]
-        #         )
+            self.aggregated_class_methods_summaries[
+                                (mod, class_name)
+                            ] = aggregated_summary
+        
 
-        #     # prepare placeholders for the aggregated summaires for each method ( every method)
-        #     self.aggregated_summaries[(mod, class_name)] = {
-        #         method_name: None for method_name in method_names
-        #     }
-        pass
+    def summarize_all_classes(self):
+        while self.invoke_queue:
+            self._summarize_1_class()
 
-    def summarize_classes_for_all_classes(self):
-        # while self.invoke_queue:
-        #     self._summarize_classes_for_1_class()
+        self.aggregated_classinfo_queue = list(self.aggregated_class_summaries.keys())
+        
 
-        # self.aggregated_classinfo_queue = list(self.aggregated_summaries.keys())
-        pass
-
-    def _summarize_classes_for_1_class(self):
-        # mod, class_name, method = self.invoke_queue.pop()
-        # method_code = self.aggregated_methods_code[(mod, class_name, method)]
-        # snippets = chunk_method_code(method_code)
-        # snippets_map = defaultdict(list)
-        # for i, code_snippet in enumerate(snippets):
-        #     summary = self.snippet_summary_chain.invoke(code_snippet)
-        #     snippets_map[f"chunk_{i}"] = [code_snippet, summary["chunk_summary"]]
-
-        # # append to aggregated_summaries
-        # self.aggregated_summaries[(mod, class_name)][method] = snippets_map
-        pass
+    def _summarize_1_class(self):
+        mod, class_name = self.invoke_queue.pop()
+        aggregated_summary = self.aggregated_class_methods_summaries[
+            (mod, class_name)
+        ]
+        summary = self.class_summary_chain.invoke(aggregated_summary)
+        self.aggregated_class_summaries[(mod, class_name)] = summary[
+            "class_summary"
+        ]
+        
     
     def update_all_classinfo(self):
-        # while self.aggregated_classinfo_queue:
-        #     self._update_1_classinfo()
-        pass
+        while self.aggregated_classinfo_queue:
+            self._update_1_classinfo()
+        
 
     def _update_1_classinfo(self):
-        # """Get one (mod, class name) info, then update the corresponding classinfo to file"""
-        # mod, class_name = self.aggregated_classinfo_queue.pop()
-        # class_code = self.aggregated_classes_code[(mod, class_name)]
+        """
+        Get one (mod, class name) info, then update the corresponding classinfo to file
+        Only pay attention to the "summary" field for MethodInfo objects.
+        """
 
-        # # get class_info
-        # class_info: ClassInfo = self.summary_manager.load_classinfo(
-        #     module_path=mod, class_name=class_name
-        # )
-        # class_info_old = copy.deepcopy(class_info)
-        # class_info.code = class_code
+        mod, class_name = self.aggregated_classinfo_queue.pop()
 
-        # # update the data fields in class_info
-        # method_summaries = self.aggregated_summaries[(mod, class_name)]
+        # get old class_info
+        class_info: ClassInfo = self.summary_manager.load_classinfo(
+            module_path=mod, class_name=class_name
+        )
 
-        # for method_name in method_summaries:
-        #     method_code = self.aggregated_methods_code[(mod, class_name, method_name)]
-        #     snippets_map = method_summaries[method_name]
-
-        #     method_id = ".".join([mod, class_name, method_name])
-        #     method_kwargs = {
-        #         "id": method_id,
-        #         "code": method_code,
-        #         "module_path": mod,
-        #         "class_name": class_name,
-        #         "method_name": method_name,
-        #     }
-
-        #     method_info = MethodInfo(**method_kwargs)
-
-        #     for snippet_name in snippets_map:
-        #         snippet_code = snippets_map[snippet_name][0]
-        #         snippet_summary = snippets_map[snippet_name][1]
-        #         snippet_id = ".".join([mod, class_name, method_name, snippet_name])
-
-        #         snippet_kwargs = {
-        #             "id": snippet_id,
-        #             "code": snippet_code,
-        #             "summary": snippet_summary,
-        #             "module_path": mod,
-        #             "class_name": class_name,
-        #             "method_name": method_name,
-        #             "snippet_name": snippet_name,
-        #             "chain_name": self.snippet_summary_chain_name,
-        #         }
-
-        #     snippet_info = SnippetInfo(**snippet_kwargs)
-        #     method_info.add_snippet_info(snippet_info)
-
-        #     class_info.add_method_info(method_info)
-
-        # updated_class_info = self.summary_manager.update_classinfo(
-        #     class_info_old, class_info
-        # )
-        # self.summary_manager.save_classinfo(updated_class_info)
-        pass
+        class_summary = self.aggregated_class_summaries[(mod, class_name)]
+        class_info = self.summary_manager.update_class_summary(
+            class_info, class_summary
+        )
+        # save out.
+        self.summary_manager.save_classinfo(class_info)
+        

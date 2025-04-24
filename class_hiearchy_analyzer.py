@@ -6,7 +6,7 @@ import threading
 import json
 import os
 
-from inheritscan.tools.ai_summaries_for_methods import generate_ai_summaries_for_method
+from inheritscan.tools.ai_summaries import generate_ai_summaries
 from inheritscan.tools.global_graph import render_global_graph_panel
 from inheritscan.tools.parse_subgraph_selected_nodes import get_mod_class_method_list
 from inheritscan.tools.render_class_uml import render_detailed_class_uml
@@ -238,7 +238,7 @@ with bottom:
                 print("currently handling " + str(t))
 
             tasks = [(d["mod"], d["class_name"], d["method"]) for d in tasks_dlist]
-            generate_ai_summaries_for_method(tasks)
+            generate_ai_summaries(tasks)
             st.session_state["ai_summary_progress"] = i + 1
             progress_bar.progress((i + 1)/L, text=f"Generating AI summaries... {(i+1)/L*100}%")
         

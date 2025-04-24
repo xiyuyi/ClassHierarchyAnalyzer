@@ -71,3 +71,10 @@ class SummaryManager:
             d["methods"][method_name]['summary'] = summary
             
         return ClassInfo.from_dict(d)
+    
+    def update_class_summary(self,c: ClassInfo, class_summary: str):
+        """ update class summary """
+        d = c.to_dict()
+        d['summary'] = class_summary
+            
+        return ClassInfo.from_dict(d)

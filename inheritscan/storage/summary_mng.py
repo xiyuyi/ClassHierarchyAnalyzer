@@ -6,6 +6,18 @@ from inheritscan.tools.recursive_update_dict import recursive_update
 
 
 class SummaryManager:
+    # root_dir: the root_dir for the summary information aggregation folder
+    # code_base_dir is the dir of the codebase root.
+    # summary_chain_name: name fo the llmchain for summary generation
+
+    # this class interface with a ClassInfo object. 
+    # Each ClassInfo object is stored in the format of a .json file under the root_dir with project dir structure
+    # this summary manger load the classinfo from .json file.
+    # update classinfo1 with information in classinfo2
+    # saves ClassInfo object to .json file.
+    # load and reconstitute ClassInfo object from .json file.
+    # update_classinfo: update classinfo_old with information in classinfo_new
+    
     def __init__(
         self,
         root_dir: str,
@@ -49,3 +61,13 @@ class SummaryManager:
         d1 = c1.to_dict()
         recursive_update(d0, d1)
         return ClassInfo.from_dict(d0)
+    
+    def update_methods_summaries(self, c: ClassInfo, method_summaries: dict):
+        # update_methods_summaries(self, c: ClassInfo, method_name: str, summary: str):
+        """ update method summaries of all methods in c """
+        d = c.to_dict()
+        for method_name in method_summaries:
+            summary = method_summaries[method_name]
+            d["methods"][method_name]['summary'] = summary
+            
+        return ClassInfo.from_dict(d)

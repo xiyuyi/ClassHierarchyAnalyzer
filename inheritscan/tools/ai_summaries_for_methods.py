@@ -29,7 +29,7 @@ def get_summary_manager():
     # consider context['project_info']
     code_base_dir = "/Users/xiyuyi/github_repos/OpenHands/openhands"
     root_dir = "/Users/xiyuyi/github_repos/ClassHierarchyAnalyzer/sumarry_root"
-    chain_name = "mock_chain"
+    chain_name = "qwen_coder_32b_instruct500_engilsh"
 
     sm = SummaryManager(root_dir = root_dir, 
                     code_base_dir = code_base_dir,

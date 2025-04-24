@@ -139,8 +139,8 @@ class ChunkSummary:
                     "chain_name": self.snippet_summary_chain_name,
                 }
 
-            snippet_info = SnippetInfo(**snippet_kwargs)
-            method_info.add_snippet_info(snippet_info)
+                snippet_info = SnippetInfo(**snippet_kwargs)
+                method_info.add_snippet_info(snippet_info)
 
             class_info.add_method_info(method_info)
 

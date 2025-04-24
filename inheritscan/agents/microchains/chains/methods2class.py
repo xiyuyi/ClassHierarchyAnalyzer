@@ -1,6 +1,10 @@
 from langchain_core.runnables import RunnableMap
 from inheritscan.agents.microchains.chains.mock import MockChain
-from inheritscan.agents.microchains.shared.llm_config import get_qwen_coder_instruct500, get_tinyllm150
+from inheritscan.agents.microchains.shared.llm_config import (
+    get_qwen_coder_instruct500, 
+    get_qwen_coder_instruct2000,
+    get_tinyllm150
+)
 from langchain_core.output_parsers import StrOutputParser
 from inheritscan.agents.microchains.prompts.class_summary import (
     class_summary_prompt_english
@@ -15,6 +19,10 @@ def get_methods2class_chain(chain_name):
     else:
         if chain_name == "qwen_coder_32b_instruct500_engilsh":
             llm = get_qwen_coder_instruct500()
+            prompt = class_summary_prompt_english
+
+        elif chain_name == "qwen_coder_32b_instruct2000_engilsh":
+            llm = get_qwen_coder_instruct2000()
             prompt = class_summary_prompt_english
 
         chain = prompt | llm | StrOutputParser()

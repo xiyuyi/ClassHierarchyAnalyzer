@@ -36,3 +36,18 @@ def get_qwen_coder_instruct500():
         frequency_penalty=0,
         seed=42
     )
+
+def get_qwen_coder_instruct2000():
+    return TogetherQwenCoder(
+        model="Qwen/Qwen2.5-Coder-32B-Instruct",
+        max_tokens=2000,
+        temperature=0,
+        top_p=0.95,
+        min_p=0.05,
+        top_k=100,
+        repetition_penalty=1.1,
+        presence_penalty=0,
+        frequency_penalty=0,
+        seed=42
+    )
+

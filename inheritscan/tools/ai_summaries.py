@@ -21,16 +21,21 @@ def generate_ai_summaries(tasks: List[dict]):
 
 
 
-def get_summary_manager():
+def get_summary_manager(code_base_dir: str = None, root_dir: str = None, chain_name: str = None):
     # TODO #4: relevant to issue $4, expose path selection #4
     # expose code_base)dir, root_dir to context. 
     # add button for selection.
     # code_base_dir is also used in global_graph.py
     # consider context['project_info']
-    code_base_dir = "/Users/xiyuyi/github_repos/OpenHands/openhands"
-    root_dir = "/Users/xiyuyi/github_repos/ClassHierarchyAnalyzer/sumarry_root"
-    # chain_name = "qwen_coder_32b_instruct500_engilsh"
-    chain_name = "mock_chain"
+    if not code_base_dir:
+        code_base_dir = "/Users/xiyuyi/github_repos/OpenHands/openhands"
+
+    if not root_dir:    
+        root_dir = "/Users/xiyuyi/github_repos/ClassHierarchyAnalyzer/sumarry_root"
+    
+    if not chain_name:
+        # chain_name = "qwen_coder_32b_instruct500_engilsh"
+        chain_name = "mock_chain"
 
     sm = SummaryManager(root_dir = root_dir, 
                     code_base_dir = code_base_dir,
@@ -39,7 +44,13 @@ def get_summary_manager():
 
 
 def get_summaries_for_method_chunks(tasks: List[dict]):
-    sm = get_summary_manager()
+    k={
+    "code_base_dir": "/Users/xiyuyi/github_repos/OpenHands/openhands",
+    "root_dir": "/Users/xiyuyi/github_repos/ClassHierarchyAnalyzer/sumarry_root",  
+    "chain_name": "qwen_coder_32b_instruct500_engilsh"
+    # "chain_name": "mock_chain",
+    }
+    sm = get_summary_manager(**k)
     chunk_summary = ChunkSummary(summary_manager=sm, tasks = tasks)
     chunk_summary.summarize_chunks_for_all_methods()
     chunk_summary.update_all_classinfo()
@@ -50,7 +61,13 @@ def get_summaries_for_method_chunks(tasks: List[dict]):
 def get_summaries_for_method(tasks: List[dict]):
     # TODO #5 llm minichain: chunk summary -> method summary
     # minichain for summary aggregation to achieve method level summary.
-    sm = get_summary_manager()
+    k={
+    "code_base_dir": "/Users/xiyuyi/github_repos/OpenHands/openhands",
+    "root_dir": "/Users/xiyuyi/github_repos/ClassHierarchyAnalyzer/sumarry_root",  
+    "chain_name": "qwen_coder_32b_instruct500_engilsh"
+    # "chain_name": "mock_chain",
+    }
+    sm = get_summary_manager(**k)
     method_summary = MethodSummary(summary_manager=sm, tasks = tasks)
     method_summary.summarize_methods_for_all_classes()
     method_summary.update_all_classinfo()
@@ -58,7 +75,13 @@ def get_summaries_for_method(tasks: List[dict]):
 
 def get_summaries_for_class(tasks: List[dict]):
     # TODO #6 minichain for summary aggregation to achieve class level summary.
-    sm = get_summary_manager()
+    k={
+    "code_base_dir": "/Users/xiyuyi/github_repos/OpenHands/openhands",
+    "root_dir": "/Users/xiyuyi/github_repos/ClassHierarchyAnalyzer/sumarry_root",  
+    "chain_name": "qwen_coder_32b_instruct2000_engilsh"
+    # "chain_name": "mock_chain",
+    }
+    sm = get_summary_manager(**k)
     method_summary = ClassSummary(summary_manager=sm, tasks = tasks)
     method_summary.summarize_all_classes()
     method_summary.update_all_classinfo()

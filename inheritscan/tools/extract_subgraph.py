@@ -16,14 +16,14 @@ def extract_subgraph_from_global(global_nx_graph: nx.DiGraph, selected_nodes_fro
     for node in selected_node_keys:
         print(f"   - {node}")
 
-    print(f"\n🌐 Inspecting edges from global graph (showing up to 30)...")
+    print(f"\n🌐 Inspecting edges from global graph...")
     all_edges = list(global_nx_graph.edges())
-    for i, (u, v) in enumerate(all_edges[:30]):
+    for i, (u, v) in enumerate(all_edges):
         edge_info = f"({u}) -> ({v})"
         match_info = ""
         if u in selected_node_keys and v in selected_node_keys:
             match_info = "✅ MATCH"
-        print(f"{i+1:>2}. {edge_info} {match_info}")
+            print(f"{i+1:>2}. {edge_info} {match_info}")
 
     print(f"\n📊 Global Graph: {len(global_nx_graph.nodes)} nodes, {len(global_nx_graph.edges)} edges")
 

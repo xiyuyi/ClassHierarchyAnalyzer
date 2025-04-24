@@ -61,3 +61,13 @@ class SummaryManager:
         d1 = c1.to_dict()
         recursive_update(d0, d1)
         return ClassInfo.from_dict(d0)
+    
+    def update_methods_summaries(self, c: ClassInfo, method_summaries: dict):
+        # update_methods_summaries(self, c: ClassInfo, method_name: str, summary: str):
+        """ update method summaries of all methods in c """
+        d = c.to_dict()
+        for method_name in method_summaries:
+            summary = method_summaries[method_name]
+            d["methods"][method_name]['summary'] = summary
+            
+        return ClassInfo.from_dict(d)

@@ -63,7 +63,7 @@ class ClassSummary:
             for method_name in method_names:
                 method_info = class_info.methods[method_name]
                 summary = method_info.summary
-                aggregated_summary += f"\n\n ##method nane:  {method_name}"
+                aggregated_summary += f"\n\n## Method Name:  {method_name}"
                 aggregated_summary += "\n"
                 aggregated_summary += summary
 

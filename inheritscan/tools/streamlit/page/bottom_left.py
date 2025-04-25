@@ -2,10 +2,11 @@ from inheritscan.tools.streamlit.page.bottomleft_aisumgen_and_render import (
     summaries_generation_and_render,
 )
 import streamlit
-from inheritscan.tools.uml_panel.render_class_uml import render_class_uml
+from inheritscan.tools.uml_panel.entry import render_class_uml
 
 
 def render_bottom_left(context):
+
     header = streamlit.markdown("### 🔍 Detailed Class View")
     button1 = streamlit.button("🔁 Generate AI summaries", use_container_width=True)
 
@@ -27,8 +28,10 @@ def render_bottom_left(context):
     # Render the panel normally
     uml_diagram_container = streamlit.container()
     with uml_diagram_container:
+
         if streamlit.session_state.get("render_uml_diagram", True):
             streamlit.markdown("### 🗺️ Class Hierarchy Diagram")
             result = render_class_uml(context)
+            
             if result:
                 streamlit.session_state.update(result)

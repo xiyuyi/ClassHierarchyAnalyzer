@@ -46,3 +46,12 @@ def dump_selected_nodes_on_global_graph(nodes):
     path = runtime_folder / "selected_nodes.json"
     _dump_nodes_to_json(nodes, path)
     print(f"dumped selected nodes on global graph to: {path}")
+
+
+def dump_clicked_node_on_detailed_uml(nodes):
+    runtime_folder = Path(inheritscan.__file__).parent.parent / ".run_time"
+    path = runtime_folder / "clicked_node_on_detailed_uml.json"
+    entry = nodes[0]
+    with open(path, "w") as f:
+        json.dump([entry], f, indent=2)
+    print(f"dumped the clicked node on detailed uml panel to: {path}")

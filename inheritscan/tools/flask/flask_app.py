@@ -6,6 +6,7 @@ import inheritscan
 from pathlib import Path
 
 from inheritscan.storage.runtime_json.runtime_json_dumpers import (
+    dump_clicked_node_on_detailed_uml,
     dump_selected_nodes_on_global_graph,
     dump_selected_nodes_on_subgraph,
 )
@@ -29,6 +30,13 @@ def receive_selection():
 def receive_selection_subgraph():
     nodes = request.json.get("nodes", [])
     dump_selected_nodes_on_subgraph(nodes)
+    return {"status": "ok"}
+
+
+@flask_app.route("/receive_the_clicked_node_detailed_uml", methods=["POST"])
+def receive_seleced_class():
+    nodes = request.json.get("nodes", [])
+    dump_clicked_node_on_detailed_uml(nodes)
     return {"status": "ok"}
 
 

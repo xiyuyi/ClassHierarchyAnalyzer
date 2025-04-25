@@ -38,7 +38,7 @@ def render_pyvis_graph(context: dict) -> dict:
         return state['class_hierachy_network_graph'], state['modules_name2path'], state['modules_details']
 
     nx_graph, modules_name2path, modules_details = get_class_hierarchy_network_graph()
-    pyvis_g = get_class_hierarchy_pyvis_network(nx_graph)
+    pyvis_g: Network = get_class_hierarchy_pyvis_network(nx_graph)
 
 
     pyvis_config_path = package_root / "configs" / "globalgraph_pyvis.txt"

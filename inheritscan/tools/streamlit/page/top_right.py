@@ -1,7 +1,7 @@
 from inheritscan.tools.sub_graph import render_sub_graph_panel
+import streamlit
 
-
-def render_top_right(context, streamlit):
+def render_top_right(context):
     streamlit.markdown("### 📎 Subgraph View")
 
     # Button always stays fixed

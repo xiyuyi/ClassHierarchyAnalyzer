@@ -1,18 +1,10 @@
 import streamlit as st
-from flask import Flask, request, jsonify
-from flask_cors import CORS
 import threading
-import json
-import os
 from pathlib import Path
 import inheritscan
 
 
-from inheritscan.tools.ai_summaries import generate_ai_summaries
 from inheritscan.tools.flask.flask_app import run_flask
-from inheritscan.tools.parse_subgraph_selected_nodes import get_mod_class_method_list
-from inheritscan.tools.render_class_uml import render_detailed_class_uml
-from inheritscan.tools.separate_list2smallerlist import separate_list
 from inheritscan.tools.streamlit.init_json_files import initialize_json_files
 from inheritscan.tools.streamlit.init_state import initialize_session_state
 from inheritscan.tools.streamlit.page.bottom_left import render_bottom_left
@@ -54,10 +46,10 @@ context = {
 
 # Render
 with top_left:
-    render_top_left(context, st)
+    render_top_left(context)
 
 with top_right:
-    render_top_right(context, st)
+    render_top_right(context)
 
 with bottom_left:
-    render_bottom_left(context, st)
+    render_bottom_left(context)

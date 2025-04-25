@@ -1,21 +1,23 @@
-import streamlit as st
 from pyvis.network import Network
 from pathlib import Path
 import networkx as nx
-import tempfile
 import os
 import json
-
+from pyvis.network import Network
+import networkx as nx
+import json
 import inheritscan
+
 package_root = Path(inheritscan.__file__).parent
 
-# -------------------------------
-# Mock graph builder
-# -------------------------------
 def build_mock_class_graph():
     G = nx.DiGraph()
     G = nx.DiGraph()
-    G.add_node("CuteCreatur", label=format_class_label("CuteCreaturs", ["eat", "sleep", "PS5"]), is_base=True)
+    G.add_node(
+        "CuteCreatur",
+        label=format_class_label("CuteCreaturs", ["eat", "sleep", "PS5"]),
+        is_base=True,
+    )
     G.add_node("Dog", label=format_class_label("Dog", ["bark"]))
     G.add_node("XiangXiang", label=format_class_label("XiangXiang", ["PS5"]))
     G.add_node("Cat", label=format_class_label("Cat", ["meow"]))
@@ -31,28 +33,23 @@ def build_mock_class_graph():
     G.add_edge("Cat", "Cat3")
     return G
 
+
 def format_class_label(class_name, methods):
     line_sep = "------------------"
-    methods_text = "\n".join([f"  {m}()" for m in methods])  # 加两个空格实现左对齐效果
+    methods_text = "\n".join([f"  {m}()" for m in methods])
     return f"<class>\n{class_name}\n{line_sep}\n{methods_text}"
 
-# -------------------------------
-# Pyvis renderer
-# -------------------------------
-from pyvis.network import Network
-import networkx as nx
-import json
 
-def render_pyvis_class_uml(G, font_size=20):
+def render_pyvis_class_uml(G: nx.DiGraph, font_size=20):
+    # G is the selected nodes for rendering in this panel.
     net = Network(height="650px", width="100%", directed=True)
-    
     # Layout tuning for better spacing
     net.repulsion(
         node_distance=100,
         central_gravity=0.2,
         spring_length=200,
         spring_strength=0.05,
-        damping=0.95
+        damping=0.95,
     )
 
     # Define colors
@@ -66,7 +63,8 @@ def render_pyvis_class_uml(G, font_size=20):
             node,
             label=data["label"],
             shape="box",
-            title=f"{node} class", # this is the hover label
+            title=f"{node} class",  
+            # TODO #7 this is the hover label, should change to more detailed version.
             color={"background": color, "border": "black"},
             font={"size": font_size, "color": "black"},
         )
@@ -75,7 +73,7 @@ def render_pyvis_class_uml(G, font_size=20):
     for source, target in G.edges():
         net.add_edge(source, target, arrows="to")
 
-    # Optional: Load external config if you have one
+    # Load external config
     try:
         with open("umlgraph_pyvis.txt", "r") as f:
             config = json.load(f)
@@ -86,33 +84,6 @@ def render_pyvis_class_uml(G, font_size=20):
     return net.generate_html()
 
 
-
-# -------------------------------
-# This is your integration entrypoint!
-# -------------------------------
-def render_class_uml(metadata=None, context=None):
-    st.markdown("### 🗺️ Class Hierarchy Diagram")
-
-    G = build_mock_class_graph()
-    html = render_pyvis_class_uml(G)  # now returns HTML string (not file)
-
-    st.components.v1.html(html, height=650, scrolling=True)
-
-    # Sidebar details (still mock)
-    st.sidebar.header("Class Details")
-    st.sidebar.markdown("**Name:** Dog")
-    st.sidebar.markdown("**Description:** Represents a dog, subclass of Animal.")
-    st.sidebar.markdown("**Methods:** \n - bark()\n - sleep()")
-    st.sidebar.markdown("**Source:** `src/animals/dog.py:10-42`")
-    if st.sidebar.button("Jump to VSCode"):
-        os.system("code -g src/animals/dog.py:10")
-
-
-# -------------------------------
-# Streamlit App main
-# -------------------------------
-st.set_page_config(page_title="UML Demao", layout="wide")
-st.title("📦 Class Hierarchy Explorer — Minimum Demo")
-
-with st.container():
-    render_class_uml()
+def get_detailed_uml_class_graph():
+    # TODO #7 in real app, replace with the real graph builder
+    return build_mock_class_graph()

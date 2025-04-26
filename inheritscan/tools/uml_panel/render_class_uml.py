@@ -107,8 +107,7 @@ def get_detailed_uml_class_graph(context) -> nx.DiGraph:
     detailed_nx_graph: nx.DiGraph = get_detailed_class_hierarchy_network_graph(sub_nx_graph)
 
     # build the nx.DiGraph for detailed uml rendering with the correct labels and names.
-    summary_root: Path = ""
-    detailed_uml_nx_graph: nx.DiGraph = build_detailed_uml_nx_graph(detailed_nx_graph, summary_root)
+    detailed_uml_nx_graph: nx.DiGraph = build_detailed_uml_nx_graph(detailed_nx_graph)
     
     return detailed_nx_graph
     # return build_mock_class_graph()

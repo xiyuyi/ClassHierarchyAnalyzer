@@ -40,6 +40,13 @@ class SummaryManager:
             json.dump(class_info.to_dict(), f, indent=2, ensure_ascii=False)
 
     def load_classinfo(self, module_path: str, class_name: str) -> ClassInfo:
+        """
+        
+        Example:
+            module_path = "memory.condenser.condenser.Condenser"
+            class_name = "Condenser"
+            class_info = load_classinfo(module_path, class_name)
+        """
         path = self.get_path(module_path, class_name)
         if os.path.exists(path):
             with open(path, encoding="utf-8") as f:

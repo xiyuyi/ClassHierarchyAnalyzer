@@ -24,7 +24,7 @@ def render_class_uml(context=None):
     # enough to generate diagrams
     # enough to generate mermaid or plantuml codes (need inheritanc einformation?)
 
-    nx_graph: nx.DiGraph = get_detailed_uml_class_graph()
+    nx_graph: nx.DiGraph = get_detailed_uml_class_graph(context)
     html = render_pyvis_class_uml(nx_graph)
 
     # Read the JS content

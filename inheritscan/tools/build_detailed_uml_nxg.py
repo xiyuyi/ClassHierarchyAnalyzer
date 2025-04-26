@@ -14,24 +14,20 @@ def build_detailed_uml_nx_graph(G: nx.DiGraph) -> nx.DiGraph:
     "chain_name": "mock_chain",
     }
     sm = get_summary_manager(**k)
-    # TODO #7 build the detailed_uml_nx_graph. should look at the mockgraph used in the uml panel module.
-    # TODO # current.
-    # sm.load_classinfo()
     
     uml_g = nx.DiGraph()
     for mod, class_name in G.nodes:
         method_names = sm.load_class_methods(module_path=mod, class_name=class_name)
-        # summary = class_info.summary
-        # mod = class_info.module_path
-        # method_names = [k for k in class_info.methods]
+        class_summary = sm.load_class_summary(module_path=mod, class_name=class_name)
         if len(method_names) == 0:
             method_names = [""]
 
         l = format_class_label(class_name, method_names)
-
         uml_g.add_node(
             class_name,
             label=l,
+            full_mod=mod+"."+class_name,
+            class_summary = class_summary,
         )
 
     for edge in G.edges:

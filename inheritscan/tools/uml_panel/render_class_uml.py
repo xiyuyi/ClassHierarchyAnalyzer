@@ -21,7 +21,6 @@ def build_mock_class_graph():
     G.add_node(
         "CuteCreatur",
         label=format_class_label("CuteCreaturs", ["eat", "sleep", "PS5"]),
-        # is_base=True,
     )
     G.add_node("Dog", label=format_class_label("Dog", ["bark"]))
     G.add_node("XiangXiang", label=format_class_label("XiangXiang", ["PS5"]))
@@ -39,14 +38,10 @@ def build_mock_class_graph():
     return G
 
 
-# def format_class_label(class_name, methods):
-#     line_sep = "------------------"
-#     methods_text = "\n".join([f"  {m}()" for m in methods])
-#     return f"<class>\n{class_name}\n{line_sep}\n{methods_text}"
-
-
 def render_pyvis_class_uml(G: nx.DiGraph, font_size=20):
+
     # G is the selected nodes for rendering in this panel.
+    
     net = Network(height="650px", width="100%", directed=True)
     # Layout tuning for better spacing
     net.repulsion(
@@ -64,12 +59,14 @@ def render_pyvis_class_uml(G: nx.DiGraph, font_size=20):
     # Add nodes with styling
     for node, data in G.nodes(data=True):
         color = base_class_color if data.get("is_base") else subclass_color
+        full_mod = data["full_mod"]
+        class_summary = data["class_summary"]
+        hover_card = f"{full_mod}\n\n{class_summary}"
         net.add_node(
             node,
             label=data["label"],
+            title=hover_card, # this is the content in the card shown with mouse hover.
             shape="box",
-            title=f"{node} class",  
-            # TODO #7 this is the hover label, should change to more detailed version.
             color={"background": color, "border": "black"},
             font={"size": font_size, "color": "black"},
         )
@@ -91,7 +88,7 @@ def render_pyvis_class_uml(G: nx.DiGraph, font_size=20):
 
 def get_detailed_uml_class_graph(context) -> nx.DiGraph:
     # get the nx.DiGraph of the subgraph (sub_nx_graph), build from json and global graph
-    # the following code block is duplicated with subgraph_render_pyvis_graph. refactor in the future.
+    # TODO the following code block is duplicated with subgraph_render_pyvis_graph. refactor in the future.
     def get_sub_class_hierarchy_network_graph():
         global_nx_graph = context["class_hierachy_network_graph"]
         selected_nodes_from_gg_fpath = runtime_data_folder / "selected_nodes.json"
@@ -111,4 +108,5 @@ def get_detailed_uml_class_graph(context) -> nx.DiGraph:
     detailed_uml_nx_graph: nx.DiGraph = build_detailed_uml_nx_graph(detailed_nx_graph)
     
     return detailed_uml_nx_graph
+    # when test, do the following:
     # return build_mock_class_graph()

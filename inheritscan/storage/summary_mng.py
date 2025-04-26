@@ -91,3 +91,8 @@ class SummaryManager:
         methods = []
         methods = [k for k in class_info.methods]
         return methods
+    
+    def load_class_summary(self, module_path: str, class_name: str):
+        class_info = self.load_classinfo(module_path=module_path, class_name=class_name)
+        summary = class_info.summary
+        return summary

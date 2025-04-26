@@ -32,8 +32,8 @@ st.title("📘 Class Hierarchy Explorer")
 st.markdown("Visualize and analyze class relationships across modules.")
 top_left, top_right = st.columns(2)
 st.divider()
-bottom_left, bottom_right = st.columns(2)
-
+# bottom_left, bottom_right = st.columns(2)
+bottom = st.container()
 # Prepare Context
 context = {
     "class_hierachy_network_graph": st.session_state.class_hierachy_network_graph,
@@ -51,5 +51,5 @@ with top_left:
 with top_right:
     render_top_right(context)
 
-with bottom_left:
+with bottom:
     render_bottom_left(context)

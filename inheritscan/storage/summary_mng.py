@@ -83,5 +83,11 @@ class SummaryManager:
         """ update class summary """
         d = c.to_dict()
         d['summary'] = class_summary
-            
+
         return ClassInfo.from_dict(d)
+    
+    def load_class_methods(self, module_path: str, class_name: str):
+        class_info = self.load_classinfo(module_path=module_path, class_name=class_name)
+        methods = []
+        methods = [k for k in class_info.methods]
+        return methods

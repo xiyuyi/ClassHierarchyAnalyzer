@@ -9,6 +9,7 @@ import json
 import inheritscan
 from inheritscan.tools.build_detailed_uml_nxg import build_detailed_uml_nx_graph
 from inheritscan.tools.extract_subgraph import extract_detailedgraph_from_subgraph, extract_subgraph_from_global
+from inheritscan.tools.uml_panel.formats import format_class_label
 package_root = Path(inheritscan.__file__).parent
 runtime_data_folder = Path(inheritscan.__file__).parent.parent / ".run_time"
 
@@ -20,7 +21,7 @@ def build_mock_class_graph():
     G.add_node(
         "CuteCreatur",
         label=format_class_label("CuteCreaturs", ["eat", "sleep", "PS5"]),
-        is_base=True,
+        # is_base=True,
     )
     G.add_node("Dog", label=format_class_label("Dog", ["bark"]))
     G.add_node("XiangXiang", label=format_class_label("XiangXiang", ["PS5"]))
@@ -38,10 +39,10 @@ def build_mock_class_graph():
     return G
 
 
-def format_class_label(class_name, methods):
-    line_sep = "------------------"
-    methods_text = "\n".join([f"  {m}()" for m in methods])
-    return f"<class>\n{class_name}\n{line_sep}\n{methods_text}"
+# def format_class_label(class_name, methods):
+#     line_sep = "------------------"
+#     methods_text = "\n".join([f"  {m}()" for m in methods])
+#     return f"<class>\n{class_name}\n{line_sep}\n{methods_text}"
 
 
 def render_pyvis_class_uml(G: nx.DiGraph, font_size=20):
@@ -49,8 +50,8 @@ def render_pyvis_class_uml(G: nx.DiGraph, font_size=20):
     net = Network(height="650px", width="100%", directed=True)
     # Layout tuning for better spacing
     net.repulsion(
-        node_distance=100,
-        central_gravity=0.2,
+        node_distance=800,
+        central_gravity=0.01,
         spring_length=200,
         spring_strength=0.05,
         damping=0.95,

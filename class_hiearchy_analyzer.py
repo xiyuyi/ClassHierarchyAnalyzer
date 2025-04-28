@@ -5,9 +5,11 @@ import inheritscan
 
 
 from inheritscan.tools.flask.flask_app import run_flask
+# from inheritscan.tools.mermaid_panel.entry import render_mermaid_panel
 from inheritscan.tools.streamlit.init_json_files import initialize_json_files
 from inheritscan.tools.streamlit.init_state import initialize_session_state
 from inheritscan.tools.streamlit.page.bottom_left import render_bottom_left
+from inheritscan.tools.streamlit.page.bottom_right import render_bottom_right
 from inheritscan.tools.streamlit.page.top_left import render_top_left
 from inheritscan.tools.streamlit.page.top_right import render_top_right
 
@@ -33,6 +35,9 @@ st.markdown("Visualize and analyze class relationships across modules.")
 top_left, top_right = st.columns(2)
 st.divider()
 bottom_left, bottom_right = st.columns(2)
+# st.divider()
+# mermaid_panel = st.container()
+
 # Prepare Context
 context = {
     "class_hierachy_network_graph": st.session_state.class_hierachy_network_graph,
@@ -52,3 +57,9 @@ with top_right:
 
 with bottom_left:
     render_bottom_left(context)
+
+with bottom_right:
+    render_bottom_right(context)
+
+# with mermaid_panel:
+#     render_mermaid_panel(context)

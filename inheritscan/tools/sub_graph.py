@@ -2,9 +2,9 @@ from pyvis.network import Network
 from collections import deque
 from pathlib import Path
 
-import streamlit as st
 import json
 import inheritscan
+import networkx as nx
 
 from inheritscan.lcgraphs.class_hierarchy import ClassHierarchyGraphBuilder
 from inheritscan.tools.extract_subgraph import extract_subgraph_from_global
@@ -33,8 +33,8 @@ def subgraph_render_pyvis_graph(context: dict) -> dict:
         sub_nx_graph = extract_subgraph_from_global(global_nx_graph, selected_nodes_from_gg_fpath)
         return sub_nx_graph
 
-    sub_nx_graph = get_sub_class_hierarchy_network_graph()
-    pyvis_subg = get_class_hierarchy_pyvis_network(sub_nx_graph)
+    sub_nx_graph: nx.DiGraph = get_sub_class_hierarchy_network_graph()
+    pyvis_subg: Network = get_class_hierarchy_pyvis_network(sub_nx_graph)
 
 
     pyvis_config_path = package_root / "configs" / "subgraph_pyvis.txt"
@@ -42,6 +42,6 @@ def subgraph_render_pyvis_graph(context: dict) -> dict:
         config_json_str = json.dumps(json.load(f))  
     pyvis_subg.set_options(config_json_str)
 
-    selected_node = interactive_pyvis_subgraph(pyvis_subg)
+    interactive_pyvis_subgraph(pyvis_subg)
     return {"subgraph_class_hierachy_network": sub_nx_graph}
 

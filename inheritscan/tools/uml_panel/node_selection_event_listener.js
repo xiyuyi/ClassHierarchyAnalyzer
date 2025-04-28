@@ -6,9 +6,10 @@ window.network.on("select", function(params) {
     const selectedNodes = params.nodes;
     const nodeData = selectedNodes.map(nodeId => {
         const node = window.network.body.data.nodes.get(nodeId);
+        console.log("👉 Full node object for ID:", nodeId, node);
         return {
             id: nodeId,
-            full_mod: node.title
+            full_mod: node.full_mod
         };
     });
     fetch("http://localhost:5555/receive_the_clicked_node_detailed_uml", {

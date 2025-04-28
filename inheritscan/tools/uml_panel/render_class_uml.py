@@ -64,6 +64,7 @@ def render_pyvis_class_uml(G: nx.DiGraph, font_size=20):
         hover_card = f"{full_mod}\n\n{class_summary}"
         net.add_node(
             node,
+            full_mod = data["full_mod"],
             label=data["label"],
             title=hover_card, # this is the content in the card shown with mouse hover.
             shape="box",

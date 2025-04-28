@@ -96,3 +96,9 @@ class SummaryManager:
         class_info = self.load_classinfo(module_path=module_path, class_name=class_name)
         summary = class_info.summary
         return summary
+
+    def load_method_summary(self, module_path: str, class_name: str, method_name: str):
+        class_info = self.load_classinfo(module_path=module_path, class_name=class_name)
+        method_info = class_info.methods[method_name]
+        summary = method_info.summary
+        return summary

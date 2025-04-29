@@ -44,6 +44,9 @@ def get_summary_manager(code_base_dir: str = None, root_dir: str = None, chain_n
 
 
 def get_summaries_for_method_chunks(tasks: List[dict]):
+    # TODO use the summary manager to retrive information from the archive
+    # should enable UI parameter setting.
+    # may retrive information from .env, or something else. design later.
     k={
     "code_base_dir": "/Users/xiyuyi/github_repos/OpenHands/openhands",
     "root_dir": "/Users/xiyuyi/github_repos/ClassHierarchyAnalyzer/sumarry_root",  
@@ -61,6 +64,9 @@ def get_summaries_for_method_chunks(tasks: List[dict]):
 def get_summaries_for_method(tasks: List[dict]):
     # TODO #5 llm minichain: chunk summary -> method summary
     # minichain for summary aggregation to achieve method level summary.
+    # TODO use the summary manager to retrive information from the archive
+    # should enable UI parameter setting.
+    # may retrive information from .env, or something else. design later.
     k={
     "code_base_dir": "/Users/xiyuyi/github_repos/OpenHands/openhands",
     "root_dir": "/Users/xiyuyi/github_repos/ClassHierarchyAnalyzer/sumarry_root",  
@@ -75,6 +81,9 @@ def get_summaries_for_method(tasks: List[dict]):
 
 def get_summaries_for_class(tasks: List[dict]):
     # TODO #6 minichain for summary aggregation to achieve class level summary.
+    # TODO use the summary manager to retrive information from the archive
+    # should enable UI parameter setting.
+    # may retrive information from .env, or something else. design later.
     k={
     "code_base_dir": "/Users/xiyuyi/github_repos/OpenHands/openhands",
     "root_dir": "/Users/xiyuyi/github_repos/ClassHierarchyAnalyzer/sumarry_root",  

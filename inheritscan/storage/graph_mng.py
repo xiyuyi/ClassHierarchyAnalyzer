@@ -3,13 +3,15 @@ import inheritscan
 import json
 
 from inheritscan.storage.runtime_json.runtime_json_dumpers import dump_global_inheritance_graph
+from inheritscan.storage.runtime_json.runtime_json_loaders import load_global_inheritance_graph
 class GraphManager:
+    runtime_folder = Path(inheritscan.__file__).parent.parent / ".run_time"
+    meta_fpath = runtime_folder / "meta.json"
         
     @classmethod
     def write_global_graph(cls, nx_global):
-        runtime_folder = Path(inheritscan.__file__).parent.parent / ".run_time"
-        meta_fpath = runtime_folder / "meta.json"
-
+        runtime_folder = cls.runtime_folder
+        meta_fpath = cls.meta_fpath
         with open(meta_fpath,'r') as f:
             data = json.load(f)
         package_name = data[0]['package_name']
@@ -26,7 +28,13 @@ class GraphManager:
             class_table[fqn_parent].append(fqn_child)
 
         dump_global_inheritance_graph(class_table)
-        print(runtime_folder)
         # save global graph inforamtion to json archive. 
         pass
+
+    @classmethod
+    def load_global_graph(cls):
+        return load_global_inheritance_graph()
+        
+
+
 

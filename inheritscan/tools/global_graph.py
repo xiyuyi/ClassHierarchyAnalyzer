@@ -63,7 +63,34 @@ def render_pyvis_graph(context: dict) -> dict:
 
 
 def expand_nodes(nodes):
-    # expand the current list of nodes with their parents and children. 
+    # TODO #21 
+    # expand the current list of nodes with their children. 
+    # example conent for nodes:
+    # [{'id': 'RollingCondenser', 'full_mod': 'memory.condenser.condenser.RollingCondenser'}]
+
+    # get fqn indexed global class inheritance relation (cir) graph
+    cir_g = GraphManager.load_global_graph()
+
+    # get fqn of the selected node
+    runtime_folder = Path(inheritscan.__file__).parent.parent / ".run_time"
+    meta_fpath = runtime_folder / "meta.json"
+    with open(meta_fpath,'r') as f:
+        data = json.load(f)
+    package_name = data[0]['package_name']
+    fqn = package_name + '.' + nodes[0]['full_mod']
+
+    # get children of the selected node
+    children = cir_g[fqn]
+
+    for child in children:
+        full_mod = child.split('.', 1)[1]
+        id = full_mod.rsplit('.', 1)[1]
+        entry =  {
+            'id': id,
+            'full_mod': full_mod,
+        }
+        nodes.append(entry)
+
     return nodes
 
 

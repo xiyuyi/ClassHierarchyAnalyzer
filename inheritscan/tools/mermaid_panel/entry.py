@@ -1,4 +1,4 @@
-import streamlit
+import streamlit as st
 import networkx as nx
 from pathlib import Path
 from inheritscan.tools.mermaid_panel.generate_mermaid_script import get_mermaid_scripts
@@ -8,32 +8,47 @@ from inheritscan.tools.uml_panel.render_class_uml import (
     get_detailed_uml_class_graph,
     render_pyvis_class_uml,
 )
-
+import streamlit.components.v1 as components
 
 def render_mermaid_panel(context=None):
-    # This is the integration entrypoint for the UML rendering panel in the
-    # main Class hierarchy explorer Streamlit app.
+    # Integration entrypoint for the UML rendering panel in the Class Hierarchy Explorer app
 
-    button1 = streamlit.container() # generate mermaid graph
-    header = streamlit.container() # header, detailed mermaid graph
-    mermaid_graph = streamlit.container() # display mermaid graph
-    script_box = streamlit.container()
-    button2 = streamlit.container() # copy mermaid scripts to clip-board.
+    # Define high-level containers
+    button1 = st.container()
+    header = st.container()
+    mermaid_graph = st.container()
+    script_box = st.container()
+    button2 = st.container()
+
+    # Create a session state to store the generated Mermaid script
+    if "generated_mermaid_script" not in st.session_state:
+        st.session_state["generated_mermaid_script"] = ""
 
     with button1:
-        nx_graph = context["detailed_nx_graph"]
-        mermaid_script = get_mermaid_scripts(nx_graph)
-        print(mermaid_script)
-        streamlit.button("Generate Mermaid Graph", use_container_width=True)
+        st.markdown("### Generate Mermaid Graph")
+        if st.button("🔄 Generate Mermaid Graph", use_container_width=True):
+            nx_graph = context["detailed_nx_graph"]
+            mermaid_script = get_mermaid_scripts(nx_graph)
+            st.session_state["generated_mermaid_script"] = mermaid_script
+            st.success("✅ Mermaid graph generated!")
 
     with header:
-        streamlit.markdown("### Mermaid Graph:")
+        st.markdown("### Mermaid Graph:")
 
     with mermaid_graph:
-        render_mermaid_graph(mermaid_script)
+        if st.session_state["generated_mermaid_script"]:
+            render_mermaid_graph(st.session_state["generated_mermaid_script"])
+        else:
+            st.info("⚡ Please generate the Mermaid graph first.")
 
     with script_box:
-        streamlit.markdown(" - Here comes the mermaid scripts")
+        if st.session_state["generated_mermaid_script"]:
+            st.markdown("### 📜 Mermaid Script:")
+            st.markdown("(`Ctrl+A` to select all, `Ctrl+C` to copy.):")
+            st.text_area(
+                "Mermaid Code",
+                value=st.session_state["generated_mermaid_script"],
+                height=300,
+                key="mermaid_script_textarea",
+            )
 
-    with button2:
-         streamlit.button("📋 Copy Mermaid Script to Clipboard", use_container_width=True)

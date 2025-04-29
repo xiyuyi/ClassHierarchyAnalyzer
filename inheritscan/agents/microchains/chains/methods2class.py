@@ -24,12 +24,3 @@ def get_methods2class_chain(chain_name):
 
         chain = prompt | llm | StrOutputParser()
         return RunnableMap({"class_summary": chain})
-
-    # TODO #6: design a minichain for this class.
-    # future may need to try different models.
-    # think about how to aggregate the method summaries ( consider aggregate from the .json files)
-    # considerations:
-    #  summary missing, what to do.
-    # the class file do not exist, what to do.
-    # think about what needs to be checked to monitor performance.
-    # don't worry about logging for now.

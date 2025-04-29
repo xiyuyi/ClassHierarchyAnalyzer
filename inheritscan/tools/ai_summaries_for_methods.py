@@ -7,8 +7,6 @@ from inheritscan.tools.method_summary_generation_manager import MethodSummary
 
 
 def generate_ai_summaries_for_method(tasks: List[dict]):
-    # TODO #3: generate ai summaries for the given collection of methods.
-
     # generate summaries for method chunks
     get_summaries_for_method_chunks(tasks)
 
@@ -46,7 +44,6 @@ def get_summaries_for_method_chunks(tasks: List[dict]):
 
 
 def get_summaries_for_method(tasks: List[dict]):
-    # TODO #5 llm minichain: chunk summary -> method summary
     # minichain for summary aggregation to achieve method level summary.
     sm = get_summary_manager()
     method_summary = MethodSummary(summary_manager=sm, tasks=tasks)
@@ -56,7 +53,6 @@ def get_summaries_for_method(tasks: List[dict]):
 
 
 def get_summaries_for_class(tasks: List[dict]):
-    # TODO #6 minichain for summary aggregation to achieve class level summary.
     sm = get_summary_manager()
     method_summary = ClassSummary(summary_manager=sm, tasks=tasks)
     method_summary.summarize_classes_for_all_classes()

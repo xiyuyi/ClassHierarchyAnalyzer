@@ -124,5 +124,5 @@ def get_detailed_uml_class_graph(context) -> nx.DiGraph:
     )
 
     return detailed_uml_nx_graph, detailed_nx_graph
-    # when test, do the following:
+    # TODO may need to re-organize test/demo logic.
     # return build_mock_class_graph()

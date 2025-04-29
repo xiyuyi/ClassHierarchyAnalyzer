@@ -20,10 +20,7 @@ def render_global_graph_panel(context: dict) -> dict:
 
 def render_pyvis_graph(context: dict) -> dict:
     st.markdown(" Pyvis Graph View")
-
-    physics_enabled = st.checkbox(
-        "Enable physics layout (force-based radial)", value=True
-    )
+    st.checkbox("Enable physics layout (force-based radial)", value=True)
 
     @st.cache_resource
     def get_class_hierarchy_network_graph():
@@ -72,11 +69,6 @@ def render_pyvis_graph(context: dict) -> dict:
 
 
 def expand_nodes(nodes):
-    # TODO #21
-    # expand the current list of nodes with their children.
-    # example conent for nodes:
-    # [{'id': 'RollingCondenser', 'full_mod': 'memory.condenser.condenser.RollingCondenser'}]
-
     # get fqn indexed global class inheritance relation (cir) graph
     cir_g = GraphManager.load_global_graph()
 

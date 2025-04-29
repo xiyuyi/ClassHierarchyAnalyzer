@@ -7,25 +7,10 @@ from inheritscan.tools.uml_panel.render_class_uml import (
 
 
 def render_class_uml(context=None):
-    # This is the integration entrypoint for the UML rendering panel in the
-    # main Class hierarchy explorer Streamlit app.
-
-    # TODO #7: render detailed UML diagram for the selected classes.
-    # with basic summaries displayed with mouse hover event on each node.
-    # modify the node's labels for information to be displayed with mouse hover event.
-
-    # TODO #7
-    # load nodes information from .run_time/selected_nodes_subgraph.json
-    # calculate/retrieve the detailed information for this cluster of nodes
-    # save out to .run_time/detailed_uml_info.json
-    # Information should be:
-    # Aggregate class summaries (class leve, method level, chunks level, everything), and inheritance info.
-    # enough to generate diagrams
-    # enough to generate mermaid or plantuml codes (need inheritanc einformation?)
+    """This is the integration entrypoint for the UML rendering panel"""
 
     result = get_detailed_uml_class_graph(context)
     nx_graph, detailed_nx_graph = result  # here nx_graph is a DiGraph
-
     html = render_pyvis_class_uml(nx_graph)
 
     # Read the JS content

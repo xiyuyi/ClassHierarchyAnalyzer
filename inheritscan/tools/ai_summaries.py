@@ -7,8 +7,6 @@ from inheritscan.tools.method_summary_generation_manager import MethodSummary
 
 
 def generate_ai_summaries(tasks: List[dict]):
-    # TODO #3: generate ai summaries for the given collection of methods.
-
     # generate summaries for method chunks
     get_summaries_for_method_chunks(tasks)
 
@@ -65,8 +63,6 @@ def get_summaries_for_method_chunks(tasks: List[dict]):
 
 
 def get_summaries_for_method(tasks: List[dict]):
-    # TODO #5 llm minichain: chunk summary -> method summary
-    # minichain for summary aggregation to achieve method level summary.
     # TODO use the summary manager to retrive information from the archive
     # should enable UI parameter setting.
     # may retrive information from .env, or something else. design later.
@@ -84,7 +80,6 @@ def get_summaries_for_method(tasks: List[dict]):
 
 
 def get_summaries_for_class(tasks: List[dict]):
-    # TODO #6 minichain for summary aggregation to achieve class level summary.
     # TODO use the summary manager to retrive information from the archive
     # should enable UI parameter setting.
     # may retrive information from .env, or something else. design later.

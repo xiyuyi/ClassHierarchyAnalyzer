@@ -10,13 +10,6 @@ runtime_data_folder = Path(inheritscan.__file__).parent.parent / ".run_time"
 
 
 def get_mod_class_method_list(context, mock=False):
-    # TODO #3: use information from "selected_nodes_subgraph.json",
-    # find all methods for each class, and construct the list of class_name, mod, method
-    # dictionary with the format shown in the mock.
-
-    # fpath = runtime_data_folder / "selected_nodes_subgraph.json"
-    # with open(fpath, 'r') as f:
-    #     info = json.load(f)
     Path(inheritscan.__file__).parent
     runtime_data_folder = (
         Path(inheritscan.__file__).parent.parent / ".run_time"

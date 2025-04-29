@@ -8,12 +8,6 @@ from inheritscan.storage.summary_mng import SummaryManager
 
 
 class ClassSummary:
-    # TODO #6: finishi this class.
-    # given a list of (modules, classes, method):
-    # generate the summaries for them using a minichain.
-    # update the summarries in method at the class level.
-    # organize the result data with defined datatypes and save in designation place.
-
     def __init__(
         self,
         summary_manager: SummaryManager,
@@ -50,7 +44,6 @@ class ClassSummary:
     def _aggretate_classes(self):
         "aggregate list of tasks into {(mod, class_name): aggregated_class_methods_summaries}"
         for mod, class_name in self.aggregated_tasks:
-            # TODO #6 implement aggregate summary logic (aggregate all emthod summaries)
             class_info = self.summary_manager.load_classinfo(mod, class_name)
 
             # Aggregate the summaries for all the method information within this class.

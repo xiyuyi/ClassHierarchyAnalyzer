@@ -1,7 +1,7 @@
-import streamlit as st
-from pyvis.network import Network
-from pathlib import Path
 import os
+from pathlib import Path
+
+import streamlit as st
 
 import inheritscan
 from inheritscan.tools.uml_panel.entry import render_class_uml
@@ -19,7 +19,9 @@ with st.container():
     # Sidebar details (still mock)
     st.sidebar.header("Class Details")
     st.sidebar.markdown("**Name:** Dog")
-    st.sidebar.markdown("**Description:** Represents a dog, subclass of Animal.")
+    st.sidebar.markdown(
+        "**Description:** Represents a dog, subclass of Animal."
+    )
     st.sidebar.markdown("**Methods:** \n - bark()\n - sleep()")
     st.sidebar.markdown("**Source:** `src/animals/dog.py:10-42`")
     if st.sidebar.button("Jump to VSCode"):

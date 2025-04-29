@@ -1,11 +1,10 @@
-import os
 import json
+import os
 import shutil
-import streamlit
 
 
 def initialize_json_files(streamlit, runtime_folder):
-    
+
     if "runtime_initialized" not in streamlit.session_state:
         if runtime_folder.exists():
             shutil.rmtree(runtime_folder)

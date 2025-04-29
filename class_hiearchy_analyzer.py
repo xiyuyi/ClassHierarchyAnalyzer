@@ -1,9 +1,9 @@
-import streamlit as st
 import threading
 from pathlib import Path
+
+import streamlit as st
+
 import inheritscan
-
-
 from inheritscan.tools.flask.flask_app import run_flask
 from inheritscan.tools.mermaid_panel.entry import render_mermaid_panel
 from inheritscan.tools.streamlit.init_json_files import initialize_json_files
@@ -16,8 +16,8 @@ from inheritscan.tools.streamlit.page.top_right import render_top_right
 package_root = Path(inheritscan.__file__).parent
 runtime_folder = Path(inheritscan.__file__).parent.parent / ".run_time"
 
-# Initialize json files:
-initialize_json_files(streamlit = st, runtime_folder = runtime_folder)
+# Initialize json files in runtime_folder:
+initialize_json_files(streamlit=st, runtime_folder=runtime_folder)
 
 # Initialize session state
 initialize_session_state(st)

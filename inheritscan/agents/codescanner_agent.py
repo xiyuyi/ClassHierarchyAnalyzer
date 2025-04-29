@@ -1,6 +1,6 @@
 import os
-from typing import Dict, List
 from collections import defaultdict
+from typing import List
 
 from myagents.utils.import_parser import extract_imports_exports
 
@@ -20,7 +20,9 @@ class CodeScannerAgent:
         # Recursively traverse all directories and subdirectories
         for root, dirs, files in os.walk(base_path):
             # Skip special directories
-            if any(x in root for x in ["__pycache__", ".venv", ".git", "tests"]):
+            if any(
+                x in root for x in ["__pycache__", ".venv", ".git", "tests"]
+            ):
                 continue
             # Process all Python files in current directory except __init__.py
             for file in files:
@@ -34,9 +36,12 @@ class CodeScannerAgent:
         modules_details = {}
         for filepath in modules:
             module_name = self.get_module_name(filepath, base_path)
-            internal_imports, internal_import_alias, external_imports, exports = (
-                self.extract_imports_exports(filepath, base_path, package_name)
-            )
+            (
+                internal_imports,
+                internal_import_alias,
+                external_imports,
+                exports,
+            ) = self.extract_imports_exports(filepath, base_path, package_name)
             exports[module_name] = exports
             modules_name2path[module_name] = filepath
             modules_path2name[filepath] = module_name
@@ -76,7 +81,9 @@ class CodeScannerAgent:
         state["internal_classes"] = internal_classes
         state["internal_functions"] = internal_functions
 
-        state["modules_to_process"] = list(state["modules_path2name"].keys())[::-1]
+        state["modules_to_process"] = list(state["modules_path2name"].keys())[
+            ::-1
+        ]
 
         return state
 

@@ -1,15 +1,14 @@
-from collections import defaultdict
 import copy
 import os
+from collections import defaultdict
 from typing import List, Tuple
 
-from inheritscan.agents.microchains.chains.sumarize_chunk import get_chunk_summary_chain
+from inheritscan.agents.microchains.chains.sumarize_chunk import \
+    get_chunk_summary_chain
 from inheritscan.core.datatypes import ClassInfo, MethodInfo, SnippetInfo
 from inheritscan.storage.summary_mng import SummaryManager
 from inheritscan.tools.class_code_parse import (
-    extract_class_code,
-    extract_methods_from_class_code,
-)
+    extract_class_code, extract_methods_from_class_code)
 from inheritscan.tools.method_code_chunker import chunk_method_code
 
 
@@ -20,7 +19,9 @@ class ChunkSummary:
     # organize the result data with defined datatypes and save in designation place.
 
     def __init__(
-        self, summary_manager: SummaryManager, tasks: List[Tuple[str, str, str]]
+        self,
+        summary_manager: SummaryManager,
+        tasks: List[Tuple[str, str, str]],
     ):
         """
         tasks: [(mod, class_name, method name)]
@@ -62,9 +63,9 @@ class ChunkSummary:
 
             # assign method codes
             for method_name in method_names:
-                self.aggregated_methods_code[(mod, class_name, method_name)] = (
-                    methods_name2code_map[method_name]
-                )
+                self.aggregated_methods_code[
+                    (mod, class_name, method_name)
+                ] = methods_name2code_map[method_name]
 
             # prepare placeholders for the aggregated summaires for each method ( every method)
             self.aggregated_summaries[(mod, class_name)] = {
@@ -75,7 +76,9 @@ class ChunkSummary:
         while self.invoke_queue:
             self._summarize_chunk_for_1_method()
 
-        self.aggregated_classinfo_queue = list(self.aggregated_summaries.keys())
+        self.aggregated_classinfo_queue = list(
+            self.aggregated_summaries.keys()
+        )
 
     def _summarize_chunk_for_1_method(self):
         mod, class_name, method = self.invoke_queue.pop()
@@ -84,7 +87,10 @@ class ChunkSummary:
         snippets_map = defaultdict(list)
         for i, code_snippet in enumerate(snippets):
             summary = self.snippet_summary_chain.invoke(code_snippet)
-            snippets_map[f"chunk_{i}"] = [code_snippet, summary["chunk_summary"]]
+            snippets_map[f"chunk_{i}"] = [
+                code_snippet,
+                summary["chunk_summary"],
+            ]
 
         # append to aggregated_summaries
         self.aggregated_summaries[(mod, class_name)][method] = snippets_map
@@ -109,7 +115,9 @@ class ChunkSummary:
         method_summaries = self.aggregated_summaries[(mod, class_name)]
 
         for method_name in method_summaries:
-            method_code = self.aggregated_methods_code[(mod, class_name, method_name)]
+            method_code = self.aggregated_methods_code[
+                (mod, class_name, method_name)
+            ]
             snippets_map = method_summaries[method_name]
 
             method_id = ".".join([mod, class_name, method_name])
@@ -126,7 +134,9 @@ class ChunkSummary:
             for snippet_name in snippets_map:
                 snippet_code = snippets_map[snippet_name][0]
                 snippet_summary = snippets_map[snippet_name][1]
-                snippet_id = ".".join([mod, class_name, method_name, snippet_name])
+                snippet_id = ".".join(
+                    [mod, class_name, method_name, snippet_name]
+                )
 
                 snippet_kwargs = {
                     "id": snippet_id,

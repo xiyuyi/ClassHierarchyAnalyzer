@@ -1,7 +1,8 @@
-import streamlit.components.v1 as components
-import tempfile
 import json
 import os
+import tempfile
+
+import streamlit.components.v1 as components
 
 
 def interactive_pyvis_graph(net, height=600):
@@ -52,7 +53,7 @@ def interactive_pyvis_graph(net, height=600):
                 });
         }
 
-        
+
         setTimeout(applyInitialNodeColorsFromFlask, 500);
 
         window.network.on("select", function(params) {

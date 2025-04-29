@@ -1,16 +1,10 @@
 from collections import defaultdict
-import copy
-import os
 from typing import List, Tuple
 
-from inheritscan.agents.microchains.chains.methods2class import get_methods2class_chain
-from inheritscan.core.datatypes import ClassInfo, MethodInfo, SnippetInfo
+from inheritscan.agents.microchains.chains.methods2class import \
+    get_methods2class_chain
+from inheritscan.core.datatypes import ClassInfo
 from inheritscan.storage.summary_mng import SummaryManager
-from inheritscan.tools.class_code_parse import (
-    extract_class_code,
-    extract_methods_from_class_code,
-)
-from inheritscan.tools.method_code_chunker import chunk_method_code
 
 
 class ClassSummary:
@@ -21,7 +15,9 @@ class ClassSummary:
     # organize the result data with defined datatypes and save in designation place.
 
     def __init__(
-        self, summary_manager: SummaryManager, tasks: List[Tuple[str, str, str]]
+        self,
+        summary_manager: SummaryManager,
+        tasks: List[Tuple[str, str, str]],
     ):
         """
         tasks: [(mod, class_name, method name)]
@@ -42,19 +38,19 @@ class ClassSummary:
         )
         self._aggretate_tasks()
         self._aggretate_classes()
-        self.invoke_queue = [k for k in self.aggregated_class_methods_summaries]
-        pass
+        self.invoke_queue = [
+            k for k in self.aggregated_class_methods_summaries
+        ]
 
     def _aggretate_tasks(self):
-        "aggregate list of tasks into {(mod, class_name): ""}"
+        "aggregate list of tasks into {(mod, class_name): " "}"
         for mod, class_name, _ in self.tasks:
             self.aggregated_tasks[(mod, class_name)] = []
-        pass
 
     def _aggretate_classes(self):
         "aggregate list of tasks into {(mod, class_name): aggregated_class_methods_summaries}"
         for mod, class_name in self.aggregated_tasks:
-            #TODO #6 implement aggregate summary logic (aggregate all emthod summaries)
+            # TODO #6 implement aggregate summary logic (aggregate all emthod summaries)
             class_info = self.summary_manager.load_classinfo(mod, class_name)
 
             # Aggregate the summaries for all the method information within this class.
@@ -67,17 +63,17 @@ class ClassSummary:
                 aggregated_summary += "\n"
                 aggregated_summary += summary
 
-            self.aggregated_class_methods_summaries[
-                                (mod, class_name)
-                            ] = aggregated_summary
-        
+            self.aggregated_class_methods_summaries[(mod, class_name)] = (
+                aggregated_summary
+            )
 
     def summarize_all_classes(self):
         while self.invoke_queue:
             self._summarize_1_class()
 
-        self.aggregated_classinfo_queue = list(self.aggregated_class_summaries.keys())
-        
+        self.aggregated_classinfo_queue = list(
+            self.aggregated_class_summaries.keys()
+        )
 
     def _summarize_1_class(self):
         mod, class_name = self.invoke_queue.pop()
@@ -88,12 +84,10 @@ class ClassSummary:
         self.aggregated_class_summaries[(mod, class_name)] = summary[
             "class_summary"
         ]
-        
-    
+
     def update_all_classinfo(self):
         while self.aggregated_classinfo_queue:
             self._update_1_classinfo()
-        
 
     def _update_1_classinfo(self):
         """
@@ -114,4 +108,3 @@ class ClassSummary:
         )
         # save out.
         self.summary_manager.save_classinfo(class_info)
-        

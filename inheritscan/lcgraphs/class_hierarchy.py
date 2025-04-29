@@ -1,4 +1,3 @@
-
 from langgraph.graph import StateGraph
 
 from inheritscan.agents.codescanner_agent import CodeScannerAgent
@@ -28,5 +27,3 @@ class ClassHierarchyGraphBuilder:
 
         self.compiled_graph = self.graph.compile()
         return self.compiled_graph
-
-

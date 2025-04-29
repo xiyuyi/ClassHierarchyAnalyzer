@@ -1,7 +1,7 @@
 from abc import ABC
-from dataclasses import dataclass, field, asdict
-from typing import Optional, List, Dict
+from dataclasses import asdict, dataclass, field
 from datetime import datetime, timezone
+from typing import Dict, Optional
 
 
 def current_utc_time() -> str:
@@ -72,7 +72,9 @@ class MethodInfo(CodeInfo):
             for name, snippet_info in data.get("snippets", {}).items()
         }
         return cls(
-            **shared_fields, method_name=data.get("method_name"), snippets=snippets
+            **shared_fields,
+            method_name=data.get("method_name"),
+            snippets=snippets
         )
 
 

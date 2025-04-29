@@ -1,40 +1,39 @@
-from pathlib import Path
-import inheritscan
 import json
+from pathlib import Path
 
-from inheritscan.storage.runtime_json.runtime_json_dumpers import dump_global_inheritance_graph
-from inheritscan.storage.runtime_json.runtime_json_loaders import load_global_inheritance_graph
+import inheritscan
+from inheritscan.storage.runtime_json.runtime_json_dumpers import \
+    dump_global_inheritance_graph
+from inheritscan.storage.runtime_json.runtime_json_loaders import \
+    load_global_inheritance_graph
+
+
 class GraphManager:
     runtime_folder = Path(inheritscan.__file__).parent.parent / ".run_time"
     meta_fpath = runtime_folder / "meta.json"
-        
+
     @classmethod
     def write_global_graph(cls, nx_global):
-        runtime_folder = cls.runtime_folder
+        cls.runtime_folder
         meta_fpath = cls.meta_fpath
-        with open(meta_fpath,'r') as f:
+        with open(meta_fpath, "r") as f:
             data = json.load(f)
-        package_name = data[0]['package_name']
+        package_name = data[0]["package_name"]
 
-        # use FQN as the key for each class. 
+        # use FQN as the key for each class.
         class_table = {}
         for node in nx_global.nodes:
-            fqn = package_name + '.' + '.'.join(node)
+            fqn = package_name + "." + ".".join(node)
             class_table[fqn] = []
 
         for edge in nx_global.edges:
-            fqn_parent = package_name + '.' + '.'.join(edge[1])
-            fqn_child = package_name + '.' + '.'.join(edge[0])
+            fqn_parent = package_name + "." + ".".join(edge[1])
+            fqn_child = package_name + "." + ".".join(edge[0])
             class_table[fqn_parent].append(fqn_child)
 
         dump_global_inheritance_graph(class_table)
-        # save global graph inforamtion to json archive. 
-        pass
+        # save global graph inforamtion to json archive.
 
     @classmethod
     def load_global_graph(cls):
         return load_global_inheritance_graph()
-        
-
-
-

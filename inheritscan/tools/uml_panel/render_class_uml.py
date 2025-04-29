@@ -1,19 +1,21 @@
-from pyvis.network import Network
+import json
 from pathlib import Path
+
 import networkx as nx
-import os
-import json
 from pyvis.network import Network
-import networkx as nx
-import json
+
 import inheritscan
-from inheritscan.tools.build_detailed_uml_nxg import build_detailed_uml_nx_graph
-from inheritscan.tools.extract_subgraph import extract_detailedgraph_from_subgraph, extract_subgraph_from_global
+from inheritscan.tools.build_detailed_uml_nxg import \
+    build_detailed_uml_nx_graph
+from inheritscan.tools.extract_subgraph import (
+    extract_detailedgraph_from_subgraph, extract_subgraph_from_global)
 from inheritscan.tools.uml_panel.formats import format_class_label
+
 package_root = Path(inheritscan.__file__).parent
 runtime_data_folder = Path(inheritscan.__file__).parent.parent / ".run_time"
 
 package_root = Path(inheritscan.__file__).parent
+
 
 def build_mock_class_graph():
     G = nx.DiGraph()
@@ -41,7 +43,7 @@ def build_mock_class_graph():
 def render_pyvis_class_uml(G: nx.DiGraph, font_size=20):
 
     # G is the selected nodes for rendering in this panel.
-    
+
     net = Network(height="650px", width="100%", directed=True)
     # Layout tuning for better spacing
     net.repulsion(
@@ -64,9 +66,9 @@ def render_pyvis_class_uml(G: nx.DiGraph, font_size=20):
         hover_card = f"{full_mod}\n\n{class_summary}"
         net.add_node(
             node,
-            full_mod = data["full_mod"],
+            full_mod=data["full_mod"],
             label=data["label"],
-            title=hover_card, # this is the content in the card shown with mouse hover.
+            title=hover_card,  # this is the content in the card shown with mouse hover.
             shape="box",
             color={"background": color, "border": "black"},
             font={"size": font_size, "color": "black"},
@@ -92,22 +94,35 @@ def get_detailed_uml_class_graph(context) -> nx.DiGraph:
     # TODO the following code block is duplicated with subgraph_render_pyvis_graph. refactor in the future.
     def get_sub_class_hierarchy_network_graph():
         global_nx_graph = context["class_hierachy_network_graph"]
-        selected_nodes_from_gg_fpath = runtime_data_folder / "selected_nodes.json"
-        sub_nx_graph = extract_subgraph_from_global(global_nx_graph, selected_nodes_from_gg_fpath)
+        selected_nodes_from_gg_fpath = (
+            runtime_data_folder / "selected_nodes.json"
+        )
+        sub_nx_graph = extract_subgraph_from_global(
+            global_nx_graph, selected_nodes_from_gg_fpath
+        )
         return sub_nx_graph
 
     sub_nx_graph: nx.DiGraph = get_sub_class_hierarchy_network_graph()
 
     # get the  nx.DiGraph for the detailed graph (selection on the subgraph)
     def get_detailed_class_hierarchy_network_graph(sub_nx_graph: nx.DiGraph):
-        selected_nodes_from_sg_fpath = runtime_data_folder / "selected_nodes_subgraph.json"
-        detailed_nx_graph = extract_detailedgraph_from_subgraph(sub_nx_graph, selected_nodes_from_sg_fpath)
+        selected_nodes_from_sg_fpath = (
+            runtime_data_folder / "selected_nodes_subgraph.json"
+        )
+        detailed_nx_graph = extract_detailedgraph_from_subgraph(
+            sub_nx_graph, selected_nodes_from_sg_fpath
+        )
         return detailed_nx_graph
-    detailed_nx_graph: nx.DiGraph = get_detailed_class_hierarchy_network_graph(sub_nx_graph)
+
+    detailed_nx_graph: nx.DiGraph = get_detailed_class_hierarchy_network_graph(
+        sub_nx_graph
+    )
 
     # build the nx.DiGraph for detailed uml rendering with the correct labels and names.
-    detailed_uml_nx_graph: nx.DiGraph = build_detailed_uml_nx_graph(detailed_nx_graph)
-    
+    detailed_uml_nx_graph: nx.DiGraph = build_detailed_uml_nx_graph(
+        detailed_nx_graph
+    )
+
     return detailed_uml_nx_graph, detailed_nx_graph
     # when test, do the following:
     # return build_mock_class_graph()

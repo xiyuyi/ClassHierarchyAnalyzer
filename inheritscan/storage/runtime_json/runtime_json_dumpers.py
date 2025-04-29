@@ -1,8 +1,9 @@
-import inheritscan
+import json
 import os
 from pathlib import Path
-import json
-import networkx as nx
+
+import inheritscan
+
 
 def _dump_nodes_to_json(nodes, path):
     if not os.path.exists(path):
@@ -19,23 +20,23 @@ def _dump_nodes_to_json(nodes, path):
 
         # Build set of (id, full_mod) for fast lookup
         node_set = {(n["id"], n["full_mod"]): n for n in current_nodes}
-        
+
         # for the given set of nodes, if any of them is not in node_set, add them all to node_set.
         # if all of them are in the node_set, delete them all to node set.
-        node_set_flag = 'delete'
+        node_set_flag = "delete"
         for new_entry in nodes:
             key = (new_entry["id"], new_entry["full_mod"])
             if key not in node_set:
                 node_set_flag = "add"
                 break
-        
+
         # Toggle behavior
         for new_entry in nodes:
             key = (new_entry["id"], new_entry["full_mod"])
-            if node_set_flag == 'delete':
+            if node_set_flag == "delete":
                 if key in node_set:
                     del node_set[key]  # deselect
-            elif node_set_flag == 'add':
+            elif node_set_flag == "add":
                 node_set[key] = new_entry  # select
 
         # Write updated list

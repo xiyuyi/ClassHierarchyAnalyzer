@@ -1,4 +1,3 @@
-from collections import defaultdict
 import networkx as nx
 import numpy as np
 
@@ -20,11 +19,17 @@ def radial_tree_layout(graph: nx.DiGraph, root="root") -> dict:
 
         n_children = len(child_radii)
         min_r = min(r for _, r in child_radii)
-        circumvent = sum([2.5 * r for _, r in child_radii]) + n_children * min_r + 2.5 * min_r
+        circumvent = (
+            sum([2.5 * r for _, r in child_radii])
+            + n_children * min_r
+            + 2.5 * min_r
+        )
 
         parent_clearance = circumvent / (2 * np.pi)
         total_angle = 2 * np.pi
-        angle_proportions = [(2.5 * r + min_r) / circumvent for _, r in child_radii]
+        angle_proportions = [
+            (2.5 * r + min_r) / circumvent for _, r in child_radii
+        ]
         angle_steps = [prop * total_angle for prop in angle_proportions]
 
         current_angle = 0

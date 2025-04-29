@@ -1,7 +1,7 @@
-import os
 import json
+import os
 
-from inheritscan.core.datatypes import ClassInfo, MethodInfo
+from inheritscan.core.datatypes import ClassInfo
 from inheritscan.tools.recursive_update_dict import recursive_update
 
 
@@ -10,14 +10,14 @@ class SummaryManager:
     # code_base_dir is the dir of the codebase root.
     # summary_chain_name: name fo the llmchain for summary generation
 
-    # this class interface with a ClassInfo object. 
+    # this class interface with a ClassInfo object.
     # Each ClassInfo object is stored in the format of a .json file under the root_dir with project dir structure
     # this summary manger load the classinfo from .json file.
     # update classinfo1 with information in classinfo2
     # saves ClassInfo object to .json file.
     # load and reconstitute ClassInfo object from .json file.
     # update_classinfo: update classinfo_old with information in classinfo_new
-    
+
     def __init__(
         self,
         root_dir: str,
@@ -41,7 +41,7 @@ class SummaryManager:
 
     def load_classinfo(self, module_path: str, class_name: str) -> ClassInfo:
         """
-        
+
         Example:
             module_path = "memory.condenser.condenser.Condenser"
             class_name = "Condenser"
@@ -68,37 +68,45 @@ class SummaryManager:
         d1 = c1.to_dict()
         recursive_update(d0, d1)
         return ClassInfo.from_dict(d0)
-    
+
     def update_methods_summaries(self, c: ClassInfo, method_summaries: dict):
         # update_methods_summaries(self, c: ClassInfo, method_name: str, summary: str):
-        """ update method summaries of all methods in c """
+        """update method summaries of all methods in c"""
         d = c.to_dict()
         for method_name in method_summaries:
             summary = method_summaries[method_name]
-            d["methods"][method_name]['summary'] = summary
-            
-        return ClassInfo.from_dict(d)
-    
-    def update_class_summary(self,c: ClassInfo, class_summary: str):
-        """ update class summary """
-        d = c.to_dict()
-        d['summary'] = class_summary
+            d["methods"][method_name]["summary"] = summary
 
         return ClassInfo.from_dict(d)
-    
+
+    def update_class_summary(self, c: ClassInfo, class_summary: str):
+        """update class summary"""
+        d = c.to_dict()
+        d["summary"] = class_summary
+
+        return ClassInfo.from_dict(d)
+
     def load_class_methods(self, module_path: str, class_name: str):
-        class_info = self.load_classinfo(module_path=module_path, class_name=class_name)
+        class_info = self.load_classinfo(
+            module_path=module_path, class_name=class_name
+        )
         methods = []
         methods = [k for k in class_info.methods]
         return methods
-    
+
     def load_class_summary(self, module_path: str, class_name: str):
-        class_info = self.load_classinfo(module_path=module_path, class_name=class_name)
+        class_info = self.load_classinfo(
+            module_path=module_path, class_name=class_name
+        )
         summary = class_info.summary
         return summary
 
-    def load_method_summary(self, module_path: str, class_name: str, method_name: str):
-        class_info = self.load_classinfo(module_path=module_path, class_name=class_name)
+    def load_method_summary(
+        self, module_path: str, class_name: str, method_name: str
+    ):
+        class_info = self.load_classinfo(
+            module_path=module_path, class_name=class_name
+        )
         method_info = class_info.methods[method_name]
         summary = method_info.summary
         return summary

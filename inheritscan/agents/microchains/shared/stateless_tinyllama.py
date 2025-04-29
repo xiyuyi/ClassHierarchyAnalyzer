@@ -1,6 +1,7 @@
-from typing import Optional, List, Dict, Any
-from langchain_core.language_models.llms import LLM
+from typing import Any, Dict, List, Optional
+
 import requests
+from langchain_core.language_models.llms import LLM
 
 
 class StatelessOllamaLLM(LLM):

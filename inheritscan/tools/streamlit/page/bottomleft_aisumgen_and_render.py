@@ -1,7 +1,9 @@
-from inheritscan.tools.ai_summaries import generate_ai_summaries
-from inheritscan.tools.parse_subgraph_selected_nodes import get_mod_class_method_list
-from inheritscan.tools.separate_list2smallerlist import separate_list
 import streamlit
+
+from inheritscan.tools.ai_summaries import generate_ai_summaries
+from inheritscan.tools.parse_subgraph_selected_nodes import \
+    get_mod_class_method_list
+from inheritscan.tools.separate_list2smallerlist import separate_list
 
 
 def summaries_generation_and_render(progress_bar, context):

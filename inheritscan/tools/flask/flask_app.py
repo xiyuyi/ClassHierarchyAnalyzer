@@ -14,6 +14,7 @@ from inheritscan.storage.runtime_json.runtime_json_loaders import (
     load_selected_nodes_on_global_graph,
     load_selected_nodes_on_subgraph,
 )
+from inheritscan.tools.global_graph import expand_nodes
 
 flask_app = Flask(__name__)
 CORS(flask_app)
@@ -29,6 +30,8 @@ def receive_selection():
 @flask_app.route("/receive_selection_subgraph", methods=["POST"])
 def receive_selection_subgraph():
     nodes = request.json.get("nodes", [])
+    # TODO #21. expand_node should be adding the parent and child nodes to the nodes list.
+    nodes = expand_nodes(nodes)
     dump_selected_nodes_on_subgraph(nodes)
     return {"status": "ok"}
 

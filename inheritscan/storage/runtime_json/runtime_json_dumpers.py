@@ -2,7 +2,7 @@ import inheritscan
 import os
 from pathlib import Path
 import json
-
+import networkx as nx
 
 def _dump_nodes_to_json(nodes, path):
     new_entry = nodes[0]
@@ -55,3 +55,21 @@ def dump_clicked_node_on_detailed_uml(nodes):
     with open(path, "w") as f:
         json.dump([entry], f, indent=2)
     print(f"dumped the clicked node on detailed uml panel to: {path}")
+
+
+def dump_metadata(metadata: dict[str]):
+    runtime_folder = Path(inheritscan.__file__).parent.parent / ".run_time"
+    path = runtime_folder / "meta.json"
+    with open(path, "w") as f:
+        json.dump([metadata], f, indent=2)
+    print(f"dumped metadata to: {path}")
+
+
+def dump_global_inheritance_graph(global_inheritance_graph: dict[str]):
+    # global_graph, key is FQN of each class
+    # value is their children. all represented with FQN
+    runtime_folder = Path(inheritscan.__file__).parent.parent / ".run_time"
+    path = runtime_folder / "global_class_inheritance_graph.json"
+    with open(path, "w") as f:
+        json.dump(global_inheritance_graph, f, indent=2)
+    print(f"dumped global_graph to: {path}")

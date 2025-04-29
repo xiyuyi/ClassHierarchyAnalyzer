@@ -1,5 +1,6 @@
-
 import streamlit
+
+
 def get_mermaid_html(mermaid_scripts: str):
     html_code = f"""
     <div class="mermaid">
@@ -18,7 +19,7 @@ def get_mermaid_html(mermaid_scripts: str):
     """
     return html_code
 
+
 def render_mermaid_graph(mermaid_scripts: str):
     html_code = get_mermaid_html(mermaid_scripts)
     streamlit.components.v1.html(html_code, height=500)
-

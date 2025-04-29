@@ -17,7 +17,7 @@ package_root = Path(inheritscan.__file__).parent
 runtime_folder = Path(inheritscan.__file__).parent.parent / ".run_time"
 
 # Initialize json files:
-initialize_json_files(streamlit = st, json_dir = runtime_folder)
+initialize_json_files(streamlit = st, runtime_folder = runtime_folder)
 
 # Initialize session state
 initialize_session_state(st)

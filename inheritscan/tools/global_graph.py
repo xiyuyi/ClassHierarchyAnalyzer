@@ -7,6 +7,7 @@ import json
 import inheritscan
 
 from inheritscan.lcgraphs.class_hierarchy import ClassHierarchyGraphBuilder
+from inheritscan.storage.graph_mng import GraphManager
 from inheritscan.tools.interactive_pyvisg import interactive_pyvis_graph
 from inheritscan.tools.mock_graphs import get_mock_graph, get_mock_graph_class_inheritance
 from inheritscan.tools.radial_tree import radial_tree_layout
@@ -35,6 +36,15 @@ def render_pyvis_graph(context: dict) -> dict:
         builder = ClassHierarchyGraphBuilder()
         class_hierachy_graph = builder.compile_graph()
         state = class_hierachy_graph.invoke(state)
+
+        # TODO housekeeping. need to make this as UI input.
+        from inheritscan.storage.runtime_json.runtime_json_dumpers import dump_metadata
+        metadata = {
+            "package_name": "openhands"
+        }
+        dump_metadata(metadata)
+
+        GraphManager.write_global_graph(state['class_hierachy_network_graph'])
         return state['class_hierachy_network_graph'], state['modules_name2path'], state['modules_details']
 
     nx_graph, modules_name2path, modules_details = get_class_hierarchy_network_graph()
@@ -52,6 +62,35 @@ def render_pyvis_graph(context: dict) -> dict:
             "modules_details": modules_details}
 
 
+def expand_nodes(nodes):
+    # TODO #21 
+    # expand the current list of nodes with their children. 
+    # example conent for nodes:
+    # [{'id': 'RollingCondenser', 'full_mod': 'memory.condenser.condenser.RollingCondenser'}]
 
+    # get fqn indexed global class inheritance relation (cir) graph
+    cir_g = GraphManager.load_global_graph()
+
+    # get fqn of the selected node
+    runtime_folder = Path(inheritscan.__file__).parent.parent / ".run_time"
+    meta_fpath = runtime_folder / "meta.json"
+    with open(meta_fpath,'r') as f:
+        data = json.load(f)
+    package_name = data[0]['package_name']
+    fqn = package_name + '.' + nodes[0]['full_mod']
+
+    # get children of the selected node
+    children = cir_g[fqn]
+
+    for child in children:
+        full_mod = child.split('.', 1)[1]
+        id = full_mod.rsplit('.', 1)[1]
+        entry =  {
+            'id': id,
+            'full_mod': full_mod,
+        }
+        nodes.append(entry)
+
+    return nodes
 
 

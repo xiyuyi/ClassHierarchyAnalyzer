@@ -31,3 +31,17 @@ def load_selected_nodes_on_subgraph():
         data = []
 
     return data
+
+
+def load_global_inheritance_graph():
+    runtime_folder = Path(inheritscan.__file__).parent.parent / ".run_time"
+    path = runtime_folder / "global_class_inheritance_graph.json"
+    try:
+        with open(path, "r") as f:
+            data = json.load(f)
+        print("loaded global_class_inheritance_grap.")
+    except Exception as e:
+        data = []
+
+    return data
+

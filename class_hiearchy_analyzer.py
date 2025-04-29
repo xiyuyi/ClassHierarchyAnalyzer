@@ -5,7 +5,7 @@ import inheritscan
 
 
 from inheritscan.tools.flask.flask_app import run_flask
-# from inheritscan.tools.mermaid_panel.entry import render_mermaid_panel
+from inheritscan.tools.mermaid_panel.entry import render_mermaid_panel
 from inheritscan.tools.streamlit.init_json_files import initialize_json_files
 from inheritscan.tools.streamlit.init_state import initialize_session_state
 from inheritscan.tools.streamlit.page.bottom_left import render_bottom_left
@@ -35,8 +35,8 @@ st.markdown("Visualize and analyze class relationships across modules.")
 top_left, top_right = st.columns(2)
 st.divider()
 bottom_left, bottom_right = st.columns(2)
-# st.divider()
-# mermaid_panel = st.container()
+st.divider()
+mermaid_panel = st.container()
 
 # Prepare Context
 context = {
@@ -46,6 +46,8 @@ context = {
     "selected_class_detail": st.session_state.selected_class_detail,
     "modules_name2path": st.session_state.modules_name2path,
     "modules_details": st.session_state.modules_details,
+    "detailed_uml_class_graph": st.session_state.detailed_uml_class_graph,
+    "detailed_nx_graph": st.session_state.detailed_nx_graph,
 }
 
 # Render
@@ -61,5 +63,5 @@ with bottom_left:
 with bottom_right:
     render_bottom_right(context)
 
-# with mermaid_panel:
-#     render_mermaid_panel(context)
+with mermaid_panel:
+    render_mermaid_panel(context)

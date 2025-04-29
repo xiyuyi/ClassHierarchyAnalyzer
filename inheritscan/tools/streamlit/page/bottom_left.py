@@ -9,15 +9,6 @@ def render_bottom_left(context):
     # define layout:
     header = streamlit.container()
     button1 = streamlit.container() # generate ai summaries
-    graph_display = streamlit.container()
-    # render each element:
-    with header:
-        streamlit.markdown("### 🔍 Detailed Class View")
-    
-    with button1:
-        streamlit.button("🔁 Generate AI summaries", use_container_width=True)
-    
-    # graph = streamlit.container()
     # Button triggers backend process
     if button1:
         streamlit.session_state["generate_ai_summaries"] = (
@@ -32,6 +23,15 @@ def render_bottom_left(context):
             streamlit.session_state["generate_ai_summaries"] = (
                 False  # Reset the trigger flag
             )
+    graph_display = streamlit.container()
+    # render each element:
+    with header:
+        streamlit.markdown("### 🔍 Detailed Class View")
+    
+    with button1:
+        streamlit.button("🔁 Generate AI summaries", use_container_width=True)
+    
+
 
     # Render the panel normally
     with graph_display:
@@ -40,7 +40,8 @@ def render_bottom_left(context):
             if streamlit.session_state.get("render_uml_diagram", True):
                 streamlit.markdown("### 🗺️ Class Hierarchy Diagram")
                 result = render_class_uml(context)
-                
+                print("finished rendering class uml, result:")
+                print(result)
                 if result:
                     streamlit.session_state.update(result)
 

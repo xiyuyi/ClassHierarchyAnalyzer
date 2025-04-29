@@ -108,6 +108,6 @@ def get_detailed_uml_class_graph(context) -> nx.DiGraph:
     # build the nx.DiGraph for detailed uml rendering with the correct labels and names.
     detailed_uml_nx_graph: nx.DiGraph = build_detailed_uml_nx_graph(detailed_nx_graph)
     
-    return detailed_uml_nx_graph
+    return detailed_uml_nx_graph, detailed_nx_graph
     # when test, do the following:
     # return build_mock_class_graph()

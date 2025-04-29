@@ -16,3 +16,9 @@ def initialize_session_state(streamlit):
 
     if "modules_details" not in streamlit.session_state:
         streamlit.session_state.modules_details = None
+
+    if "detailed_uml_class_graph" not in streamlit.session_state:
+        streamlit.session_state.detailed_uml_class_graph = None
+
+    if "detailed_nx_graph" not in streamlit.session_state:
+        streamlit.session_state.detailed_nx_graph = None

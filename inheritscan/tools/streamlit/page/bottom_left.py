@@ -40,7 +40,8 @@ def render_bottom_left(context):
             if streamlit.session_state.get("render_uml_diagram", True):
                 streamlit.markdown("### 🗺️ Class Hierarchy Diagram")
                 result = render_class_uml(context)
-                
+                print("finished rendering class uml, result:")
+                print(result)
                 if result:
                     streamlit.session_state.update(result)
 

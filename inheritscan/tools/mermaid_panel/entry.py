@@ -1,6 +1,7 @@
 import streamlit
 import networkx as nx
 from pathlib import Path
+from inheritscan.tools.mermaid_panel.generate_mermaid_script import get_mermaid_scripts
 from inheritscan.tools.mermaid_panel.load_mermaid import load_mermaid_scripts
 from inheritscan.tools.mermaid_panel.render import render_mermaid_graph
 from inheritscan.tools.uml_panel.render_class_uml import (
@@ -22,18 +23,20 @@ def render_mermaid_panel(context=None):
     button3 = streamlit.container() # copy mermaid scripts to clip-board.
 
     with button1:
+        nx_graph = context["detailed_nx_graph"]
+        mermaid_script = get_mermaid_scripts(nx_graph)
+        print(mermaid_script)
         streamlit.button("Generate Mermaid Graph", use_container_width=True)
 
     with header:
         streamlit.markdown("### Mermaid Graph:")
 
     with mermaid_graph:
-        mermaid_scripts = load_mermaid_scripts()
-        render_mermaid_graph(mermaid_scripts)
+        # mermaid_scripts = load_mermaid_scripts()
+        render_mermaid_graph(mermaid_script)
 
     with button2:
         streamlit.button("🔁 Generate Mermaid Script", use_container_width=True)
-
 
     with script_box:
         streamlit.markdown(" - Here comes the mermaid scripts")

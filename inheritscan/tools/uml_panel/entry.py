@@ -24,9 +24,11 @@ def render_class_uml(context=None):
     # enough to generate diagrams
     # enough to generate mermaid or plantuml codes (need inheritanc einformation?)
 
-    nx_graph: nx.DiGraph = get_detailed_uml_class_graph(context)
-    html = render_pyvis_class_uml(nx_graph)
+    result = get_detailed_uml_class_graph(context)
+    nx_graph, detailed_nx_graph = result  # here nx_graph is a DiGraph
 
+    html = render_pyvis_class_uml(nx_graph)
+    
     # Read the JS content
     current_script_path = Path(__file__).parent.resolve()
     js_file_path = current_script_path / "node_selection_event_listener.js"
@@ -40,3 +42,5 @@ def render_class_uml(context=None):
 
     # render
     streamlit.components.v1.html(html, height=650, scrolling=True)
+    return {"detailed_uml_class_graph": nx_graph,
+            "detailed_nx_graph": detailed_nx_graph}

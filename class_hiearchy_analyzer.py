@@ -46,6 +46,8 @@ context = {
     "selected_class_detail": st.session_state.selected_class_detail,
     "modules_name2path": st.session_state.modules_name2path,
     "modules_details": st.session_state.modules_details,
+    "detailed_uml_class_graph": st.session_state.detailed_uml_class_graph,
+    "detailed_nx_graph": st.session_state.detailed_nx_graph,
 }
 
 # Render

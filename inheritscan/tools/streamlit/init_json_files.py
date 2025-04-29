@@ -17,7 +17,7 @@ def initialize_json_files(streamlit, json_dir):
         ps.append(json_dir / "selected_nodes.json")
         ps.append(json_dir / "selected_nodes_subgraph.json")
         ps.append(json_dir / "clicked_node_on_detailed_uml.json")
-
+        ps.append(json_dir / "detailed_class_view_mermaid.json")
         for p in ps:
             if not os.path.exists(p):
                 with open(p, "w") as f:

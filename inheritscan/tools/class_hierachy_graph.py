@@ -14,4 +14,4 @@ def get_class_hierarchy_network_graph():
     builder = ClassHierarchyGraphBuilder()
     class_hierachy_graph = builder.compile_graph()
     state = class_hierachy_graph.invoke(state)
-    return state["class_hierachy_network_graph"]
+    return state["class_hierarchy_network_graph"]

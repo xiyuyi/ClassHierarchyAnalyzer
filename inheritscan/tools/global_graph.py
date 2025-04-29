@@ -41,9 +41,9 @@ def render_pyvis_graph(context: dict) -> dict:
         metadata = {"package_name": "openhands"}
         dump_metadata(metadata)
 
-        GraphManager.write_global_graph(state["class_hierachy_network_graph"])
+        GraphManager.write_global_graph(state["class_hierarchy_network_graph"])
         return (
-            state["class_hierachy_network_graph"],
+            state["class_hierarchy_network_graph"],
             state["modules_name2path"],
             state["modules_details"],
         )
@@ -62,7 +62,7 @@ def render_pyvis_graph(context: dict) -> dict:
 
     interactive_pyvis_graph(pyvis_g)
     return {
-        "class_hierachy_network_graph": nx_graph,
+        "class_hierarchy_network_graph": nx_graph,
         "modules_name2path": modules_name2path,
         "modules_details": modules_details,
     }

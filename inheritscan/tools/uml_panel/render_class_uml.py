@@ -93,7 +93,7 @@ def get_detailed_uml_class_graph(context) -> nx.DiGraph:
     # get the nx.DiGraph of the subgraph (sub_nx_graph), build from json and global graph
     # TODO the following code block is duplicated with subgraph_render_pyvis_graph. refactor in the future.
     def get_sub_class_hierarchy_network_graph():
-        global_nx_graph = context["class_hierachy_network_graph"]
+        global_nx_graph = context["class_hierarchy_network_graph"]
         selected_nodes_from_gg_fpath = (
             runtime_data_folder / "selected_nodes.json"
         )

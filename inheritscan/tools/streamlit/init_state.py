@@ -8,8 +8,8 @@ def initialize_session_state(streamlit):
     if "selected_class_detail" not in streamlit.session_state:
         streamlit.session_state.selected_class_detail = None
 
-    if "class_hierachy_network_graph" not in streamlit.session_state:
-        streamlit.session_state.class_hierachy_network_graph = None
+    if "class_hierarchy_network_graph" not in streamlit.session_state:
+        streamlit.session_state.class_hierarchy_network_graph = None
 
     if "modules_name2path" not in streamlit.session_state:
         streamlit.session_state.modules_name2path = None

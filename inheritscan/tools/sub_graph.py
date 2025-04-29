@@ -24,7 +24,7 @@ def subgraph_render_pyvis_graph(context: dict) -> dict:
     # physics_enabled = st.checkbox("Enable physics layout for subgraph (force-based radial)", value=True)
 
     def get_sub_class_hierarchy_network_graph():
-        global_nx_graph = context["class_hierachy_network_graph"]
+        global_nx_graph = context["class_hierarchy_network_graph"]
         selected_nodes_from_gg_fpath = (
             runtime_data_folder / "selected_nodes.json"
         )

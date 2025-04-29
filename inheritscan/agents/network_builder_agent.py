@@ -23,5 +23,5 @@ class NetworkBuilderAgent:
                         if child in G:
                             G.add_edge(node, child, relation="inherits")
 
-        state["class_hierachy_network_graph"] = G
+        state["class_hierarchy_network_graph"] = G
         return state

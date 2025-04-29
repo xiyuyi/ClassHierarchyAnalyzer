@@ -40,7 +40,7 @@ mermaid_panel = st.container()
 
 # Prepare Context
 context = {
-    "class_hierachy_network_graph": st.session_state.class_hierachy_network_graph,
+    "class_hierarchy_network_graph": st.session_state.class_hierarchy_network_graph,
     "selected_cluster": st.session_state.selected_cluster,
     "selected_classes": st.session_state.selected_classes,
     "selected_class_detail": st.session_state.selected_class_detail,

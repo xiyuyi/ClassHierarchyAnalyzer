@@ -57,11 +57,12 @@ def render_pyvis_graph(context: dict) -> dict:
         )  # Pyvis needs str，not dict. json.dumps() converts a dict into tr.
     pyvis_g.set_options(config_json_str)
 
-    interactive_pyvis_graph(pyvis_g)
+    html = interactive_pyvis_graph(pyvis_g)
     return {
         "class_hierarchy_network_graph": nx_graph,
         "modules_name2path": modules_name2path,
         "modules_details": modules_details,
+        "interactive_pyvis_global_graph_html": html,
     }
 
 

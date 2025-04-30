@@ -16,6 +16,7 @@ def render_top_right(context):
     # window area for the graph rendering
     subgraph_container = streamlit.container()
     with subgraph_container:
+
         # retrieve the html with ineractive selection logic for the panel.
         html = streamlit.session_state.interactive_pyvis_subbraph_html
 

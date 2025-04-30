@@ -43,3 +43,16 @@ def load_global_inheritance_graph():
         data = []
 
     return data
+
+
+def load_metadata():
+    runtime_folder = Path(inheritscan.__file__).parent.parent / ".run_time"
+    path = runtime_folder / "meta.json"
+    try:
+        with open(path, "r") as f:
+            data = json.load(f)
+        print("loaded meta data for the session.")
+    except Exception:
+        data = []
+
+    return data

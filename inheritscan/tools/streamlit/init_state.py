@@ -27,3 +27,4 @@ def initialize_session_state(streamlit):
     streamlit.session_state.rerender_sub_graph = False
     streamlit.session_state.rerender_uml_view = False
     streamlit.session_state.rerender_classdetails_view = False
+    streamlit.session_state.interactive_pyvis_subbraph_html = ""

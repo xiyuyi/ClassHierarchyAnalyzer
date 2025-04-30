@@ -2,6 +2,8 @@ import streamlit
 
 from inheritscan.tools.classinfo_panel.get_classinfo_markdown import \
     get_detailed_class_description
+from inheritscan.tools.classinfo_panel.open_class_in_vscode import \
+    open_selected_file_in_vscode
 
 
 def render_bottom_right(context):
@@ -21,5 +23,4 @@ def render_bottom_right(context):
     if button2:
         # TODO open the module for this class in vscode.
         # Consider extracting `mod` and `class_name` from context or JSON
-        # open_selected_file_in_vscode(contex)
-        pass
+        open_selected_file_in_vscode(context)

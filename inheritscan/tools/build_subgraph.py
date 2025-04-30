@@ -13,6 +13,10 @@ timeout_seconds = 5
 start_time = time.time()
 
 
+def build_subgraph(graph, selected_nodes):
+    pass
+
+
 def build_subgraph_from_global(global_nx_graph: nx.DiGraph):
     while not global_nx_graph:
         if time.time() - start_time > timeout_seconds:
@@ -54,9 +58,7 @@ def build_subgraph_from_global(global_nx_graph: nx.DiGraph):
     return global_nx_graph.subgraph(selected_node_keys).copy()
 
 
-def build_detailedgraph_from_subgraph(
-    sub_nx_graph: nx.DiGraph, selected_nodes_from_sb_fpath
-):
+def build_detailedgraph_from_subgraph(sub_nx_graph: nx.DiGraph):
     while not sub_nx_graph:
         if time.time() - start_time > timeout_seconds:
             print(
@@ -66,6 +68,10 @@ def build_detailedgraph_from_subgraph(
         time.sleep(0.1)
 
     print("📦 Loading selected nodes from subgraph...")
+
+    selected_nodes_from_sb_fpath = (
+        runtime_data_folder / "selected_nodes_subgraph.json"
+    )
     with open(selected_nodes_from_sb_fpath, "r") as f:
         selected_nodes = json.load(f)
 

@@ -38,16 +38,5 @@ def subgraph_render_pyvis_graph(context: dict) -> dict:
 
 
 def get_sub_class_hierarchy_network_graph(global_nx_graph):
-    # selected_nodes_from_gg_fpath = runtime_data_folder / "selected_nodes.json"
     sub_nx_graph = build_subgraph_from_global(global_nx_graph)
     return sub_nx_graph
-
-
-# def get_sub_class_hierarchy_network_graph(global_nx_graph):
-#     selected_nodes_from_gg_fpath = (
-#         runtime_data_folder / "selected_nodes.json"
-#     )
-#     sub_nx_graph = build_subgraph_from_global(
-#         global_nx_graph, selected_nodes_from_gg_fpath
-#     )
-#     return sub_nx_graph

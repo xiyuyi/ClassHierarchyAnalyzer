@@ -7,8 +7,8 @@ from pyvis.network import Network
 import inheritscan
 from inheritscan.tools.build_detailed_uml_nxg import \
     build_detailed_uml_nx_graph
-from inheritscan.tools.build_subgraph import (
-    build_detailedgraph_from_subgraph, build_subgraph_from_global)
+from inheritscan.tools.build_subgraph import build_detailedgraph_from_subgraph
+from inheritscan.tools.sub_graph import get_sub_class_hierarchy_network_graph
 from inheritscan.tools.uml_panel.formats import format_class_label
 
 package_root = Path(inheritscan.__file__).parent
@@ -89,20 +89,24 @@ def render_pyvis_class_uml(G: nx.DiGraph, font_size=20):
     return net.generate_html()
 
 
+# def get_sub_class_hierarchy_network_graph(global_nx_graph):
+#     selected_nodes_from_gg_fpath = (
+#         runtime_data_folder / "selected_nodes.json"
+#     )
+#     sub_nx_graph = build_subgraph_from_global(
+#         global_nx_graph, selected_nodes_from_gg_fpath
+#     )
+#     return sub_nx_graph
+
+
 def get_detailed_uml_class_graph(context) -> nx.DiGraph:
     # get the nx.DiGraph of the subgraph (sub_nx_graph), build from json and global graph
     # TODO the following code block is duplicated with subgraph_render_pyvis_graph. refactor in the future.
-    def get_sub_class_hierarchy_network_graph():
-        global_nx_graph = context["class_hierarchy_network_graph"]
-        selected_nodes_from_gg_fpath = (
-            runtime_data_folder / "selected_nodes.json"
-        )
-        sub_nx_graph = build_subgraph_from_global(
-            global_nx_graph, selected_nodes_from_gg_fpath
-        )
-        return sub_nx_graph
 
-    sub_nx_graph: nx.DiGraph = get_sub_class_hierarchy_network_graph()
+    global_nx_graph = context["class_hierarchy_network_graph"]
+    sub_nx_graph: nx.DiGraph = get_sub_class_hierarchy_network_graph(
+        global_nx_graph
+    )
 
     # get the  nx.DiGraph for the detailed graph (selection on the subgraph)
     def get_detailed_class_hierarchy_network_graph(sub_nx_graph: nx.DiGraph):

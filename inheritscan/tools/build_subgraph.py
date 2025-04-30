@@ -1,16 +1,19 @@
 import json
 import time
+from pathlib import Path
 
 import networkx as nx
+
+import inheritscan
+
+runtime_data_folder = Path(inheritscan.__file__).parent.parent / ".run_time"
 
 timeout_seconds = 5
 # TODO may need to optimize this timeout logic. The overall goal is to ensure enough time for global_nx_graph to be built.
 start_time = time.time()
 
 
-def build_subgraph_from_global(
-    global_nx_graph: nx.DiGraph, selected_nodes_from_gg_fpath
-):
+def build_subgraph_from_global(global_nx_graph: nx.DiGraph):
     while not global_nx_graph:
         if time.time() - start_time > timeout_seconds:
             print(
@@ -20,6 +23,9 @@ def build_subgraph_from_global(
         time.sleep(0.1)
 
     print("📦 Loading selected nodes...")
+
+    selected_nodes_from_gg_fpath = runtime_data_folder / "selected_nodes.json"
+
     with open(selected_nodes_from_gg_fpath, "r") as f:
         selected_nodes = json.load(f)
 

@@ -1,4 +1,3 @@
-import json
 from pathlib import Path
 
 import networkx as nx
@@ -23,12 +22,15 @@ def subgraph_render_pyvis_graph(context: dict) -> dict:
     print("subgraph_render_pyvis_graph")
 
     sub_nx_graph: nx.DiGraph = get_sub_class_hierarchy_network_graph(context)
-    pyvis_subg: Network = build_class_hierarchy_pyvis_network(sub_nx_graph)
+    pyvis_subg: Network = build_class_hierarchy_pyvis_network(
+        nx_graph=sub_nx_graph, panel="sub_graph"
+    )
 
-    pyvis_config_path = package_root / "configs" / "subgraph_pyvis.txt"
-    with open(pyvis_config_path, "r") as f:
-        config_json_str = json.dumps(json.load(f))
-    pyvis_subg.set_options(config_json_str)
+    # pyvis_config_path = package_root / "configs" / "subgraph_pyvis.txt"
+    # with open(pyvis_config_path, "r") as f:
+    #     config_json_str = json.dumps(json.load(f))
+    # pyvis_subg.set_options(config_json_str)
+
     # TODO #24 update html block when the render button is clicked
     html = get_interactive_pyvis_subgraph_html(pyvis_subg)
     return {

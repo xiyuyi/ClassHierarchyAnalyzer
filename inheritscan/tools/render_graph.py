@@ -18,7 +18,6 @@ def build_class_hierarchy_pyvis_network(nx_graph=None, panel=None):
     )
     for node in nx_graph.nodes(data=True):
         full_mod = node[0][0] + "." + node[0][1]
-        # mod = node[1].get("class_name", "EMPTY")
         pyvis_g.add_node(node[0][1], title=full_mod)
 
     for edge in nx_graph.edges():
@@ -33,6 +32,7 @@ def build_class_hierarchy_pyvis_network(nx_graph=None, panel=None):
         config_json_str = json.dumps(
             json.load(f)
         )  # Pyvis needs str，not dict. json.dumps() converts a dict into tr.
+
     pyvis_g.set_options(config_json_str)
 
     return pyvis_g

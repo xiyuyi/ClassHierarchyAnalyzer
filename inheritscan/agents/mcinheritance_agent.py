@@ -1,5 +1,6 @@
 import ast
 import traceback
+
 from myagents.utils.ast import inspect_class_relations
 
 

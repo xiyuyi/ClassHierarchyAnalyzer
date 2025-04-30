@@ -1,9 +1,9 @@
-import streamlit as st
 import threading
 from pathlib import Path
+
+import streamlit as st
+
 import inheritscan
-
-
 from inheritscan.tools.flask.flask_app import run_flask
 from inheritscan.tools.mermaid_panel.entry import render_mermaid_panel
 from inheritscan.tools.streamlit.init_json_files import initialize_json_files
@@ -16,8 +16,8 @@ from inheritscan.tools.streamlit.page.top_right import render_top_right
 package_root = Path(inheritscan.__file__).parent
 runtime_folder = Path(inheritscan.__file__).parent.parent / ".run_time"
 
-# Initialize json files:
-initialize_json_files(streamlit = st, runtime_folder = runtime_folder)
+# Initialize json files in runtime_folder:
+initialize_json_files(streamlit=st, runtime_folder=runtime_folder)
 
 # Initialize session state
 initialize_session_state(st)
@@ -29,9 +29,11 @@ if "flask_started" not in st.session_state:
     print("🚀 Flask service started.")
 
 # Page Layout
-st.set_page_config(page_title="Class Hierarchy Explorer", layout="wide")
-st.title("📘 Class Hierarchy Explorer")
-st.markdown("Visualize and analyze class relationships across modules.")
+st.set_page_config(page_title="Class Inheritance Explorer", layout="wide")
+st.title("📘 Class Inheritance Explorer")
+st.markdown(
+    "Explore and analyze class inheritance structures across your Python codebase."
+)
 top_left, top_right = st.columns(2)
 st.divider()
 bottom_left, bottom_right = st.columns(2)
@@ -40,7 +42,7 @@ mermaid_panel = st.container()
 
 # Prepare Context
 context = {
-    "class_hierachy_network_graph": st.session_state.class_hierachy_network_graph,
+    "class_hierarchy_network_graph": st.session_state.class_hierarchy_network_graph,
     "selected_cluster": st.session_state.selected_cluster,
     "selected_classes": st.session_state.selected_classes,
     "selected_class_detail": st.session_state.selected_class_detail,

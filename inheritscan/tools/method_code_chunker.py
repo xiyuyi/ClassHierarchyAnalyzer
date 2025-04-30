@@ -1,5 +1,7 @@
 import ast
 import textwrap
+
+
 def chunk_method_code(source: str) -> list[str]:
 
     try:
@@ -12,11 +14,20 @@ def chunk_method_code(source: str) -> list[str]:
     class_or_func = tree.body[0]
     if isinstance(class_or_func, ast.ClassDef):
         class_body = class_or_func.body
-        method = next((n for n in class_body if isinstance(n, (ast.FunctionDef, ast.AsyncFunctionDef))), None)
+        method = next(
+            (
+                n
+                for n in class_body
+                if isinstance(n, (ast.FunctionDef, ast.AsyncFunctionDef))
+            ),
+            None,
+        )
     elif isinstance(class_or_func, (ast.FunctionDef, ast.AsyncFunctionDef)):
         method = class_or_func
     else:
-        print("❌ Input must be a single function or class with at leaset one method.")
+        print(
+            "❌ Input must be a single function or class with at leaset one method."
+        )
         return []
 
     if method is None:

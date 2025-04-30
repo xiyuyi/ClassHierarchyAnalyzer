@@ -1,22 +1,26 @@
-import time
-import networkx as nx
 import json
 import time
 
-timeout_seconds = 5  
+import networkx as nx
+
+timeout_seconds = 5
 # TODO may need to optimize this timeout logic. The overall goal is to ensure enough time for global_nx_graph to be built.
 start_time = time.time()
 
 
-def extract_subgraph_from_global(global_nx_graph: nx.DiGraph, selected_nodes_from_gg_fpath):
+def extract_subgraph_from_global(
+    global_nx_graph: nx.DiGraph, selected_nodes_from_gg_fpath
+):
     while not global_nx_graph:
         if time.time() - start_time > timeout_seconds:
-            print(f"Timeout after {timeout_seconds} seconds waiting for global_nx_graph to be ready.")
+            print(
+                f"Timeout after {timeout_seconds} seconds waiting for global_nx_graph to be ready."
+            )
             break
         time.sleep(0.1)
 
     print("📦 Loading selected nodes...")
-    with open(selected_nodes_from_gg_fpath, 'r') as f:
+    with open(selected_nodes_from_gg_fpath, "r") as f:
         selected_nodes = json.load(f)
 
     selected_node_keys = {
@@ -37,20 +41,26 @@ def extract_subgraph_from_global(global_nx_graph: nx.DiGraph, selected_nodes_fro
             match_info = "✅ MATCH"
             print(f"{i+1:>2}. {edge_info} {match_info}")
 
-    print(f"\n📊 Global Graph: {len(global_nx_graph.nodes)} nodes, {len(global_nx_graph.edges)} edges")
+    print(
+        f"\n📊 Global Graph: {len(global_nx_graph.nodes)} nodes, {len(global_nx_graph.edges)} edges"
+    )
 
     return global_nx_graph.subgraph(selected_node_keys).copy()
 
 
-def extract_detailedgraph_from_subgraph(sub_nx_graph: nx.DiGraph, selected_nodes_from_sb_fpath):
+def extract_detailedgraph_from_subgraph(
+    sub_nx_graph: nx.DiGraph, selected_nodes_from_sb_fpath
+):
     while not sub_nx_graph:
         if time.time() - start_time > timeout_seconds:
-            print(f"Timeout after {timeout_seconds} seconds waiting for sub_nx_graph to be ready.")
+            print(
+                f"Timeout after {timeout_seconds} seconds waiting for sub_nx_graph to be ready."
+            )
             break
         time.sleep(0.1)
 
     print("📦 Loading selected nodes from subgraph...")
-    with open(selected_nodes_from_sb_fpath, 'r') as f:
+    with open(selected_nodes_from_sb_fpath, "r") as f:
         selected_nodes = json.load(f)
 
     selected_node_keys = {
@@ -71,7 +81,8 @@ def extract_detailedgraph_from_subgraph(sub_nx_graph: nx.DiGraph, selected_nodes
             match_info = "✅ MATCH"
             print(f"{i+1:>2}. {edge_info} {match_info}")
 
-    print(f"\n📊 Global Graph: {len(sub_nx_graph.nodes)} nodes, {len(sub_nx_graph.edges)} edges")
+    print(
+        f"\n📊 Global Graph: {len(sub_nx_graph.nodes)} nodes, {len(sub_nx_graph.edges)} edges"
+    )
 
     return sub_nx_graph.subgraph(selected_node_keys).copy()
-

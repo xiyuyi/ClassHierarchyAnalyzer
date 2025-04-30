@@ -1,5 +1,7 @@
 import streamlit as st
-from inheritscan.tools.mermaid_panel.generate_mermaid_script import get_mermaid_scripts
+
+from inheritscan.tools.mermaid_panel.generate_mermaid_script import \
+    get_mermaid_scripts
 from inheritscan.tools.mermaid_panel.render import render_mermaid_graph
 
 

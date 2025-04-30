@@ -1,8 +1,7 @@
-from abc import ABC
-from pathlib import Path
-from flask import jsonify
-import inheritscan
 import json
+from pathlib import Path
+
+import inheritscan
 
 
 def load_selected_nodes_on_global_graph():
@@ -40,8 +39,7 @@ def load_global_inheritance_graph():
         with open(path, "r") as f:
             data = json.load(f)
         print("loaded global_class_inheritance_grap.")
-    except Exception as e:
+    except Exception:
         data = []
 
     return data
-

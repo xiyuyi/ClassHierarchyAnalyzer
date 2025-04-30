@@ -1,4 +1,5 @@
-from inheritscan.agents.microchains.shared.stateless_tinyllama import StatelessOllamaLLM
+from inheritscan.agents.microchains.shared.stateless_tinyllama import \
+    StatelessOllamaLLM
 from inheritscan.agents.microchains.shared.together_ai import TogetherQwenCoder
 
 
@@ -23,6 +24,7 @@ def get_tinyllm100():
         stop=["Explanation complete.", "\n\n"],
     )
 
+
 def get_qwen_coder_instruct500():
     return TogetherQwenCoder(
         model="Qwen/Qwen2.5-Coder-32B-Instruct",
@@ -34,8 +36,9 @@ def get_qwen_coder_instruct500():
         repetition_penalty=1.1,
         presence_penalty=0,
         frequency_penalty=0,
-        seed=42
+        seed=42,
     )
+
 
 def get_qwen_coder_instruct2000():
     return TogetherQwenCoder(
@@ -48,6 +51,5 @@ def get_qwen_coder_instruct2000():
         repetition_penalty=1.1,
         presence_penalty=0,
         frequency_penalty=0,
-        seed=42
+        seed=42,
     )
-

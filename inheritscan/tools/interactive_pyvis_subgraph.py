@@ -1,11 +1,14 @@
-import streamlit.components.v1 as components
-import tempfile
 import json
 import os
+import tempfile
+
+import streamlit.components.v1 as components
 
 
 def interactive_pyvis_subgraph(net, height=600):
-    def load_selected_subgraph_ids(path=".run_time/selected_nodes_subgraph.json"):
+    def load_selected_subgraph_ids(
+        path=".run_time/selected_nodes_subgraph.json",
+    ):
         if os.path.exists(path):
             with open(path, "r") as f:
                 selected_data = json.load(f)
@@ -52,7 +55,7 @@ def interactive_pyvis_subgraph(net, height=600):
                 });
         }
 
-        
+
         setTimeout(applyInitialNodeColorsFromFlask, 500);
 
         window.network.on("select", function(params) {

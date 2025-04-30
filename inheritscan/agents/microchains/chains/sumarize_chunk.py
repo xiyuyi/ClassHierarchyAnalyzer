@@ -1,12 +1,11 @@
-from langchain_core.runnables import RunnableMap
 from langchain_core.output_parsers import StrOutputParser
+from langchain_core.runnables import RunnableMap
 
 from inheritscan.agents.microchains.chains.mock import MockChain
-from inheritscan.agents.microchains.shared.llm_config import get_qwen_coder_instruct500, get_tinyllm150
 from inheritscan.agents.microchains.prompts.chunk_summary import (
-    chunk_summary_prompt_korean,
-    chunk_summary_prompt_english
-)
+    chunk_summary_prompt_english, chunk_summary_prompt_korean)
+from inheritscan.agents.microchains.shared.llm_config import (
+    get_qwen_coder_instruct500, get_tinyllm150)
 
 
 def get_chunk_summary_chain(chain_name):
@@ -17,7 +16,7 @@ def get_chunk_summary_chain(chain_name):
         # Return the mock chain wrapped in RunnableMap
         mock_chain = MockChain()
         return RunnableMap({"chunk_summary": mock_chain})
-    
+
     else:
         if chain_name == "tinyllama150_korean":
             llm = get_tinyllm150()

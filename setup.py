@@ -3,8 +3,8 @@ setup.py for myagents
 """
 
 from os import path
-import setuptools
 
+import setuptools
 
 setuptools.setup(
     name="inheritscan",

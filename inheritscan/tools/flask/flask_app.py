@@ -1,19 +1,11 @@
-from flask import Flask, request, jsonify
+from flask import Flask, jsonify, request
 from flask_cors import CORS
-import json
-import os
-import inheritscan
-from pathlib import Path
 
 from inheritscan.storage.runtime_json.runtime_json_dumpers import (
-    dump_clicked_node_on_detailed_uml,
-    dump_selected_nodes_on_global_graph,
-    dump_selected_nodes_on_subgraph,
-)
+    dump_clicked_node_on_detailed_uml, dump_selected_nodes_on_global_graph,
+    dump_selected_nodes_on_subgraph)
 from inheritscan.storage.runtime_json.runtime_json_loaders import (
-    load_selected_nodes_on_global_graph,
-    load_selected_nodes_on_subgraph,
-)
+    load_selected_nodes_on_global_graph, load_selected_nodes_on_subgraph)
 from inheritscan.tools.global_graph import expand_nodes
 
 flask_app = Flask(__name__)
@@ -23,7 +15,6 @@ CORS(flask_app)
 @flask_app.route("/receive_selection", methods=["POST"])
 def receive_selection():
     nodes = request.json.get("nodes", [])
-    # TODO #21. expand_node should be adding the parent and child nodes to the nodes list.
     print("this is receive_selection in flask app")
     nodes = expand_nodes(nodes)
     dump_selected_nodes_on_global_graph(nodes)

@@ -1,7 +1,8 @@
-from typing import Optional, List, Dict, Any
+from typing import Any, Dict, List, Optional
+
+from dotenv import load_dotenv
 from langchain_core.language_models.llms import LLM
 from together import Together
-from dotenv import load_dotenv
 
 load_dotenv()  # This will load variables from the .env file into os.environ
 

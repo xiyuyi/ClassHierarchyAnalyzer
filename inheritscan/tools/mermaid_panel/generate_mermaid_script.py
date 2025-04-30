@@ -1,7 +1,8 @@
-from inheritscan.tools.ai_summaries import get_summary_manager
-import inheritscan
 from pathlib import Path
+
+import inheritscan
 from inheritscan.storage.summary_mng import SummaryManager
+from inheritscan.tools.ai_summaries import get_summary_manager
 
 
 def _build_method_string_segment(methods):
@@ -22,7 +23,7 @@ def _get_class_table(nx_graph):
     for node in nx_graph.nodes:
         # example node:
         # ('runtime.impl.local.local_runtime', 'LocalRuntime')
-        full_mod = node[0] + "." + node[1]
+        node[0] + "." + node[1]
         # set deduplicated class names
         counter, class_key = 1, node[1]
         while class_key in class_table:
@@ -38,11 +39,15 @@ def _get_aggregated_class_segments(class_table, sm: SummaryManager):
     for node, class_key in class_table.items():
         module_path = node[0]
         class_name = node[1]
-        methods = sm.load_class_methods(module_path=module_path, class_name=class_name)
+        methods = sm.load_class_methods(
+            module_path=module_path, class_name=class_name
+        )
 
         # remove hidden methods
         methods = [m for m in methods if (not m.startswith("_"))]
-        aggregated_class_segment += "\n" + _build_class_segment(class_key, methods)
+        aggregated_class_segment += "\n" + _build_class_segment(
+            class_key, methods
+        )
 
     return aggregated_class_segment
 

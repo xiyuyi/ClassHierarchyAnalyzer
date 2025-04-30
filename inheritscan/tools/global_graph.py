@@ -14,7 +14,7 @@ package_root = Path(inheritscan.__file__).parent
 
 
 def render_global_graph_panel(context: dict) -> dict:
-    st.markdown("### 🌐 Global Class Graph")
+    st.markdown("### 🌐 Class Inheritance Graph — Global Graph View")
     return render_pyvis_graph(context)
 
 

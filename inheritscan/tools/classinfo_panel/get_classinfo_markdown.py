@@ -17,6 +17,10 @@ def get_detailed_class_description(context):
     fpath = runtime_data_folder / "clicked_node_on_detailed_uml.json"
     with open(fpath, "r") as f:
         class_selected = json.load(f)[0]
+
+    if len(class_selected) == 0:
+        return "No class is selected.\nPlease select a class (click) from the diagram on the left."
+
     mod = class_selected["full_mod"].rsplit(".", 1)[0]
     class_name = class_selected["id"]
 
@@ -48,7 +52,7 @@ def get_detailed_class_description(context):
 
     print(f"class summary: {class_summary}")
 
-    return f"""
+    result = f"""
 
     #### Class: `{class_name}`
 
@@ -65,3 +69,5 @@ def get_detailed_class_description(context):
 
 
 """
+
+    return result

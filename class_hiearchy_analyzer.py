@@ -29,9 +29,11 @@ if "flask_started" not in st.session_state:
     print("🚀 Flask service started.")
 
 # Page Layout
-st.set_page_config(page_title="Class Hierarchy Explorer", layout="wide")
-st.title("📘 Class Hierarchy Explorer")
-st.markdown("Visualize and analyze class relationships across modules.")
+st.set_page_config(page_title="Class Inheritance Explorer", layout="wide")
+st.title("📘 Class Inheritance Explorer")
+st.markdown(
+    "Explore and analyze class inheritance structures across your Python codebase."
+)
 top_left, top_right = st.columns(2)
 st.divider()
 bottom_left, bottom_right = st.columns(2)

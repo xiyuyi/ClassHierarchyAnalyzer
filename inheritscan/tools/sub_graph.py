@@ -22,9 +22,7 @@ def subgraph_render_pyvis_graph(context: dict) -> dict:
     print("subgraph_render_pyvis_graph")
     global_nx_graph = context["class_hierarchy_network_graph"]
 
-    sub_nx_graph: nx.DiGraph = get_sub_class_hierarchy_network_graph(
-        global_nx_graph
-    )
+    sub_nx_graph: nx.DiGraph = build_subgraph_from_global(global_nx_graph)
     pyvis_subg: Network = build_class_hierarchy_pyvis_network(
         nx_graph=sub_nx_graph, panel="sub_graph"
     )
@@ -35,8 +33,3 @@ def subgraph_render_pyvis_graph(context: dict) -> dict:
         "subgraph_class_hierachy_network": sub_nx_graph,
         "interactive_pyvis_subbraph_html": html,
     }
-
-
-def get_sub_class_hierarchy_network_graph(global_nx_graph):
-    sub_nx_graph = build_subgraph_from_global(global_nx_graph)
-    return sub_nx_graph

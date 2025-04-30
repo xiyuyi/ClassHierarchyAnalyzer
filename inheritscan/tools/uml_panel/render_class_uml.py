@@ -7,8 +7,8 @@ from pyvis.network import Network
 import inheritscan
 from inheritscan.tools.build_detailed_uml_nxg import \
     build_detailed_uml_nx_graph
-from inheritscan.tools.build_subgraph import build_detailedgraph_from_subgraph
-from inheritscan.tools.sub_graph import get_sub_class_hierarchy_network_graph
+from inheritscan.tools.build_subgraph import (
+    build_detailedgraph_from_subgraph, build_subgraph_from_global)
 from inheritscan.tools.uml_panel.formats import format_class_label
 
 package_root = Path(inheritscan.__file__).parent
@@ -94,16 +94,10 @@ def get_detailed_uml_class_graph(context) -> nx.DiGraph:
     # TODO the following code block is duplicated with subgraph_render_pyvis_graph. refactor in the future.
 
     global_nx_graph = context["class_hierarchy_network_graph"]
-    sub_nx_graph: nx.DiGraph = get_sub_class_hierarchy_network_graph(
-        global_nx_graph
-    )
+    sub_nx_graph: nx.DiGraph = build_subgraph_from_global(global_nx_graph)
 
-    # get the  nx.DiGraph for the detailed graph (selection on the subgraph)
-    def get_detailed_class_hierarchy_network_graph(sub_nx_graph: nx.DiGraph):
-        detailed_nx_graph = build_detailedgraph_from_subgraph(sub_nx_graph)
-        return detailed_nx_graph
-
-    detailed_nx_graph: nx.DiGraph = get_detailed_class_hierarchy_network_graph(
+    # build the nx.DiGraph for the detailed graph (selection on the subgraph)
+    detailed_nx_graph: nx.DiGraph = build_detailedgraph_from_subgraph(
         sub_nx_graph
     )
 

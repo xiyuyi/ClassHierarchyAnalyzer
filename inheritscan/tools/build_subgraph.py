@@ -8,7 +8,7 @@ timeout_seconds = 5
 start_time = time.time()
 
 
-def extract_subgraph_from_global(
+def build_subgraph_from_global(
     global_nx_graph: nx.DiGraph, selected_nodes_from_gg_fpath
 ):
     while not global_nx_graph:
@@ -48,7 +48,7 @@ def extract_subgraph_from_global(
     return global_nx_graph.subgraph(selected_node_keys).copy()
 
 
-def extract_detailedgraph_from_subgraph(
+def build_detailedgraph_from_subgraph(
     sub_nx_graph: nx.DiGraph, selected_nodes_from_sb_fpath
 ):
     while not sub_nx_graph:

@@ -7,8 +7,8 @@ from pyvis.network import Network
 import inheritscan
 from inheritscan.tools.build_detailed_uml_nxg import \
     build_detailed_uml_nx_graph
-from inheritscan.tools.extract_subgraph import (
-    extract_detailedgraph_from_subgraph, extract_subgraph_from_global)
+from inheritscan.tools.build_subgraph import (
+    build_detailedgraph_from_subgraph, build_subgraph_from_global)
 from inheritscan.tools.uml_panel.formats import format_class_label
 
 package_root = Path(inheritscan.__file__).parent
@@ -97,7 +97,7 @@ def get_detailed_uml_class_graph(context) -> nx.DiGraph:
         selected_nodes_from_gg_fpath = (
             runtime_data_folder / "selected_nodes.json"
         )
-        sub_nx_graph = extract_subgraph_from_global(
+        sub_nx_graph = build_subgraph_from_global(
             global_nx_graph, selected_nodes_from_gg_fpath
         )
         return sub_nx_graph
@@ -109,7 +109,7 @@ def get_detailed_uml_class_graph(context) -> nx.DiGraph:
         selected_nodes_from_sg_fpath = (
             runtime_data_folder / "selected_nodes_subgraph.json"
         )
-        detailed_nx_graph = extract_detailedgraph_from_subgraph(
+        detailed_nx_graph = build_detailedgraph_from_subgraph(
             sub_nx_graph, selected_nodes_from_sg_fpath
         )
         return detailed_nx_graph

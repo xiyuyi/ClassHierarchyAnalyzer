@@ -13,24 +13,8 @@ timeout_seconds = 5
 start_time = time.time()
 
 
-def build_subgraph(graph, selected_nodes):
-    pass
-
-
-def build_subgraph_from_global(global_nx_graph: nx.DiGraph):
-    while not global_nx_graph:
-        if time.time() - start_time > timeout_seconds:
-            print(
-                f"Timeout after {timeout_seconds} seconds waiting for global_nx_graph to be ready."
-            )
-            break
-        time.sleep(0.1)
-
-    print("📦 Loading selected nodes...")
-
-    selected_nodes_from_gg_fpath = runtime_data_folder / "selected_nodes.json"
-
-    with open(selected_nodes_from_gg_fpath, "r") as f:
+def _build_subgraph(G: nx.DiGraph, selected_nodes_fpath: str):
+    with open(selected_nodes_fpath, "r") as f:
         selected_nodes = json.load(f)
 
     selected_node_keys = {
@@ -43,7 +27,7 @@ def build_subgraph_from_global(global_nx_graph: nx.DiGraph):
 
     print(f"\n🌐 Inspecting edges from global graph...")
 
-    all_edges = list(global_nx_graph.edges())
+    all_edges = list(G.edges())
     for i, (u, v) in enumerate(all_edges):
         edge_info = f"({u}) -> ({v})"
         match_info = ""
@@ -51,50 +35,22 @@ def build_subgraph_from_global(global_nx_graph: nx.DiGraph):
             match_info = "✅ MATCH"
             print(f"{i+1:>2}. {edge_info} {match_info}")
 
-    print(
-        f"\n📊 Global Graph: {len(global_nx_graph.nodes)} nodes, {len(global_nx_graph.edges)} edges"
-    )
+    print(f"\n📊 Global Graph: {len(G.nodes)} nodes, {len(G.edges)} edges")
 
-    return global_nx_graph.subgraph(selected_node_keys).copy()
+    return G.subgraph(selected_node_keys).copy()
 
 
-def build_detailedgraph_from_subgraph(sub_nx_graph: nx.DiGraph):
-    while not sub_nx_graph:
-        if time.time() - start_time > timeout_seconds:
-            print(
-                f"Timeout after {timeout_seconds} seconds waiting for sub_nx_graph to be ready."
-            )
-            break
-        time.sleep(0.1)
+def build_subgraph_from_global(G: nx.DiGraph):
+    """
+    G: Global Graph
+    """
+    selected_nodes_fpath = runtime_data_folder / "selected_nodes.json"
+    return _build_subgraph(G, selected_nodes_fpath)
 
-    print("📦 Loading selected nodes from subgraph...")
 
-    selected_nodes_from_sb_fpath = (
-        runtime_data_folder / "selected_nodes_subgraph.json"
-    )
-    with open(selected_nodes_from_sb_fpath, "r") as f:
-        selected_nodes = json.load(f)
-
-    selected_node_keys = {
-        tuple(node["full_mod"].rsplit(".", 1)) for node in selected_nodes
-    }
-
-    print(f"\n✅ Selected {len(selected_node_keys)} nodes:")
-    for node in selected_node_keys:
-        print(f"   - {node}")
-
-    print(f"\n🌐 Inspecting edges from global graph...")
-
-    all_edges = list(sub_nx_graph.edges())
-    for i, (u, v) in enumerate(all_edges):
-        edge_info = f"({u}) -> ({v})"
-        match_info = ""
-        if u in selected_node_keys and v in selected_node_keys:
-            match_info = "✅ MATCH"
-            print(f"{i+1:>2}. {edge_info} {match_info}")
-
-    print(
-        f"\n📊 Global Graph: {len(sub_nx_graph.nodes)} nodes, {len(sub_nx_graph.edges)} edges"
-    )
-
-    return sub_nx_graph.subgraph(selected_node_keys).copy()
+def build_detailedgraph_from_subgraph(G: nx.DiGraph):
+    """
+    G: Sub Graph
+    """
+    selected_nodes_fpath = runtime_data_folder / "selected_nodes_subgraph.json"
+    return _build_subgraph(G, selected_nodes_fpath)

@@ -67,3 +67,7 @@ with bottom_right:
 
 with mermaid_panel:
     render_mermaid_panel(context)
+
+print("All session_state keys:")
+for key in list(st.session_state.keys()):
+    print(key)

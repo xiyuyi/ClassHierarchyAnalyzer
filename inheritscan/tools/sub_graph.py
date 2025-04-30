@@ -7,7 +7,7 @@ from pyvis.network import Network
 import inheritscan
 from inheritscan.tools.extract_subgraph import extract_subgraph_from_global
 from inheritscan.tools.interactive_pyvis_subgraph import \
-    interactive_pyvis_subgraph
+    get_interactive_pyvis_subgraph_html
 from inheritscan.tools.render_graph import get_class_hierarchy_pyvis_network
 
 package_root = Path(inheritscan.__file__).parent
@@ -29,9 +29,12 @@ def subgraph_render_pyvis_graph(context: dict) -> dict:
     with open(pyvis_config_path, "r") as f:
         config_json_str = json.dumps(json.load(f))
     pyvis_subg.set_options(config_json_str)
-
-    interactive_pyvis_subgraph(pyvis_subg)
-    return {"subgraph_class_hierachy_network": sub_nx_graph}
+    # TODO #24 update html block when the render button is clicked
+    html = get_interactive_pyvis_subgraph_html(pyvis_subg)
+    return {
+        "subgraph_class_hierachy_network": sub_nx_graph,
+        "interactive_pyvis_subbraph_html": html,
+    }
 
 
 def get_sub_class_hierarchy_network_graph(context):

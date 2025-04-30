@@ -19,9 +19,6 @@ def render_global_graph_panel(context: dict) -> dict:
 
 
 def render_pyvis_graph(context: dict) -> dict:
-    st.markdown(" Pyvis Graph View")
-    st.checkbox("Enable physics layout (force-based radial)", value=True)
-
     @st.cache_resource
     def get_class_hierarchy_network_graph():
         # TODO #4: expose user input of the initial state info for code base path selection.

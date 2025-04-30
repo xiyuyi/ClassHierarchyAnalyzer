@@ -17,8 +17,12 @@ def render_bottom_right(context):
         button2 = streamlit.button("Go to VSCODE", use_container_width=True)
 
     if button1:
+        streamlit.session_state.rerender_classdetails_view = True
         markdown_text = get_detailed_class_description(context)
-        streamlit.markdown(markdown_text)
+        streamlit.session_state.rerender_classdetails_content = markdown_text
+
+    content = streamlit.session_state.rerender_classdetails_content
+    streamlit.markdown(content)
 
     if button2:
         # TODO open the module for this class in vscode.

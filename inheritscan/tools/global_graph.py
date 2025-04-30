@@ -10,7 +10,7 @@ from inheritscan.services.graph_services import \
 from inheritscan.storage.graph_mng import GraphManager
 from inheritscan.storage.runtime_json.runtime_json_loaders import load_metadata
 from inheritscan.tools.interactive_pyvisg import interactive_pyvis_graph
-from inheritscan.tools.render_graph import get_class_hierarchy_pyvis_network
+from inheritscan.tools.render_graph import build_class_hierarchy_pyvis_network
 
 package_root = Path(inheritscan.__file__).parent
 
@@ -25,7 +25,7 @@ def render_pyvis_graph(context: dict) -> dict:
     nx_graph, modules_name2path, modules_details = (
         get_class_hierarchy_network_graph()
     )
-    pyvis_g: Network = get_class_hierarchy_pyvis_network(nx_graph)
+    pyvis_g: Network = build_class_hierarchy_pyvis_network(nx_graph)
 
     pyvis_config_path = package_root / "configs" / "globalgraph_pyvis.txt"
     with open(pyvis_config_path, "r") as f:

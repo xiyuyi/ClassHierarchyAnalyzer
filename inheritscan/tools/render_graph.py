@@ -1,7 +1,7 @@
 from pyvis.network import Network
 
 
-def get_class_hierarchy_pyvis_network(nx_graph):
+def build_class_hierarchy_pyvis_network(nx_graph):
     pyvis_g = Network(
         height="600px",
         width="100%",

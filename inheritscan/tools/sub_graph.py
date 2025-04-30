@@ -8,7 +8,7 @@ import inheritscan
 from inheritscan.tools.extract_subgraph import extract_subgraph_from_global
 from inheritscan.tools.interactive_pyvis_subgraph import \
     get_interactive_pyvis_subgraph_html
-from inheritscan.tools.render_graph import get_class_hierarchy_pyvis_network
+from inheritscan.tools.render_graph import build_class_hierarchy_pyvis_network
 
 package_root = Path(inheritscan.__file__).parent
 runtime_data_folder = Path(inheritscan.__file__).parent.parent / ".run_time"
@@ -23,7 +23,7 @@ def subgraph_render_pyvis_graph(context: dict) -> dict:
     print("subgraph_render_pyvis_graph")
 
     sub_nx_graph: nx.DiGraph = get_sub_class_hierarchy_network_graph(context)
-    pyvis_subg: Network = get_class_hierarchy_pyvis_network(sub_nx_graph)
+    pyvis_subg: Network = build_class_hierarchy_pyvis_network(sub_nx_graph)
 
     pyvis_config_path = package_root / "configs" / "subgraph_pyvis.txt"
     with open(pyvis_config_path, "r") as f:

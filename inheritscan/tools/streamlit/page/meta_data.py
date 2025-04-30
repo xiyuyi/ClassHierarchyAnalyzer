@@ -6,43 +6,32 @@ from inheritscan.storage.runtime_json.runtime_json_dumpers import dump_metadata
 from inheritscan.storage.runtime_json.runtime_json_loaders import load_metadata
 
 
-def render_metadata_editor(defaults: dict = None) -> dict:
+def render_metadata_editor():
     """
     Renders a metadata editing form in the main page.
     - Returns the metadata dict currently shown in the UI (not only after saving).
     - If user clicks "Save", it dumps the metadata, clears cache, and reruns the app.
     """
-    st.markdown("### 🛠️ Configure Class Graph Metadata")
+    st.markdown("### Choose package name and codebase path.")
 
     # Load existing metadata
-    try:
-        existing_metadata = load_metadata()
-    except:
-        existing_metadata = {}
 
-    # Default values
-    default_metadata = {
-        "package_name": "openhands",
-        "package_path": "/Users/xiyuyi/github_repos/OpenHands/openhands",
-        "module_cluster_levels": 1,
-    }
-    if defaults:
-        default_metadata.update(defaults)
-    default_metadata.update(existing_metadata)
+    metadata = load_metadata()
 
     # Render fields
     package_name = st.text_input(
-        "Package name", value=default_metadata["package_name"]
+        "### Package name", value=metadata["package_name"]
     )
     package_path = st.text_input(
-        "Codebase path", value=default_metadata["package_path"]
+        "### Codebase path", value=metadata["package_path"]
     )
+
     module_cluster_levels = st.number_input(
         "Module cluster levels",
         min_value=1,
         max_value=5,
         step=1,
-        value=default_metadata["module_cluster_levels"],
+        value=metadata["module_cluster_levels"],
     )
 
     # Assemble result
@@ -53,7 +42,7 @@ def render_metadata_editor(defaults: dict = None) -> dict:
     }
 
     # Save button
-    if st.button("💾 Save Metadata & Rebuild Graph"):
+    if st.button("🛠️ Build Graph"):
         dump_metadata(metadata)
         st.cache_resource.clear()
         st.rerun()

@@ -68,7 +68,7 @@ context = {
 
 # call at top of page
 with metadata_panel:
-    current_metadata = render_metadata_editor()
+    render_metadata_editor()
 
 with top_left:
     render_top_left(context)

@@ -53,6 +53,6 @@ def load_metadata():
             data = json.load(f)
         print("loaded meta data for the session.")
     except Exception:
-        data = []
+        data = {}
 
     return data

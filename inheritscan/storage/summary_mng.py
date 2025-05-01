@@ -103,13 +103,17 @@ class SummaryManager:
 
         if class_info.chain_name == self.summary_chain_name:
             return class_info.summary
+        else:
+            # need to change to logger.
+            print(
+                f"class_info.chain_name {class_info.chain_name}, self.summary_chain_name {self.summary_chain_name}"
+            )
 
         return None
 
     def load_method_summary(
         self, module_path: str, class_name: str, method_name: str
     ):
-        # TODO #24ß
         class_info: ClassInfo = self.load_classinfo(
             module_path=module_path, class_name=class_name
         )
@@ -146,6 +150,20 @@ class SummaryManager:
                         )
                         print(summary)
                         return summary
+                    else:
+                        pass
+                else:
+                    print("chain mismatch")
+                    print(
+                        f"snippet_info.chain_name: {snippet_info.chain_name}, and self.summary_chain_name: {self.summary_chain_name}"
+                    )
+            else:
+                print(
+                    f"snippet_name {snippet_name} not found in method_info.snippets"
+                )
+        else:
+            print(f"method_name {method_name} not found in class_info.methods")
+
         summary = None
         print(
             f"Didn't find snippet summary {module_path}, {class_name}, {method_name}, {snippet_name}"

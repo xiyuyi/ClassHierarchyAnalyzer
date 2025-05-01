@@ -1,7 +1,7 @@
 import json
 import os
 
-from inheritscan.core.datatypes import ClassInfo, MethodInfo, SnippetInfo
+from inheritscan.core.datatypes import ClassInfo, SnippetInfo
 from inheritscan.tools.recursive_update_dict import recursive_update
 
 
@@ -106,14 +106,15 @@ class SummaryManager:
     def load_method_summary(
         self, module_path: str, class_name: str, method_name: str
     ):
-        class_info = self.load_classinfo(
+        # TODO #24ß
+        class_info: ClassInfo = self.load_classinfo(
             module_path=module_path, class_name=class_name
         )
         if method_name in class_info.methods:
-            method_info: MethodInfo = class_info.methods[method_name]
+            method_info = class_info.methods[method_name]
             summary = method_info.summary
-
-        return summary
+            return summary
+        return None
 
     def load_snippet_summary(
         self,
@@ -127,7 +128,8 @@ class SummaryManager:
         )
         chain_name = None
         if method_name in class_info.methods:
-            if snippet_name in class_info.methods[method_name].snippets:
+            method_info = class_info.methods[method_name]
+            if snippet_name in method_info.snippets:
                 snippet_info: SnippetInfo = class_info.methods[
                     method_name
                 ].snippets[snippet_name]
@@ -139,6 +141,10 @@ class SummaryManager:
                             f"Sucessfully loaded snippet summary {module_path}, {class_name}, {method_name}, {snippet_name}"
                         )
                         print(summary)
+                        # TODO delete
+                        if summary == "some random content":
+
+                            print(f"    method summary: {method_info.summary}")
                         return summary
         summary = None
         print(

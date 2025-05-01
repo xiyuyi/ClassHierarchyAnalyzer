@@ -15,6 +15,7 @@ class CodeInfo(ABC):
     summary: Optional[str] = None
     module_path: Optional[str] = None
     class_name: Optional[str] = None
+    chain_name: Optional[str] = None
     modified_time: Optional[str] = field(default_factory=current_utc_time)
 
     def to_dict(self) -> dict:
@@ -29,6 +30,7 @@ class CodeInfo(ABC):
             "summary": data.get("summary"),
             "module_path": data.get("module_path"),
             "class_name": data.get("class_name"),
+            "chain_name": data.get("chain_name"),
             "modified_time": data.get("modified_time", current_utc_time()),
         }
 
@@ -43,7 +45,6 @@ class SnippetInfo(CodeInfo):
 
     method_name: Optional[str] = ""
     snippet_name: Optional[str] = ""
-    chain_name: Optional[str] = ""
 
     @classmethod
     def from_dict(cls, data: dict):
@@ -51,8 +52,7 @@ class SnippetInfo(CodeInfo):
         return cls(
             **shared_fields,
             method_name=data.get("method_name"),
-            snippet_name=data.get("snippet_name"),
-            chain_name=data.get("chain_name")
+            snippet_name=data.get("snippet_name")
         )
 
 
@@ -60,7 +60,6 @@ class SnippetInfo(CodeInfo):
 class MethodInfo(CodeInfo):
     method_name: Optional[str] = ""
     snippets: Dict[str, SnippetInfo] = field(default_factory=dict)
-    chain_name: Optional[str] = ""
 
     def add_snippet_info(self, snippet_info: SnippetInfo):
         self.snippets[snippet_info.snippet_name] = snippet_info
@@ -75,7 +74,6 @@ class MethodInfo(CodeInfo):
         return cls(
             **shared_fields,
             method_name=data.get("method_name"),
-            chain_name=data.get("chain_name"),
             snippets=snippets
         )
 
@@ -83,7 +81,6 @@ class MethodInfo(CodeInfo):
 @dataclass
 class ClassInfo(CodeInfo):
     methods: Dict[str, MethodInfo] = field(default_factory=dict)
-    chain_name: Optional[str] = ""
 
     def add_method_info(self, method_info: MethodInfo):
         if not method_info.method_name:
@@ -97,6 +94,4 @@ class ClassInfo(CodeInfo):
             name: MethodInfo.from_dict(method_data)
             for name, method_data in data.get("methods", {}).items()
         }
-        return cls(
-            **shared_fields, chain_name=data.get("chain_name"), methods=methods
-        )
+        return cls(**shared_fields, methods=methods)

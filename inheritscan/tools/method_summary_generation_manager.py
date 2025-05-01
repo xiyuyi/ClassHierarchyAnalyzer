@@ -75,6 +75,7 @@ class MethodSummary:
             }
 
     def get_summaries_for_all_methods_and_classes(self):
+        self.method_updated_flag = False
         while self.invoke_queue:
             self._get_summary_for_1_method()
 
@@ -90,17 +91,28 @@ class MethodSummary:
         #   ChunkSummary._get_summary_for_1_method method.
         # it should be in the aggregate logic
         mod, class_name, method_name = self.invoke_queue.pop()
-        aggregated_summary = self.aggregated_method_chunk_summaries[
-            (mod, class_name, method_name)
-        ]
-        summary = self.method_summary_chain.invoke(aggregated_summary)
-        self.aggregated_method_summaries[(mod, class_name)][method_name] = (
-            summary["method_summary"]
+        summary = self.summary_archive_manager.load_method_summary(
+            mod, class_name, method_name
         )
+        if summary is None:
+            print(
+                f"Generate method summary {mod}, {class_name}, {method_name}"
+            )
+            aggregated_summary = self.aggregated_method_chunk_summaries[
+                (mod, class_name, method_name)
+            ]
+            response = self.method_summary_chain.invoke(aggregated_summary)
+            summary = response["method_summary"]
+            self.method_updated_flag = True
+
+        self.aggregated_method_summaries[(mod, class_name)][
+            method_name
+        ] = summary
 
     def update_all_classinfo(self):
-        while self.aggregated_classinfo_queue:
-            self._update_1_classinfo()
+        if self.method_updated_flag:
+            while self.aggregated_classinfo_queue:
+                self._update_1_classinfo()
 
     def _update_1_classinfo(self):
         """

@@ -73,6 +73,7 @@ class ChunkSummary:
             }
 
     def get_summaries_for_chunks_for_all_method(self):
+        self.chunk_updated_flag = False
         while self.invoke_queue:
             self._get_summaries_for_chunks_for_1_method()
 
@@ -100,6 +101,7 @@ class ChunkSummary:
                 )
                 response = self.snippet_summary_chain.invoke(code_snippet)
                 summary = response["chunk_summary"]
+                self.chunk_updated_flag = True
 
             snippets_map[snippet_name] = [
                 code_snippet,
@@ -110,11 +112,17 @@ class ChunkSummary:
         self.aggregated_summaries[(mod, class_name)][method] = snippets_map
 
     def update_all_classinfo(self):
-        while self.aggregated_classinfo_queue:
-            self._update_1_classinfo()
+        if self.chunk_updated_flag:
+            while self.aggregated_classinfo_queue:
+                self._update_1_classinfo()
 
     def _update_1_classinfo(self):
-        """Get one (mod, class name) info, then update the corresponding classinfo to file"""
+        """
+        Get one (mod, class name) info, then update the corresponding classinfo to file.
+        The method would always reset the method sumamries and class summaries to None.
+        This is because as long as any chunk is updated, the higher level summaries needs to
+        be updated regardless.
+        """
         mod, class_name = self.aggregated_classinfo_queue.pop()
         class_code = self.aggregated_classes_code[(mod, class_name)]
 

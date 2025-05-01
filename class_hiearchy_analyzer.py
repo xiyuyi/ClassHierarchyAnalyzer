@@ -5,6 +5,7 @@ import streamlit as st
 
 import inheritscan
 from inheritscan.storage.runtime_json.runtime_json_dumpers import dump_metadata
+from inheritscan.storage.runtime_json.runtime_json_loaders import load_metadata
 from inheritscan.tools.flask.flask_app import run_flask
 from inheritscan.tools.mermaid_panel.entry import render_mermaid_panel
 from inheritscan.tools.streamlit.init_json_files import initialize_json_files
@@ -17,21 +18,31 @@ from inheritscan.tools.streamlit.page.top_right import render_top_right
 
 package_root = Path(inheritscan.__file__).parent
 runtime_folder = Path(inheritscan.__file__).parent.parent / ".run_time"
+root_dir = Path(inheritscan.__file__).parent.parent / "sumarry_root"
+
+# Initialize session state
+initialize_session_state(st)
 
 # Initialize json files in runtime_folder:
 initialize_json_files(streamlit=st, runtime_folder=runtime_folder)
 
 # put place holder json. files
-metadata = {
-    "package_name": "openhands",
-    "package_path": "/Users/xiyuyi/github_repos/OpenHands/openhands",
-    "module_cluster_levels": 1,
-}
+metadata = load_metadata()
+# metadata = {
+#     "package_name": st.session_state.package_name,
+#     "package_path": st.session_state.package_path,
+#     "module_cluster_levels": st.session_state.module_cluster_levels,
+#     "runtime_folder": st.session_state.runtime_folder,
+#     "sumarry_root": st.session_state.sumarry_root,
+#     "mock_mode": st.session_state.mock_mode,
+#     "chain_name": st.session_state.chain_name,
+#     "chunk_summary_chain_name": st.session_state.chunk_summary_chain_name,
+#     "method_summary_chain_name": st.session_state.method_summary_chain_name,
+#     "class_summary_chain_name": st.session_state.class_summary_chain_name,
+# }
 
 dump_metadata(metadata)
 
-# Initialize session state
-initialize_session_state(st)
 
 # Start flask:
 if "flask_started" not in st.session_state:

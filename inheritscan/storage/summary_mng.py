@@ -145,10 +145,6 @@ class SummaryManager:
                             f"Sucessfully loaded snippet summary {module_path}, {class_name}, {method_name}, {snippet_name}"
                         )
                         print(summary)
-                        # TODO delete
-                        if summary == "some random content":
-
-                            print(f"    method summary: {method_info.summary}")
                         return summary
         summary = None
         print(

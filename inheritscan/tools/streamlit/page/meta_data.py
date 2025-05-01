@@ -34,15 +34,22 @@ def render_metadata_editor():
     # st.divider()
     on = st.toggle("Mock mode", True)
     mock_mode = True if on else False
+    chain_name = "mock_chain" if on else "qwen_coder_32b_instruct500_engilsh"
     st.divider()
 
     # Assemble result
-    metadata = {
-        "package_name": package_name,
-        "package_path": package_path,
-        "module_cluster_levels": 1,
-        "mock_mode": mock_mode,
-    }
+    metadata.update(
+        {
+            "package_name": package_name,
+            "package_path": package_path,
+            "module_cluster_levels": 1,
+            "mock_mode": mock_mode,
+            "chain_name": chain_name,
+            "chunk_summary_chain_name": chain_name,  # may configure these chains differently in the future.
+            "method_summary_chain_name": chain_name,
+            "class_summary_chain_name": chain_name,
+        }
+    )
 
     # Save button
     if st.button("🛠️ Build Graph"):

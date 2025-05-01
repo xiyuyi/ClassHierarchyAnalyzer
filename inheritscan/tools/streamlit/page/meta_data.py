@@ -13,40 +13,48 @@ def render_metadata_editor():
     - Returns the metadata dict currently shown in the UI (not only after saving).
     - If user clicks "Save", it dumps the metadata, clears cache, and reruns the app.
     """
-    st.markdown("### Choose package name and codebase path.")
-
     # Load existing metadata
     metadata = load_metadata()
 
-    # Render fields
-    package_name = st.text_input(
-        "### Package name", value=metadata["package_name"]
-    )
-    package_path = st.text_input(
-        "### Codebase path", value=metadata["package_path"]
-    )
+    st.markdown("#### Set codebase path, packge name below:")
 
-    module_cluster_levels = st.number_input(
-        "Module cluster levels",
-        min_value=1,
-        max_value=5,
-        step=1,
-        value=metadata["module_cluster_levels"],
-    )
+    c1, c2 = st.columns(2)
+    with c1:
+        package_path = st.text_input(
+            "Codebase path (e.g. ~/repo/package_src)",
+            value=metadata["package_path"],
+        )
+
+    with c2:
+        # Render fields
+        package_name = st.text_input(
+            "Package name (e.g. openhands)", value=metadata["package_name"]
+        )
+
+    # st.divider()
+    on = st.toggle("Mock mode", True)
+    mock_mode = True if on else False
+    chain_name = "mock_chain" if on else "qwen_coder_32b_instruct500_engilsh"
+    st.divider()
 
     # Assemble result
-    metadata = {
-        "package_name": package_name,
-        "package_path": package_path,
-        "module_cluster_levels": module_cluster_levels,
-    }
+    metadata.update(
+        {
+            "package_name": package_name,
+            "package_path": package_path,
+            "module_cluster_levels": 1,
+            "mock_mode": mock_mode,
+            "chain_name": chain_name,
+            "chunk_summary_chain_name": chain_name,  # may configure these chains differently in the future.
+            "method_summary_chain_name": chain_name,
+            "class_summary_chain_name": chain_name,
+        }
+    )
 
     # Save button
     if st.button("🛠️ Build Graph"):
         dump_metadata(metadata)
         nx_graph = st.session_state.class_hierarchy_network_graph
         GraphManager.write_global_graph(nx_graph)
-        # st.cache_resource.clear()
-        # st.rerun()
 
     return metadata

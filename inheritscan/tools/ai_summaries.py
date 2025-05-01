@@ -1,5 +1,6 @@
 from typing import List
 
+from inheritscan.storage.runtime_json.runtime_json_loaders import load_metadata
 from inheritscan.storage.summary_mng import SummaryManager
 from inheritscan.tools.chunk_summary_generation_manager import ChunkSummary
 from inheritscan.tools.class_summary_generation_manager import ClassSummary
@@ -20,22 +21,6 @@ def get_ai_summaries(tasks: List[dict]):
 def get_summary_manager(
     code_base_dir: str = None, root_dir: str = None, chain_name: str = None
 ):
-    # TODO #4: relevant to issue $4, expose path selection #4
-    # expose code_base)dir, root_dir to context.
-    # add button for selection.
-    # code_base_dir is also used in global_graph.py
-    # consider context['project_info']
-    if not code_base_dir:
-        code_base_dir = "/Users/xiyuyi/github_repos/OpenHands/openhands"
-
-    if not root_dir:
-        root_dir = (
-            "/Users/xiyuyi/github_repos/ClassHierarchyAnalyzer/sumarry_root"
-        )
-
-    if not chain_name:
-        # chain_name = "qwen_coder_32b_instruct500_engilsh"
-        chain_name = "mock_chain"
 
     sm = SummaryManager(
         root_dir=root_dir,
@@ -46,16 +31,18 @@ def get_summary_manager(
 
 
 def get_summaries_for_method_chunks(tasks: List[dict]):
-    # TODO use the summary manager to retrive information from the archive
-    # should enable UI parameter setting.
-    # may retrive information from .env, or something else. design later.
-    k = {
-        "code_base_dir": "/Users/xiyuyi/github_repos/OpenHands/openhands",
-        "root_dir": "/Users/xiyuyi/github_repos/ClassHierarchyAnalyzer/sumarry_root",
-        # "chain_name": "qwen_coder_32b_instruct500_engilsh"
-        "chain_name": "mock_chain",
-    }
-    sm = get_summary_manager(**k)
+
+    metadata = load_metadata()
+    root_dir = metadata["sumarry_root"]
+    code_base_dir = metadata["package_path"]
+    chain_name = metadata["chunk_summary_chain_name"]
+
+    sm = get_summary_manager(
+        root_dir=root_dir,
+        code_base_dir=code_base_dir,
+        chain_name=chain_name,
+    )
+
     chunk_summary = ChunkSummary(summary_manager=sm, tasks=tasks)
     chunk_summary.get_summaries_for_chunks_for_all_method()
     chunk_summary.update_all_classinfo()
@@ -63,16 +50,18 @@ def get_summaries_for_method_chunks(tasks: List[dict]):
 
 
 def get_summaries_for_method(tasks: List[dict]):
-    # TODO use the summary manager to retrive information from the archive
-    # should enable UI parameter setting.
-    # may retrive information from .env, or something else. design later.
-    k = {
-        "code_base_dir": "/Users/xiyuyi/github_repos/OpenHands/openhands",
-        "root_dir": "/Users/xiyuyi/github_repos/ClassHierarchyAnalyzer/sumarry_root",
-        # "chain_name": "qwen_coder_32b_instruct500_engilsh"
-        "chain_name": "mock_chain",
-    }
-    sm = get_summary_manager(**k)
+
+    metadata = load_metadata()
+    root_dir = metadata["sumarry_root"]
+    code_base_dir = metadata["package_path"]
+    chain_name = metadata["method_summary_chain_name"]
+
+    sm = get_summary_manager(
+        root_dir=root_dir,
+        code_base_dir=code_base_dir,
+        chain_name=chain_name,
+    )
+
     method_summary = MethodSummary(summary_manager=sm, tasks=tasks)
     method_summary.get_summaries_for_all_methods_and_classes()
     method_summary.update_all_classinfo()
@@ -80,16 +69,18 @@ def get_summaries_for_method(tasks: List[dict]):
 
 
 def get_summaries_for_class(tasks: List[dict]):
-    # TODO use the summary manager to retrive information from the archive
-    # should enable UI parameter setting.
-    # may retrive information from .env, or something else. design later.
-    k = {
-        "code_base_dir": "/Users/xiyuyi/github_repos/OpenHands/openhands",
-        "root_dir": "/Users/xiyuyi/github_repos/ClassHierarchyAnalyzer/sumarry_root",
-        # "chain_name": "qwen_coder_32b_instruct2000_engilsh"
-        "chain_name": "mock_chain",
-    }
-    sm = get_summary_manager(**k)
+
+    metadata = load_metadata()
+    root_dir = metadata["sumarry_root"]
+    code_base_dir = metadata["package_path"]
+    chain_name = metadata["class_summary_chain_name"]
+
+    sm = get_summary_manager(
+        root_dir=root_dir,
+        code_base_dir=code_base_dir,
+        chain_name=chain_name,
+    )
+
     method_summary = ClassSummary(summary_manager=sm, tasks=tasks)
     method_summary.get_summaries_for_all_classes()
     method_summary.update_all_classinfo()

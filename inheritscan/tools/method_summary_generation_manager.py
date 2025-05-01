@@ -74,7 +74,7 @@ class MethodSummary:
                 method_name: None for method_name in method_names
             }
 
-    def _get_summaries_for_all_methods_and_classes(self):
+    def get_summaries_for_all_methods_and_classes(self):
         while self.invoke_queue:
             self._get_summary_for_1_method()
 

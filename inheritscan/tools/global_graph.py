@@ -8,7 +8,8 @@ from inheritscan.services.graph_services import \
     get_class_hierarchy_network_graph
 from inheritscan.storage.graph_mng import GraphManager
 from inheritscan.storage.runtime_json.runtime_json_loaders import load_metadata
-from inheritscan.tools.interactive_pyvisg import build_interactive_pyvis_graph
+from inheritscan.tools.interactive_pyvisg import \
+    build_interactive_pyvis_graph_html
 from inheritscan.tools.render_graph import build_class_hierarchy_pyvis_network
 
 package_root = Path(inheritscan.__file__).parent
@@ -35,7 +36,7 @@ def render_pyvis_graph(context: dict) -> dict:
     #     )  # Pyvis needs str，not dict. json.dumps() converts a dict into tr.
     # pyvis_g.set_options(config_json_str)
     print("rendering pyvis_g for global graph")
-    html = build_interactive_pyvis_graph(pyvis_g)
+    html = build_interactive_pyvis_graph_html(pyvis_g)
     return {
         "class_hierarchy_network_graph": nx_graph,
         "modules_name2path": modules_name2path,

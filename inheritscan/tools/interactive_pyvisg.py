@@ -12,7 +12,7 @@ def load_selected_ids(path=".run_time/selected_nodes.json"):
     return []
 
 
-def build_interactive_pyvis_graph(net, height=600):
+def build_interactive_pyvis_graph_html(net):
     selected_ids = load_selected_ids()
     selected_ids_json = json.dumps(selected_ids)  # safe for JS embedding
     js = """

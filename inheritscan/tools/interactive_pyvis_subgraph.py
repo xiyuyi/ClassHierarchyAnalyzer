@@ -14,7 +14,7 @@ def load_selected_subgraph_ids(
     return []
 
 
-def get_interactive_pyvis_subgraph_html(net, height=600):
+def build_interactive_pyvis_subgraph_html(net):
     selected_ids = load_selected_subgraph_ids()
     selected_ids_json = json.dumps(selected_ids)  # safe for JS embedding
     js = """

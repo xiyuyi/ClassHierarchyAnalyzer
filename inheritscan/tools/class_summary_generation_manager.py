@@ -63,6 +63,7 @@ class ClassSummary:
             )
 
     def get_summaries_for_all_classes(self):
+        self.class_updated_flag = False
         while self.invoke_queue:
             self._get_summary_for_1_class()
 
@@ -77,17 +78,23 @@ class ClassSummary:
         # otherwise, generate it.
         # the method summaries should be achieved through
         #   MethodSummary._get_summary_for_1_method method.
-        aggregated_summary = self.aggregated_class_methods_summaries[
-            (mod, class_name)
-        ]
-        summary = self.class_summary_chain.invoke(aggregated_summary)
-        self.aggregated_class_summaries[(mod, class_name)] = summary[
-            "class_summary"
-        ]
+        summary = self.summary_archive_manager.load_class_summary(
+            mod, class_name
+        )
+        if summary is None:
+            aggregated_summary = self.aggregated_class_methods_summaries[
+                (mod, class_name)
+            ]
+            response = self.class_summary_chain.invoke(aggregated_summary)
+            summary = response["class_summary"]
+            self.class_updated_flag = True
+
+        self.aggregated_class_summaries[(mod, class_name)] = summary
 
     def update_all_classinfo(self):
-        while self.aggregated_classinfo_queue:
-            self._update_1_classinfo()
+        if self.class_updated_flag:
+            while self.aggregated_classinfo_queue:
+                self._update_1_classinfo()
 
     def _update_1_classinfo(self):
         """

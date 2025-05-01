@@ -100,8 +100,11 @@ class SummaryManager:
         class_info = self.load_classinfo(
             module_path=module_path, class_name=class_name
         )
-        summary = class_info.summary
-        return summary
+
+        if class_info.chain_name == self.summary_chain_name:
+            return class_info.summary
+
+        return None
 
     def load_method_summary(
         self, module_path: str, class_name: str, method_name: str
@@ -112,8 +115,9 @@ class SummaryManager:
         )
         if method_name in class_info.methods:
             method_info = class_info.methods[method_name]
-            summary = method_info.summary
-            return summary
+            if method_info.chain_name == self.summary_chain_name:
+                summary = method_info.summary
+                return summary
         return None
 
     def load_snippet_summary(

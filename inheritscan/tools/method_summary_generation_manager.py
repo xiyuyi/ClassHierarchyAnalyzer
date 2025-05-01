@@ -118,6 +118,7 @@ class MethodSummary:
         """
         Get one (mod, class name) info, then update the corresponding classinfo to file
         Only pay attention to the "summary" field for MethodInfo objects.
+        as long as this method is triggered, the class summary has to be resetted to None.
         """
 
         mod, class_name = self.aggregated_classinfo_queue.pop()
@@ -133,6 +134,7 @@ class MethodSummary:
         class_info = self.summary_archive_manager.update_methods_summaries(
             class_info, method_summaries
         )
+        class_info.summary = None
 
         updated_class_info = self.summary_archive_manager.update_classinfo(
             class_info_old, class_info

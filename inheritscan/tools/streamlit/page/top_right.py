@@ -19,6 +19,13 @@ def render_top_right(context):
             "🔁 Render Subgraph", use_container_width=True
         )
 
+    # define actions
+    if b1_handle:
+        streamlit.session_state.rerender_subgraph = True
+        result = update_sub_graph_panel_content(context)
+        if result:
+            streamlit.session_state.update(result)
+
     with graph_display:
         # retrieve the html with ineractive selection logic for the panel.
         html = streamlit.session_state.get(
@@ -27,10 +34,3 @@ def render_top_right(context):
         # render with the modified html.
         streamlit.components.v1.html(html, height=500, scrolling=True)
         streamlit.session_state["rerender_subgraph"] = False
-
-    # define actions
-    if b1_handle:
-        streamlit.session_state.rerender_subgraph = True
-        result = update_sub_graph_panel_content(context)
-        if result:
-            streamlit.session_state.update(result)

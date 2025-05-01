@@ -15,6 +15,7 @@ class CodeInfo(ABC):
     summary: Optional[str] = None
     module_path: Optional[str] = None
     class_name: Optional[str] = None
+    chain_name: Optional[str] = None
     modified_time: Optional[str] = field(default_factory=current_utc_time)
 
     def to_dict(self) -> dict:
@@ -29,6 +30,7 @@ class CodeInfo(ABC):
             "summary": data.get("summary"),
             "module_path": data.get("module_path"),
             "class_name": data.get("class_name"),
+            "chain_name": data.get("chain_name"),
             "modified_time": data.get("modified_time", current_utc_time()),
         }
 
@@ -43,7 +45,6 @@ class SnippetInfo(CodeInfo):
 
     method_name: Optional[str] = ""
     snippet_name: Optional[str] = ""
-    chain_name: Optional[str] = ""
 
     @classmethod
     def from_dict(cls, data: dict):
@@ -51,8 +52,7 @@ class SnippetInfo(CodeInfo):
         return cls(
             **shared_fields,
             method_name=data.get("method_name"),
-            snippet_name=data.get("snippet_name"),
-            chain_name=data.get("chain_name")
+            snippet_name=data.get("snippet_name")
         )
 
 

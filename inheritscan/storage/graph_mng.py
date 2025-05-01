@@ -1,11 +1,10 @@
-import json
 from pathlib import Path
 
 import inheritscan
 from inheritscan.storage.runtime_json.runtime_json_dumpers import \
     dump_global_inheritance_graph
-from inheritscan.storage.runtime_json.runtime_json_loaders import \
-    load_global_inheritance_graph
+from inheritscan.storage.runtime_json.runtime_json_loaders import (
+    load_global_inheritance_graph, load_metadata)
 
 
 class GraphManager:
@@ -14,11 +13,8 @@ class GraphManager:
 
     @classmethod
     def write_global_graph(cls, nx_global):
-        cls.runtime_folder
-        meta_fpath = cls.meta_fpath
-        with open(meta_fpath, "r") as f:
-            data = json.load(f)
-        package_name = data[0]["package_name"]
+        data = load_metadata()
+        package_name = data["package_name"]
 
         # use FQN as the key for each class.
         class_table = {}

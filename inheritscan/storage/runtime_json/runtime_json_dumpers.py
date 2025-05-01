@@ -72,7 +72,7 @@ def dump_metadata(metadata: dict[str]):
     runtime_folder = Path(inheritscan.__file__).parent.parent / ".run_time"
     path = runtime_folder / "meta.json"
     with open(path, "w") as f:
-        json.dump([metadata], f, indent=2)
+        json.dump(metadata, f, indent=2)
     print(f"dumped metadata to: {path}")
 
 

@@ -22,3 +22,8 @@ def initialize_session_state(streamlit):
 
     if "detailed_nx_graph" not in streamlit.session_state:
         streamlit.session_state.detailed_nx_graph = None
+
+    # initialize re-render flag
+    streamlit.session_state.rerender_sub_graph = False
+    streamlit.session_state.rerender_uml_view = False
+    streamlit.session_state.rerender_classdetails_view = False

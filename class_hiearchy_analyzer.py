@@ -4,12 +4,14 @@ from pathlib import Path
 import streamlit as st
 
 import inheritscan
+from inheritscan.storage.runtime_json.runtime_json_dumpers import dump_metadata
 from inheritscan.tools.flask.flask_app import run_flask
 from inheritscan.tools.mermaid_panel.entry import render_mermaid_panel
 from inheritscan.tools.streamlit.init_json_files import initialize_json_files
 from inheritscan.tools.streamlit.init_state import initialize_session_state
 from inheritscan.tools.streamlit.page.bottom_left import render_bottom_left
 from inheritscan.tools.streamlit.page.bottom_right import render_bottom_right
+from inheritscan.tools.streamlit.page.meta_data import render_metadata_editor
 from inheritscan.tools.streamlit.page.top_left import render_top_left
 from inheritscan.tools.streamlit.page.top_right import render_top_right
 
@@ -18,6 +20,15 @@ runtime_folder = Path(inheritscan.__file__).parent.parent / ".run_time"
 
 # Initialize json files in runtime_folder:
 initialize_json_files(streamlit=st, runtime_folder=runtime_folder)
+
+# put place holder json. files
+metadata = {
+    "package_name": "openhands",
+    "package_path": "/Users/xiyuyi/github_repos/OpenHands/openhands",
+    "module_cluster_levels": 1,
+}
+
+dump_metadata(metadata)
 
 # Initialize session state
 initialize_session_state(st)
@@ -34,6 +45,7 @@ st.title("📘 Class Inheritance Explorer")
 st.markdown(
     "Explore and analyze class inheritance structures across your Python codebase."
 )
+metadata_panel = st.container()
 top_left, top_right = st.columns(2)
 st.divider()
 bottom_left, bottom_right = st.columns(2)
@@ -53,6 +65,11 @@ context = {
 }
 
 # Render
+
+# call at top of page
+with metadata_panel:
+    render_metadata_editor()
+
 with top_left:
     render_top_left(context)
 
@@ -67,3 +84,7 @@ with bottom_right:
 
 with mermaid_panel:
     render_mermaid_panel(context)
+
+print("All session_state keys:")
+for key in list(st.session_state.keys()):
+    print(key)

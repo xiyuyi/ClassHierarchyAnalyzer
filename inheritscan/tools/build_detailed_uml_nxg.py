@@ -16,25 +16,26 @@ def build_detailed_uml_nx_graph(G: nx.DiGraph) -> nx.DiGraph:
     sm = get_summary_manager(**k)
 
     uml_g = nx.DiGraph()
-    for mod, class_name in G.nodes:
-        method_names = sm.load_class_methods(
-            module_path=mod, class_name=class_name
-        )
-        class_summary = sm.load_class_summary(
-            module_path=mod, class_name=class_name
-        )
-        if len(method_names) == 0:
-            method_names = [""]
+    if G:
+        for mod, class_name in G.nodes:
+            method_names = sm.load_class_methods(
+                module_path=mod, class_name=class_name
+            )
+            class_summary = sm.load_class_summary(
+                module_path=mod, class_name=class_name
+            )
+            if len(method_names) == 0:
+                method_names = [""]
 
-        l = format_class_label(class_name, method_names)
-        uml_g.add_node(
-            class_name,
-            label=l,
-            full_mod=mod + "." + class_name,
-            class_summary=class_summary,
-        )
+            l = format_class_label(class_name, method_names)
+            uml_g.add_node(
+                class_name,
+                label=l,
+                full_mod=mod + "." + class_name,
+                class_summary=class_summary,
+            )
 
-    for edge in G.edges:
-        uml_g.add_edge(edge[0][1], edge[1][1])
+        for edge in G.edges:
+            uml_g.add_edge(edge[0][1], edge[1][1])
 
     return uml_g

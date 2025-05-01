@@ -1,7 +1,7 @@
 import json
 import os
 
-from inheritscan.core.datatypes import ClassInfo
+from inheritscan.core.datatypes import ClassInfo, SnippetInfo
 from inheritscan.tools.recursive_update_dict import recursive_update
 
 
@@ -76,6 +76,7 @@ class SummaryManager:
         for method_name in method_summaries:
             summary = method_summaries[method_name]
             d["methods"][method_name]["summary"] = summary
+            d["methods"][method_name]["chain_name"] = self.summary_chain_name
 
         return ClassInfo.from_dict(d)
 
@@ -83,6 +84,7 @@ class SummaryManager:
         """update class summary"""
         d = c.to_dict()
         d["summary"] = class_summary
+        d["chain_name"] = self.summary_chain_name
 
         return ClassInfo.from_dict(d)
 
@@ -98,15 +100,64 @@ class SummaryManager:
         class_info = self.load_classinfo(
             module_path=module_path, class_name=class_name
         )
-        summary = class_info.summary
-        return summary
+
+        if class_info.chain_name == self.summary_chain_name:
+            return class_info.summary
+
+        return None
 
     def load_method_summary(
         self, module_path: str, class_name: str, method_name: str
     ):
-        class_info = self.load_classinfo(
+        # TODO #24ß
+        class_info: ClassInfo = self.load_classinfo(
             module_path=module_path, class_name=class_name
         )
-        method_info = class_info.methods[method_name]
-        summary = method_info.summary
-        return summary
+        if method_name in class_info.methods:
+            method_info = class_info.methods[method_name]
+            if method_info.chain_name == self.summary_chain_name:
+                summary = method_info.summary
+                return summary
+        return None
+
+    def load_snippet_summary(
+        self,
+        module_path: str,
+        class_name: str,
+        method_name: str,
+        snippet_name: str,
+    ):
+        class_info: ClassInfo = self.load_classinfo(
+            module_path=module_path, class_name=class_name
+        )
+        chain_name = None
+        if method_name in class_info.methods:
+            method_info = class_info.methods[method_name]
+            if snippet_name in method_info.snippets:
+                snippet_info: SnippetInfo = class_info.methods[
+                    method_name
+                ].snippets[snippet_name]
+                chain_name = snippet_info.chain_name
+                if snippet_info.chain_name == self.summary_chain_name:
+                    summary = snippet_info.summary
+                    if summary is not None:
+                        print(
+                            f"Sucessfully loaded snippet summary {module_path}, {class_name}, {method_name}, {snippet_name}"
+                        )
+                        print(summary)
+                        # TODO delete
+                        if summary == "some random content":
+
+                            print(f"    method summary: {method_info.summary}")
+                        return summary
+        summary = None
+        print(
+            f"Didn't find snippet summary {module_path}, {class_name}, {method_name}, {snippet_name}"
+        )
+
+        if chain_name:
+            print(
+                f"found summary {summary} for chain [{chain_name}], will update this field."
+            )
+
+        return None

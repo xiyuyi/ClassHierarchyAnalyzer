@@ -6,7 +6,7 @@ from inheritscan.tools.class_summary_generation_manager import ClassSummary
 from inheritscan.tools.method_summary_generation_manager import MethodSummary
 
 
-def generate_ai_summaries(tasks: List[dict]):
+def get_ai_summaries(tasks: List[dict]):
     # generate summaries for method chunks
     get_summaries_for_method_chunks(tasks)
 
@@ -74,7 +74,7 @@ def get_summaries_for_method(tasks: List[dict]):
     }
     sm = get_summary_manager(**k)
     method_summary = MethodSummary(summary_manager=sm, tasks=tasks)
-    method_summary.summarize_methods_for_all_classes()
+    method_summary._get_summaries_for_all_methods_and_classes()
     method_summary.update_all_classinfo()
     print("ai summaries at the method level is generated")
 
@@ -91,6 +91,6 @@ def get_summaries_for_class(tasks: List[dict]):
     }
     sm = get_summary_manager(**k)
     method_summary = ClassSummary(summary_manager=sm, tasks=tasks)
-    method_summary.summarize_all_classes()
+    method_summary.get_summaries_for_all_classes()
     method_summary.update_all_classinfo()
     print("ai summaries at the class level is generated")

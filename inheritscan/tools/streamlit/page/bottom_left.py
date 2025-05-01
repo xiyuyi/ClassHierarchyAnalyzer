@@ -1,7 +1,7 @@
 import streamlit
 
 from inheritscan.tools.streamlit.page.bottomleft_aisumgen_and_render import \
-    summaries_generation_and_render
+    get_summaries_and_render
 from inheritscan.tools.uml_panel.entry import render_class_uml
 
 
@@ -18,11 +18,11 @@ def render_bottom_left(context):
 
     with button1:
         b1_handle = streamlit.button(
-            "🔁 Generate AI summaries", use_container_width=True
+            "🔁 Get AI summaries", use_container_width=True
         )
 
     with progress:
-        progress_bar = streamlit.progress(0, text="Generating AI summaries...")
+        progress_bar = streamlit.progress(0, text="Getting AI summaries...")
 
     with graph_display:
         streamlit.markdown("### 🗺️ Class Hierarchy Diagram")
@@ -34,15 +34,15 @@ def render_bottom_left(context):
 
     # define actions
     if b1_handle:
-        print("pressed the 🔁 Generate AI summaries button!")
-        # streamlit.session_state["generate_ai_summaries"] = (
-        #     True  # Reset the trigger flag
-        # )
+        print("pressed the 🔁 Get AI summaries button!")
+        streamlit.session_state["get_ai_summaries"] = (
+            True  # Reset the trigger flag
+        )
         streamlit.session_state["ai_summary_progress"] = 0  # Reset progress
 
         # If generation is triggered, run process and show progress
-        if streamlit.session_state.get("generate_ai_summaries", False):
-            summaries_generation_and_render(progress_bar, context)
-            # streamlit.session_state["generate_ai_summaries"] = (
-            #     False  # Reset the trigger flag
-            # )
+        if streamlit.session_state.get("get_ai_summaries", False):
+            get_summaries_and_render(progress_bar, context)
+            streamlit.session_state["get_ai_summaries"] = (
+                False  # Reset the trigger flag
+            )

@@ -47,7 +47,7 @@ def get_summaries_for_method(tasks: List[dict]):
     # minichain for summary aggregation to achieve method level summary.
     sm = get_summary_manager()
     method_summary = MethodSummary(summary_manager=sm, tasks=tasks)
-    method_summary.summarize_methods_for_all_classes()
+    method_summary._get_summaries_for_all_methods_and_classes()
     method_summary.update_all_classinfo()
     print("ai summaries at the method level is generated")
 

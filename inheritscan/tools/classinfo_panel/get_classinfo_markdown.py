@@ -2,6 +2,7 @@ import json
 from pathlib import Path
 
 import inheritscan
+from inheritscan.storage.runtime_json.runtime_json_loaders import load_metadata
 from inheritscan.tools.ai_summaries import get_summary_manager
 
 
@@ -11,6 +12,8 @@ def get_detailed_class_description(context):
     # us summary manager to retrieve information from archive.
     # aggregate into proper markdown
     # TODO here all FQN should be updated in the future.
+    metadata = load_metadata()
+
     runtime_data_folder = (
         Path(inheritscan.__file__).parent.parent / ".run_time"
     )
@@ -23,6 +26,7 @@ def get_detailed_class_description(context):
 
     mod = class_selected["full_mod"].rsplit(".", 1)[0]
     class_name = class_selected["id"]
+    fqn = metadata["package_name"] + "." + mod + "." + class_name
 
     # TODO use the summary manager to retrive information from the archive
     # should enable UI parameter setting.
@@ -56,7 +60,7 @@ def get_detailed_class_description(context):
 
     #### Class: `{class_name}`
 
-    **Fully Qualified Name (FQN):** `{mod}`
+    **Fully Qualified Name (FQN):** `{fqn}`
 
     ---
 

@@ -7,24 +7,30 @@ from inheritscan.tools.classinfo_panel.open_class_in_vscode import \
 
 
 def render_bottom_right(context):
-    streamlit.markdown("### 📝 Detailed class description")
-    b1, b2 = streamlit.columns(2)
-    with b1:
-        button1 = streamlit.button(
+    # define layout
+    header = streamlit.container()
+    button1, button2 = streamlit.columns(2)
+    content_area = streamlit.container()
+
+    # render components
+    with header:
+        streamlit.markdown("### 📝 Detailed class description")
+
+    with button1:
+        b1_handle = streamlit.button(
             "Show Class Details", use_container_width=True
         )
-    with b2:
-        button2 = streamlit.button("Go to VSCODE", use_container_width=True)
+    with button2:
+        b2_handle = streamlit.button("Go to VSCODE", use_container_width=True)
 
-    if button1:
-        streamlit.session_state.rerender_classdetails_view = True
+    with content_area:
+        content = streamlit.session_state.rerender_classdetails_content
+        streamlit.markdown(content)
+
+    # define actions
+    if b1_handle:
         markdown_text = get_detailed_class_description(context)
         streamlit.session_state.rerender_classdetails_content = markdown_text
 
-    content = streamlit.session_state.rerender_classdetails_content
-    streamlit.markdown(content)
-
-    if button2:
-        # TODO open the module for this class in vscode.
-        # Consider extracting `mod` and `class_name` from context or JSON
+    if b2_handle:
         open_selected_file_in_vscode(context)

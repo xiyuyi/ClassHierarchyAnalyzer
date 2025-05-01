@@ -13,13 +13,13 @@ package_root = Path(inheritscan.__file__).parent
 runtime_data_folder = Path(inheritscan.__file__).parent.parent / ".run_time"
 
 
-def render_sub_graph_panel(context: dict) -> dict:
+def update_sub_graph_panel_content(context: dict) -> dict:
     print("render subgraph")
-    return subgraph_render_pyvis_graph(context)
+    return subgraph_get_pyvis_graph_html(context)
 
 
-def subgraph_render_pyvis_graph(context: dict) -> dict:
-    print("subgraph_render_pyvis_graph")
+def subgraph_get_pyvis_graph_html(context: dict) -> dict:
+    print("subgraph_get_pyvis_graph_html")
     global_nx_graph = context["class_hierarchy_network_graph"]
 
     sub_nx_graph: nx.DiGraph = build_subgraph_from_global(global_nx_graph)

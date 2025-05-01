@@ -1,7 +1,7 @@
 import json
 import os
 
-from inheritscan.core.datatypes import ClassInfo
+from inheritscan.core.datatypes import ClassInfo, MethodInfo, SnippetInfo
 from inheritscan.tools.recursive_update_dict import recursive_update
 
 
@@ -107,6 +107,43 @@ class SummaryManager:
         class_info = self.load_classinfo(
             module_path=module_path, class_name=class_name
         )
-        method_info = class_info.methods[method_name]
+        method_info: MethodInfo = class_info.methods[method_name]
         summary = method_info.summary
         return summary
+
+    def load_snippet_summary(
+        self,
+        module_path: str,
+        class_name: str,
+        method_name: str,
+        snippet_name: str,
+    ):
+        class_info: ClassInfo = self.load_classinfo(
+            module_path=module_path, class_name=class_name
+        )
+        chain_name = None
+        if method_name in class_info.methods:
+            if snippet_name in class_info.methods[method_name].snippets:
+                snippet_info: SnippetInfo = class_info.methods[
+                    method_name
+                ].snippets[snippet_name]
+                chain_name = snippet_info.chain_name
+                if snippet_info.chain_name == self.summary_chain_name:
+                    summary = snippet_info.summary
+                    if summary is not None:
+                        print(
+                            f"Sucessfully loaded snippet summary {module_path}, {class_name}, {method_name}, {snippet_name}"
+                        )
+                        print(summary)
+                        return summary
+        summary = None
+        print(
+            f"Didn't find snippet summary {module_path}, {class_name}, {method_name}, {snippet_name}"
+        )
+
+        if chain_name:
+            print(
+                f"found summary {summary} for chain [{chain_name}], will update this field."
+            )
+
+        return None

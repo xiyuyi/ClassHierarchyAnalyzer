@@ -89,10 +89,21 @@ class ChunkSummary:
         snippets = chunk_method_code(method_code)
         snippets_map = defaultdict(list)
         for i, code_snippet in enumerate(snippets):
-            summary = self.snippet_summary_chain.invoke(code_snippet)
-            snippets_map[f"chunk_{i}"] = [
+            # load summary, if empty, generate new, else, assign.
+            snippet_name = f"chunk_{i}"
+            summary = self.summary_archive_manager.load_snippet_summary(
+                mod, class_name, method, snippet_name
+            )
+            if summary is None:
+                print(
+                    f"Generate snippet summary {mod}, {class_name}, {method}, {snippet_name}"
+                )
+                response = self.snippet_summary_chain.invoke(code_snippet)
+                summary = response["chunk_summary"]
+
+            snippets_map[snippet_name] = [
                 code_snippet,
-                summary["chunk_summary"],
+                summary,
             ]
 
         # append to aggregated_summaries

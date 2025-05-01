@@ -1,6 +1,5 @@
 from pathlib import Path
 
-import streamlit as st
 from pyvis.network import Network
 
 import inheritscan
@@ -15,12 +14,11 @@ from inheritscan.tools.render_graph import build_class_hierarchy_pyvis_network
 package_root = Path(inheritscan.__file__).parent
 
 
-def render_global_graph_panel(context: dict) -> dict:
-    st.markdown("### 🌐 Class Inheritance Graph — Global Graph View")
-    return render_pyvis_graph(context)
+def update_global_graph_panel_content(context: dict) -> dict:
+    return get_globalgraph_pyvis_html(context)
 
 
-def render_pyvis_graph(context: dict) -> dict:
+def get_globalgraph_pyvis_html(context: dict) -> dict:
 
     nx_graph, modules_name2path, modules_details = (
         get_class_hierarchy_network_graph()
@@ -29,12 +27,6 @@ def render_pyvis_graph(context: dict) -> dict:
         nx_graph=nx_graph, panel="global_graph"
     )
 
-    # pyvis_config_path = package_root / "configs" / "globalgraph_pyvis.txt"
-    # with open(pyvis_config_path, "r") as f:
-    #     config_json_str = json.dumps(
-    #         json.load(f)
-    #     )  # Pyvis needs str，not dict. json.dumps() converts a dict into tr.
-    # pyvis_g.set_options(config_json_str)
     print("rendering pyvis_g for global graph")
     html = build_interactive_pyvis_graph_html(pyvis_g)
     return {

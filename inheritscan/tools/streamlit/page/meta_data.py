@@ -15,7 +15,6 @@ def render_metadata_editor():
     st.markdown("### Choose package name and codebase path.")
 
     # Load existing metadata
-
     metadata = load_metadata()
 
     # Render fields

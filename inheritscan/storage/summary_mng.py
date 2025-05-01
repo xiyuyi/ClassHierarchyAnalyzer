@@ -76,6 +76,7 @@ class SummaryManager:
         for method_name in method_summaries:
             summary = method_summaries[method_name]
             d["methods"][method_name]["summary"] = summary
+            d["methods"][method_name]["chain_name"] = self.summary_chain_name
 
         return ClassInfo.from_dict(d)
 
@@ -83,6 +84,7 @@ class SummaryManager:
         """update class summary"""
         d = c.to_dict()
         d["summary"] = class_summary
+        d["chain_name"] = self.summary_chain_name
 
         return ClassInfo.from_dict(d)
 
@@ -107,8 +109,10 @@ class SummaryManager:
         class_info = self.load_classinfo(
             module_path=module_path, class_name=class_name
         )
-        method_info: MethodInfo = class_info.methods[method_name]
-        summary = method_info.summary
+        if method_name in class_info.methods:
+            method_info: MethodInfo = class_info.methods[method_name]
+            summary = method_info.summary
+
         return summary
 
     def load_snippet_summary(

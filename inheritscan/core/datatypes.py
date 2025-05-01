@@ -60,6 +60,7 @@ class SnippetInfo(CodeInfo):
 class MethodInfo(CodeInfo):
     method_name: Optional[str] = ""
     snippets: Dict[str, SnippetInfo] = field(default_factory=dict)
+    chain_name: Optional[str] = ""
 
     def add_snippet_info(self, snippet_info: SnippetInfo):
         self.snippets[snippet_info.snippet_name] = snippet_info
@@ -74,6 +75,7 @@ class MethodInfo(CodeInfo):
         return cls(
             **shared_fields,
             method_name=data.get("method_name"),
+            chain_name=data.get("chain_name"),
             snippets=snippets
         )
 
@@ -81,6 +83,7 @@ class MethodInfo(CodeInfo):
 @dataclass
 class ClassInfo(CodeInfo):
     methods: Dict[str, MethodInfo] = field(default_factory=dict)
+    chain_name: Optional[str] = ""
 
     def add_method_info(self, method_info: MethodInfo):
         if not method_info.method_name:
@@ -94,4 +97,6 @@ class ClassInfo(CodeInfo):
             name: MethodInfo.from_dict(method_data)
             for name, method_data in data.get("methods", {}).items()
         }
-        return cls(**shared_fields, methods=methods)
+        return cls(
+            **shared_fields, chain_name=data.get("chain_name"), methods=methods
+        )

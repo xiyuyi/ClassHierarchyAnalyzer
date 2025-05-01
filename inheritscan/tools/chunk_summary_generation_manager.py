@@ -26,7 +26,7 @@ class ChunkSummary:
         """
         tasks: [(mod, class_name, method name)]
         """
-        self.summary_manager = summary_manager
+        self.summary_archive_manager = summary_manager
         self.tasks = tasks
         self.aggregated_tasks = defaultdict(list)
         self.aggregated_classes_code = defaultdict(str)
@@ -48,7 +48,7 @@ class ChunkSummary:
 
     def _aggretate_methods(self):
         "aggregate list of tasks into {(mod, class_name, method): code}"
-        code_base_dir = self.summary_manager.code_base_dir
+        code_base_dir = self.summary_archive_manager.code_base_dir
         for mod, class_name in self.aggregated_tasks:
             # get class code.
             method_names = self.aggregated_tasks[mod, class_name]
@@ -108,7 +108,7 @@ class ChunkSummary:
         class_code = self.aggregated_classes_code[(mod, class_name)]
 
         # get class_info
-        class_info: ClassInfo = self.summary_manager.load_classinfo(
+        class_info: ClassInfo = self.summary_archive_manager.load_classinfo(
             module_path=mod, class_name=class_name
         )
         class_info_old = copy.deepcopy(class_info)
@@ -157,7 +157,7 @@ class ChunkSummary:
 
             class_info.add_method_info(method_info)
 
-        updated_class_info = self.summary_manager.update_classinfo(
+        updated_class_info = self.summary_archive_manager.update_classinfo(
             class_info_old, class_info
         )
-        self.summary_manager.save_classinfo(updated_class_info)
+        self.summary_archive_manager.save_classinfo(updated_class_info)

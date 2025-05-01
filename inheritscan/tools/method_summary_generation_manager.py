@@ -24,7 +24,7 @@ class MethodSummary:
         """
         # keep tasks the same format across ClassSummary, MethodSummary and ChunkSummary classes.
 
-        self.summary_manager = summary_manager
+        self.summary_archive_manager = summary_manager
         self.tasks = tasks
         self.aggregated_tasks = defaultdict(list)
         self.aggregated_method_chunk_summaries = defaultdict(str)
@@ -48,7 +48,9 @@ class MethodSummary:
 
         # code_base_dir = self.summary_manager.code_base_dir
         for mod, class_name in self.aggregated_tasks:
-            class_info = self.summary_manager.load_classinfo(mod, class_name)
+            class_info = self.summary_archive_manager.load_classinfo(
+                mod, class_name
+            )
             method_names = self.aggregated_tasks[mod, class_name]
             for method_name in method_names:
                 method_info = class_info.methods[method_name]
@@ -109,19 +111,19 @@ class MethodSummary:
         mod, class_name = self.aggregated_classinfo_queue.pop()
 
         # get class_info
-        class_info: ClassInfo = self.summary_manager.load_classinfo(
+        class_info: ClassInfo = self.summary_archive_manager.load_classinfo(
             module_path=mod, class_name=class_name
         )
         class_info_old = copy.deepcopy(class_info)
 
         # update the data fields in class_info
         method_summaries = self.aggregated_method_summaries[(mod, class_name)]
-        class_info = self.summary_manager.update_methods_summaries(
+        class_info = self.summary_archive_manager.update_methods_summaries(
             class_info, method_summaries
         )
 
-        updated_class_info = self.summary_manager.update_classinfo(
+        updated_class_info = self.summary_archive_manager.update_classinfo(
             class_info_old, class_info
         )
 
-        self.summary_manager.save_classinfo(updated_class_info)
+        self.summary_archive_manager.save_classinfo(updated_class_info)

@@ -16,9 +16,7 @@ def render_metadata_editor():
     # Load existing metadata
     metadata = load_metadata()
 
-    st.markdown(
-        "#### Input below the codebase path, packge name, and LLM to use"
-    )
+    st.markdown("#### Set codebase path, packge name below:")
 
     c1, c2 = st.columns(2)
     with c1:

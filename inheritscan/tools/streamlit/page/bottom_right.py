@@ -23,10 +23,6 @@ def render_bottom_right(context):
     with button2:
         b2_handle = streamlit.button("Go to VSCODE", use_container_width=True)
 
-    with content_area:
-        content = streamlit.session_state.rerender_classdetails_content
-        streamlit.markdown(content)
-
     # define actions
     if b1_handle:
         markdown_text = get_detailed_class_description(context)
@@ -34,3 +30,9 @@ def render_bottom_right(context):
 
     if b2_handle:
         open_selected_file_in_vscode(context)
+
+    with content_area:
+        content = streamlit.session_state.get(
+            "rerender_classdetails_content", ""
+        )
+        streamlit.markdown(content)

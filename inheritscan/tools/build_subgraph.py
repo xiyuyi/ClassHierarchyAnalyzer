@@ -21,17 +21,21 @@ def _build_subgraph(G: nx.DiGraph, selected_nodes_fpath: str):
 
     print(f"\n🌐 Inspecting edges from global graph...")
 
-    all_edges = list(G.edges())
-    for i, (u, v) in enumerate(all_edges):
-        edge_info = f"({u}) -> ({v})"
-        match_info = ""
-        if u in selected_node_keys and v in selected_node_keys:
-            match_info = "✅ MATCH"
-            print(f"{i+1:>2}. {edge_info} {match_info}")
+    try:
+        all_edges = list(G.edges())
+        for i, (u, v) in enumerate(all_edges):
+            edge_info = f"({u}) -> ({v})"
+            match_info = ""
+            if u in selected_node_keys and v in selected_node_keys:
+                match_info = "✅ MATCH"
+                print(f"{i+1:>2}. {edge_info} {match_info}")
 
-    print(f"\n📊 Global Graph: {len(G.nodes)} nodes, {len(G.edges)} edges")
+        print(f"\n📊 Global Graph: {len(G.nodes)} nodes, {len(G.edges)} edges")
 
-    return G.subgraph(selected_node_keys).copy()
+        return G.subgraph(selected_node_keys).copy()
+
+    except:
+        pass
 
 
 def build_subgraph_from_global(G: nx.DiGraph):

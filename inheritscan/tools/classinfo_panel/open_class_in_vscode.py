@@ -44,13 +44,5 @@ def open_selected_file_in_vscode(contex):
     print(code_base_dir)
     print("py_path")
     print(py_path)
-    # # class_name = "MyClass"
-    # # root_dir = Path("./asdf")
-
-    # py_path = package_path.joinpath(
-    #     *mod.split(".")
-    # )  # folder1/folder2/mod3/mod4
-    # py_path = py_path.with_suffix(".py")  # .../mod4.py
-
     lineno = find_class_def_line(py_path, class_name)
     os.system(f"code -g {py_path}:{lineno}")

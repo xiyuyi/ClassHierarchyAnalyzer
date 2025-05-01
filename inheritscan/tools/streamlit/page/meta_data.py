@@ -2,6 +2,7 @@
 
 import streamlit as st
 
+from inheritscan.storage.graph_mng import GraphManager
 from inheritscan.storage.runtime_json.runtime_json_dumpers import dump_metadata
 from inheritscan.storage.runtime_json.runtime_json_loaders import load_metadata
 
@@ -43,7 +44,9 @@ def render_metadata_editor():
     # Save button
     if st.button("🛠️ Build Graph"):
         dump_metadata(metadata)
-        st.cache_resource.clear()
-        st.rerun()
+        nx_graph = st.session_state.class_hierarchy_network_graph
+        GraphManager.write_global_graph(nx_graph)
+        # st.cache_resource.clear()
+        # st.rerun()
 
     return metadata

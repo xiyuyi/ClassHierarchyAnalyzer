@@ -21,7 +21,9 @@ def render_top_right(context):
 
     with graph_display:
         # retrieve the html with ineractive selection logic for the panel.
-        html = streamlit.session_state.interactive_pyvis_subbraph_html
+        html = streamlit.session_state.get(
+            "interactive_pyvis_subbraph_html", ""
+        )
         # render with the modified html.
         streamlit.components.v1.html(html, height=500, scrolling=True)
         streamlit.session_state["rerender_subgraph"] = False

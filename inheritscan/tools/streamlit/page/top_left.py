@@ -16,7 +16,9 @@ def render_top_left(context: dict):
 
     with graph_display:
         # Display and return selected node from Streamlit frontend
-        html = streamlit.session_state.interactive_pyvis_global_graph_html
+        html = streamlit.session_state.get(
+            "interactive_pyvis_global_graph_html", ""
+        )
         streamlit.components.v1.html(html, height=500, scrolling=True)
 
     # define actions

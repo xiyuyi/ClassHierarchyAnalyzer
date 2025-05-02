@@ -28,19 +28,6 @@ initialize_json_files(streamlit=st, runtime_folder=runtime_folder)
 
 # put place holder json. files
 metadata = load_metadata()
-# metadata = {
-#     "package_name": st.session_state.package_name,
-#     "package_path": st.session_state.package_path,
-#     "module_cluster_levels": st.session_state.module_cluster_levels,
-#     "runtime_folder": st.session_state.runtime_folder,
-#     "sumarry_root": st.session_state.sumarry_root,
-#     "mock_mode": st.session_state.mock_mode,
-#     "chain_name": st.session_state.chain_name,
-#     "chunk_summary_chain_name": st.session_state.chunk_summary_chain_name,
-#     "method_summary_chain_name": st.session_state.method_summary_chain_name,
-#     "class_summary_chain_name": st.session_state.class_summary_chain_name,
-# }
-
 dump_metadata(metadata)
 
 

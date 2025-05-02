@@ -46,6 +46,7 @@ def get_detailed_class_description(context):
     class_summary = sm_class.load_class_summary(
         module_path=mod, class_name=class_name
     )
+    # class_summary = class_summary.split("### Summary:\n")[1].split("\n### Bulletin points:")[0]
 
     # construct method_string chunk
     method_str_chunk = ""
@@ -53,11 +54,14 @@ def get_detailed_class_description(context):
         method_summary = sm_method.load_method_summary(
             module_path=mod, class_name=class_name, method_name=method_name
         )
-
-        method_str_chunk += f""""
-    - `{method_name}()` — *({method_summary})*
+        method_summary = method_summary.split("### Summary:\n")[1].split("\n")[
+            0
+        ]
+        method_str_chunk += f"""
+    ##### {method_name}():
+    > *{method_summary}*
     """
-
+    # method_str_chunk=""
     print(f"class summary: {class_summary}")
 
     result = f"""

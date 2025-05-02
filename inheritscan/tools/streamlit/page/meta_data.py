@@ -35,6 +35,8 @@ def render_metadata_editor():
     on = st.toggle("Mock mode", True)
     mock_mode = True if on else False
     chain_name = "mock_chain" if on else "qwen_coder_32b_instruct500_engilsh"
+    cls_sum_chain = "mock_chain" if on else "qwen_32b_1_paragraph"
+
     st.divider()
 
     # Assemble result
@@ -47,7 +49,7 @@ def render_metadata_editor():
             "chain_name": chain_name,
             "chunk_summary_chain_name": chain_name,  # may configure these chains differently in the future.
             "method_summary_chain_name": chain_name,
-            "class_summary_chain_name": chain_name,
+            "class_summary_chain_name": cls_sum_chain,
         }
     )
 

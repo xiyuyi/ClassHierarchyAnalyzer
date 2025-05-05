@@ -1,3 +1,7 @@
+from inheritscan.tools.logging.logger import get_logger
+
+log = get_logger(__name__)
+
 from typing import List
 
 from inheritscan.storage.runtime_json.runtime_json_loaders import load_metadata

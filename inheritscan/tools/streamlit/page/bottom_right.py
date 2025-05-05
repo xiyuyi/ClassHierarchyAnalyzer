@@ -1,3 +1,7 @@
+from inheritscan.tools.logging.logger import get_logger
+
+log = get_logger(__name__)
+
 import streamlit
 
 from inheritscan.tools.classinfo_panel.get_classinfo_markdown import \

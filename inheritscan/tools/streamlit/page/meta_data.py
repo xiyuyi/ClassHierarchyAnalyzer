@@ -1,3 +1,7 @@
+from inheritscan.tools.logging.logger import get_logger
+
+log = get_logger(__name__)
+
 # inheritscan/tools/ui_blocks/metadata_editor.py
 
 import streamlit as st

@@ -1,3 +1,7 @@
+from inheritscan.tools.logging.logger import get_logger
+
+log = get_logger(__name__)
+
 import streamlit
 
 from inheritscan.tools.global_graph import update_global_graph_panel_content

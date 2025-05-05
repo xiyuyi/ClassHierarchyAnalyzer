@@ -1,3 +1,8 @@
+from inheritscan.tools.logging.logger import get_logger
+
+log = get_logger(__name__)
+
+
 def initialize_session_state(streamlit):
     if "selected_cluster" not in streamlit.session_state:
         streamlit.session_state.selected_cluster = None

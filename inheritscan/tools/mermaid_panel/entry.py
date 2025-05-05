@@ -1,3 +1,7 @@
+from inheritscan.tools.logging.logger import get_logger
+
+log = get_logger(__name__)
+
 import streamlit as st
 
 from inheritscan.tools.mermaid_panel.generate_mermaid_script import \

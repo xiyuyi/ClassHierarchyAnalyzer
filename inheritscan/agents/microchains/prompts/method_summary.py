@@ -1,3 +1,7 @@
+from inheritscan.tools.logging.logger import get_logger
+
+log = get_logger(__name__)
+
 from langchain.prompts import PromptTemplate
 
 method_summary_prompt_english = PromptTemplate(

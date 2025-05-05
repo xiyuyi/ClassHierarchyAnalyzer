@@ -1,3 +1,7 @@
+from inheritscan.tools.logging.logger import get_logger
+
+log = get_logger(__name__)
+
 from collections import defaultdict
 from typing import List, Tuple
 
@@ -53,7 +57,13 @@ class ClassSummary:
             aggregated_summary = ""
             for method_name in method_names:
                 method_info = class_info.methods[method_name]
-                summary = method_info.summary
+                if method_info.summary:
+                    summary = method_info.summary
+                    log.debug(f"retrieved method summary for {method_name}")
+                else:
+                    # summary = ""
+                    log.debug(f"method summary for {method_name} not found")
+
                 aggregated_summary += f"\n\n## Method Name:  {method_name}"
                 aggregated_summary += "\n"
                 aggregated_summary += summary

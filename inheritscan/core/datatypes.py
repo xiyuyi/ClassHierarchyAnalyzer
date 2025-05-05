@@ -1,3 +1,7 @@
+from inheritscan.tools.logging.logger import get_logger
+
+log = get_logger(__name__)
+
 from abc import ABC
 from dataclasses import asdict, dataclass, field
 from datetime import datetime, timezone

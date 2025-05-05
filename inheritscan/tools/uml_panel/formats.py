@@ -1,3 +1,8 @@
+from inheritscan.tools.logging.logger import get_logger
+
+log = get_logger(__name__)
+
+
 def format_class_label(class_name, methods):
 
     maxlen = max(len(class_name), 0)

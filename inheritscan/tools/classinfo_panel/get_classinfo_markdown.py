@@ -1,3 +1,7 @@
+from inheritscan.tools.logging.logger import get_logger
+
+log = get_logger(__name__)
+
 import json
 from pathlib import Path
 
@@ -54,9 +58,13 @@ def get_detailed_class_description(context):
         method_summary = sm_method.load_method_summary(
             module_path=mod, class_name=class_name, method_name=method_name
         )
-        method_summary = method_summary.split("### Summary:\n")[1].split("\n")[
-            0
-        ]
+        try:
+            method_summary = method_summary.split("### Summary:\n")[1].split(
+                "\n"
+            )[0]
+        except:
+            log.debug(f"method summary format mismatched, no parsing applied")
+
         method_str_chunk += f"""
     ##### {method_name}():
     > *{method_summary}*

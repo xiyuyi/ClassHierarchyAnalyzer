@@ -1,3 +1,7 @@
+from inheritscan.tools.logging.logger import get_logger
+
+log = get_logger(__name__)
+
 from typing import Any, Dict, List, Optional
 
 from dotenv import load_dotenv

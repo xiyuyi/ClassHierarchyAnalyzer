@@ -1,3 +1,7 @@
+from inheritscan.tools.logging.logger import get_logger
+
+log = get_logger(__name__)
+
 import networkx as nx
 
 from inheritscan.tools.ai_summaries import get_summary_manager

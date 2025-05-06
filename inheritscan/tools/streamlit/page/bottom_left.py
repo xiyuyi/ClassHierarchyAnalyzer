@@ -1,3 +1,7 @@
+from inheritscan.tools.logging.logger import get_logger
+
+log = get_logger(__name__)
+
 import streamlit
 
 from inheritscan.tools.streamlit.page.bottomleft_aisumgen_and_render import \

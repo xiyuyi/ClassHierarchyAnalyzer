@@ -1,3 +1,7 @@
+from inheritscan.tools.logging.logger import get_logger
+
+log = get_logger(__name__)
+
 from inheritscan.agents.microchains.shared.stateless_tinyllama import \
     StatelessOllamaLLM
 from inheritscan.agents.microchains.shared.together_ai import TogetherQwenCoder

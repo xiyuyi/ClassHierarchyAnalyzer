@@ -1,3 +1,7 @@
+from inheritscan.tools.logging.logger import get_logger
+
+log = get_logger(__name__)
+
 import streamlit
 
 from inheritscan.tools.ai_summaries import get_ai_summaries

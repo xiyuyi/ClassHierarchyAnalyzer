@@ -1,3 +1,7 @@
+from inheritscan.tools.logging.logger import get_logger
+
+log = get_logger(__name__)
+
 import streamlit as st
 
 from inheritscan.lcgraphs.class_hierarchy import ClassHierarchyGraphBuilder

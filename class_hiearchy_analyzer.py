@@ -1,3 +1,7 @@
+from inheritscan.tools.logging.logger import get_logger
+
+log = get_logger(__name__)
+
 import threading
 from pathlib import Path
 
@@ -35,7 +39,7 @@ dump_metadata(metadata)
 if "flask_started" not in st.session_state:
     threading.Thread(target=run_flask, daemon=True).start()
     st.session_state["flask_started"] = True
-    print("🚀 Flask service started.")
+    log.info("🚀 Flask service started.")
 
 # Page Layout
 st.set_page_config(page_title="Class Inheritance Explorer", layout="wide")
@@ -83,6 +87,6 @@ with bottom_right:
 with mermaid_panel:
     render_mermaid_panel(context)
 
-print("All session_state keys:")
+log.info("All session_state keys:")
 for key in list(st.session_state.keys()):
     print(key)

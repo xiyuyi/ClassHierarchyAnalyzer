@@ -25,13 +25,13 @@ def get_logger(name="default"):
 
     config = load_json_config("logger_config")
 
-    # 设置日志级别
+    # set logging level
     log_level = getattr(
         logging, config.get("log_level", "INFO").upper(), logging.INFO
     )
     logger.setLevel(log_level)
 
-    # 设置格式
+    # format setting
     if config.get("json_format", False):
         formatter = JsonLogFormatter()
     else:
@@ -42,13 +42,13 @@ def get_logger(name="default"):
             )
         )
 
-    # 控制台输出
+    # console output
     if config.get("log_to_console", True):
         ch = logging.StreamHandler()
         ch.setFormatter(formatter)
         logger.addHandler(ch)
 
-    # 文件输出
+    # per file output
     if config.get("log_to_file", True):
         log_dir = config.get("log_dir", "logs")
         os.makedirs(log_dir, exist_ok=True)

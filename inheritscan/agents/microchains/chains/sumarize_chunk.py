@@ -16,7 +16,7 @@ def get_chunk_summary_chain(chain_name):
     """
     implemented the following typs of chain_names:
     """
-    print(f"chain name is: {chain_name}")
+    log.info(f"chain name is: {chain_name}")
     if chain_name == "mock_chain":
         # Return the mock chain wrapped in RunnableMap
         mock_chain = MockChain()

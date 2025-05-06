@@ -23,9 +23,9 @@ def get_summaries_and_render(progress_bar, context):
     task_lists = _get_task_groups(context)
     L = len(task_lists)
     for i, tasks_dlist in enumerate(task_lists):
-        print("currently handling: ")
+        log.info("currently handling: ")
         for t in tasks_dlist:
-            print("   " + str(t))
+            log.info("   " + str(t))
         tasks = [(d["mod"], d["class_name"], d["method"]) for d in tasks_dlist]
 
         get_ai_summaries(tasks)

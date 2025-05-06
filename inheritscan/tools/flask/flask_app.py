@@ -19,7 +19,7 @@ CORS(flask_app)
 @flask_app.route("/receive_selection", methods=["POST"])
 def receive_selection():
     nodes = request.json.get("nodes", [])
-    print("this is receive_selection in flask app")
+    log.info("this is receive_selection in flask app")
     nodes = expand_nodes(nodes)
     dump_selected_nodes_on_global_graph(nodes)
     return {"status": "ok"}

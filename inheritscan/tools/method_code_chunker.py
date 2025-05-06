@@ -11,7 +11,7 @@ def chunk_method_code(source: str) -> list[str]:
     try:
         tree = ast.parse(source)
     except SyntaxError as e:
-        print(f"❌ Syntax error in input code: {e}")
+        log.debug(f"❌ Syntax error in input code: {e}")
         return []
 
     chunks = []
@@ -35,7 +35,7 @@ def chunk_method_code(source: str) -> list[str]:
         return []
 
     if method is None:
-        print("❌ No method found in the class.")
+        log.info("❌ No method found in the class.")
         return []
 
     method_src_lines = source.splitlines()

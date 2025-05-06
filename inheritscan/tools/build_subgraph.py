@@ -19,11 +19,11 @@ def _build_subgraph(G: nx.DiGraph, selected_nodes_fpath: str):
         tuple(node["full_mod"].rsplit(".", 1)) for node in selected_nodes
     }
 
-    print(f"\n✅ Selected {len(selected_node_keys)} nodes:")
+    log.info(f"\n✅ Selected {len(selected_node_keys)} nodes:")
     for node in selected_node_keys:
-        print(f"   - {node}")
+        log.info(f"   - {node}")
 
-    print(f"\n🌐 Inspecting edges from global graph...")
+    log.info(f"\n🌐 Inspecting edges from global graph...")
 
     try:
         all_edges = list(G.edges())
@@ -32,9 +32,11 @@ def _build_subgraph(G: nx.DiGraph, selected_nodes_fpath: str):
             match_info = ""
             if u in selected_node_keys and v in selected_node_keys:
                 match_info = "✅ MATCH"
-                print(f"{i+1:>2}. {edge_info} {match_info}")
+                log.info(f"{i+1:>2}. {edge_info} {match_info}")
 
-        print(f"\n📊 Global Graph: {len(G.nodes)} nodes, {len(G.edges)} edges")
+        log.info(
+            f"\n📊 Global Graph: {len(G.nodes)} nodes, {len(G.edges)} edges"
+        )
 
         return G.subgraph(selected_node_keys).copy()
 

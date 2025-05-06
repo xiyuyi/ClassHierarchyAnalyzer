@@ -53,14 +53,14 @@ def dump_selected_nodes_on_subgraph(nodes):
     runtime_folder = Path(inheritscan.__file__).parent.parent / ".run_time"
     path = runtime_folder / "selected_nodes_subgraph.json"
     _dump_nodes_to_json(nodes, path)
-    print(f"dumped selected nodes on sub-graph to: {path}")
+    log.info(f"dumped selected nodes on sub-graph to: {path}")
 
 
 def dump_selected_nodes_on_global_graph(nodes):
     runtime_folder = Path(inheritscan.__file__).parent.parent / ".run_time"
     path = runtime_folder / "selected_nodes.json"
     _dump_nodes_to_json(nodes, path)
-    print(f"dumped selected nodes on global graph to: {path}")
+    log.info(f"dumped selected nodes on global graph to: {path}")
 
 
 def dump_clicked_node_on_detailed_uml(nodes):
@@ -69,7 +69,7 @@ def dump_clicked_node_on_detailed_uml(nodes):
     entry = nodes[0]
     with open(path, "w") as f:
         json.dump([entry], f, indent=2)
-    print(f"dumped the clicked node on detailed uml panel to: {path}")
+    log.info(f"dumped the clicked node on detailed uml panel to: {path}")
 
 
 def dump_metadata(metadata: dict[str]):
@@ -77,7 +77,7 @@ def dump_metadata(metadata: dict[str]):
     path = runtime_folder / "meta.json"
     with open(path, "w") as f:
         json.dump(metadata, f, indent=2)
-    print(f"dumped metadata to: {path}")
+    log.info(f"dumped metadata to: {path}")
 
 
 def dump_global_inheritance_graph(global_inheritance_graph: dict[str]):
@@ -87,4 +87,4 @@ def dump_global_inheritance_graph(global_inheritance_graph: dict[str]):
     path = runtime_folder / "global_class_inheritance_graph.json"
     with open(path, "w") as f:
         json.dump(global_inheritance_graph, f, indent=2)
-    print(f"dumped global_graph to: {path}")
+    log.info(f"dumped global_graph to: {path}")

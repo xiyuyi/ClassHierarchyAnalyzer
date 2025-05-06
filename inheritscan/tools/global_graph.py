@@ -31,7 +31,7 @@ def get_globalgraph_pyvis_html(context: dict) -> dict:
         nx_graph=nx_graph, panel="global_graph"
     )
 
-    print("rendering pyvis_g for global graph")
+    log.info("rendering pyvis_g for global graph")
     html = build_interactive_pyvis_graph_html(pyvis_g)
     return {
         "class_hierarchy_network_graph": nx_graph,

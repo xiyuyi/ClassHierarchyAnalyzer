@@ -71,8 +71,8 @@ def get_mermaid_scripts(nx_graph):
     """populate mermaid script in json archive."""
     runtime_folder = Path(inheritscan.__file__).parent.parent / ".run_time"
     class_table = _get_class_table(nx_graph)
-    print("class_table:")
-    print(class_table)
+    log.info("class_table:")
+    log.info(class_table)
 
     k = {
         "code_base_dir": "/Users/xiyuyi/github_repos/OpenHands/openhands",

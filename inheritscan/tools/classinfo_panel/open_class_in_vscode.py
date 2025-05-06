@@ -36,17 +36,17 @@ def open_selected_file_in_vscode(contex):
         return "No class is selected.\nPlease select a class (click) from the diagram on the left."
 
     mod = class_selected["full_mod"].rsplit(".", 1)[0].split(".")
-    print("debug in open_selected_file_in_vscode")
-    print("mod")
-    print(mod)
+    log.info("debug in open_selected_file_in_vscode")
+    log.info("mod")
+    log.info(mod)
 
     class_name = class_selected["id"]
 
     code_base_dir = "/Users/xiyuyi/github_repos/OpenHands/openhands"
     py_path = Path(code_base_dir, *mod[:-1], mod[-1] + ".py")
-    print("package_path")
-    print(code_base_dir)
-    print("py_path")
-    print(py_path)
+    log.info("package_path")
+    log.info(code_base_dir)
+    log.info("py_path")
+    log.info(py_path)
     lineno = find_class_def_line(py_path, class_name)
     os.system(f"code -g {py_path}:{lineno}")

@@ -14,9 +14,9 @@ def load_selected_nodes_on_global_graph():
     try:
         with open(path, "r") as f:
             data = json.load(f)
-        print("📤 [Flask] Returning selected nodes:", data)
+        log.info("📤 [Flask] Returning selected nodes:", data)
     except Exception as e:
-        print("❌ Error loading selected nodes:", e)
+        log.info("❌ Error loading selected nodes:", e)
         data = []
 
     return data
@@ -28,9 +28,9 @@ def load_selected_nodes_on_subgraph():
     try:
         with open(path, "r") as f:
             data = json.load(f)
-        print("📤 [Flask] Returning selected nodes on subgraph:", data)
+        log.info("📤 [Flask] Returning selected nodes on subgraph:", data)
     except Exception as e:
-        print("❌ Error loading selected nodes on subgraph:", e)
+        log.info("❌ Error loading selected nodes on subgraph:", e)
         data = []
 
     return data
@@ -42,7 +42,7 @@ def load_global_inheritance_graph():
     try:
         with open(path, "r") as f:
             data = json.load(f)
-        print("loaded global_class_inheritance_grap.")
+        log.info("loaded global_class_inheritance_grap.")
     except Exception:
         data = []
 
@@ -55,7 +55,7 @@ def load_metadata():
     try:
         with open(path, "r") as f:
             data = json.load(f)
-        print("loaded meta data for the session.")
+        log.info("loaded meta data for the session.")
     except Exception:
         data = {}
 

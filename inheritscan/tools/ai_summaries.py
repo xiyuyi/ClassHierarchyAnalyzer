@@ -50,7 +50,7 @@ def get_summaries_for_method_chunks(tasks: List[dict]):
     chunk_summary = ChunkSummary(summary_manager=sm, tasks=tasks)
     chunk_summary.get_summaries_for_chunks_for_all_method()
     chunk_summary.update_all_classinfo()
-    print("ai summaries at the method chunks level is generated")
+    log.info("ai summaries at the method chunks level is generated")
 
 
 def get_summaries_for_method(tasks: List[dict]):
@@ -69,7 +69,7 @@ def get_summaries_for_method(tasks: List[dict]):
     method_summary = MethodSummary(summary_manager=sm, tasks=tasks)
     method_summary.get_summaries_for_all_methods_and_classes()
     method_summary.update_all_classinfo()
-    print("ai summaries at the method level is generated")
+    log.info("ai summaries at the method level is generated")
 
 
 def get_summaries_for_class(tasks: List[dict]):
@@ -88,4 +88,4 @@ def get_summaries_for_class(tasks: List[dict]):
     method_summary = ClassSummary(summary_manager=sm, tasks=tasks)
     method_summary.get_summaries_for_all_classes()
     method_summary.update_all_classinfo()
-    print("ai summaries at the class level is generated")
+    log.info("ai summaries at the class level is generated")

@@ -152,12 +152,12 @@ class SummaryManager:
                         print(
                             f"Sucessfully loaded snippet summary {module_path}, {class_name}, {method_name}, {snippet_name}"
                         )
-                        print(summary)
+                        log.info(summary)
                         return summary
                     else:
                         pass
                 else:
-                    print("chain mismatch")
+                    log.info("chain mismatch")
                     print(
                         f"snippet_info.chain_name: {snippet_info.chain_name}, and self.summary_chain_name: {self.summary_chain_name}"
                     )
@@ -166,7 +166,9 @@ class SummaryManager:
                     f"snippet_name {snippet_name} not found in method_info.snippets"
                 )
         else:
-            print(f"method_name {method_name} not found in class_info.methods")
+            log.info(
+                f"method_name {method_name} not found in class_info.methods"
+            )
 
         summary = None
         print(

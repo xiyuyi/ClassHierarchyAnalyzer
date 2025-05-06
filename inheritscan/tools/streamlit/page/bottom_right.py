@@ -29,7 +29,7 @@ def render_bottom_right(context):
 
     # define actions
     if b1_handle:
-        print("show class details clicked")
+        log.info("show class details clicked")
         markdown_text = get_detailed_class_description(context)
         streamlit.session_state.rerender_classdetails_content = markdown_text
 

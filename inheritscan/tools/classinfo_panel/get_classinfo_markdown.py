@@ -12,7 +12,7 @@ from inheritscan.tools.ai_summaries import get_summary_manager
 
 def get_detailed_class_description(context):
     # TODO #37 need reformat and clean up
-    print("now inside get_detailed_class_description")
+    log.info("now inside get_detailed_class_description")
     metadata = load_metadata()
 
     runtime_data_folder = (
@@ -70,7 +70,7 @@ def get_detailed_class_description(context):
     > *{method_summary}*
     """
     # method_str_chunk=""
-    print(f"class summary: {class_summary}")
+    log.info(f"class summary: {class_summary}")
 
     result = f"""
 

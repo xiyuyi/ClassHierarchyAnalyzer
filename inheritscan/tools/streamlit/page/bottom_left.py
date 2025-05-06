@@ -31,14 +31,14 @@ def render_bottom_left(context):
     with graph_display:
         streamlit.markdown("### 🗺️ Class Hierarchy Diagram")
         result = render_class_uml(context)
-        print("finished rendering class uml, result:")
-        print(result)
+        log.info("finished rendering class uml, result:")
+        log.info(result)
         if result:
             streamlit.session_state.update(result)
 
     # define actions
     if b1_handle:
-        print("pressed the 🔁 Get AI summaries button!")
+        log.info("pressed the 🔁 Get AI summaries button!")
         streamlit.session_state["get_ai_summaries"] = (
             True  # Reset the trigger flag
         )

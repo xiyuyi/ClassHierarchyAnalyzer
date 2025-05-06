@@ -30,7 +30,7 @@ class MCInheritance:
                     source = f.read()
                 tree = ast.parse(source)
             except (SyntaxError, UnicodeDecodeError):
-                print(f"[WARN] Failed to parse: {module_path}")
+                log.info(f"[WARN] Failed to parse: {module_path}")
                 return state
 
             # loop over all class definition nodes, and populate the class dependency relation table
@@ -44,7 +44,7 @@ class MCInheritance:
                         )
                         class_inheritances.update(relations)
             except:
-                print(f"Inheritance analysis failed at {module_path}")
+                log.info(f"Inheritance analysis failed at {module_path}")
                 traceback.print_exc()
                 return state
 

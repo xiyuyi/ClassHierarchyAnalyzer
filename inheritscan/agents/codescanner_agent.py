@@ -11,7 +11,7 @@ from myagents.utils.import_parser import extract_imports_exports
 
 class CodeScannerAgent:
     def __call__(self, state: dict) -> dict:
-        print(state)
+        log.info(state)
         state["started"] = "modified"
         base_path = state["codebase_path"]
         package_name = state["package_name"]

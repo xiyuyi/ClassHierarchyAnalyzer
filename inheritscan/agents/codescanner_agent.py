@@ -79,8 +79,8 @@ class CodeScannerAgent:
         for mod in state["modules_name2path"]:
             for c in state["modules_details"][mod]["exports"]["classes"]:
                 internal_classes.add((mod, c))
-            for f in state["modules_details"][mod]["exports"]["functions"]:
-                internal_functions.add((mod, c))
+            # for f in state["modules_details"][mod]["exports"]["functions"]:
+            #     internal_functions.add((mod, c))
 
         state["internal_classes"] = internal_classes
         state["internal_functions"] = internal_functions

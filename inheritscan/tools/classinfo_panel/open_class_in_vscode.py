@@ -1,3 +1,4 @@
+from inheritscan.storage.runtime_json.runtime_json_loaders import load_metadata
 from inheritscan.tools.logging.logger import get_logger
 
 log = get_logger(__name__)
@@ -41,8 +42,10 @@ def open_selected_file_in_vscode(contex):
     log.info(mod)
 
     class_name = class_selected["id"]
+    metadata = load_metadata()
+    # code_base_dir = "/Users/xiyuyi/github_repos/OpenHands/openhands"
+    code_base_dir = metadata["package_path"]
 
-    code_base_dir = "/Users/xiyuyi/github_repos/OpenHands/openhands"
     py_path = Path(code_base_dir, *mod[:-1], mod[-1] + ".py")
     log.info("package_path")
     log.info(code_base_dir)

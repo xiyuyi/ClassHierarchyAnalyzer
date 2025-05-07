@@ -2,7 +2,6 @@ from inheritscan.tools.logging.logger import get_logger
 
 log = get_logger(__name__)
 
-import streamlit
 
 from inheritscan.lcgraphs.class_hierarchy import ClassHierarchyGraphBuilder
 from inheritscan.storage.graph_mng import GraphManager
@@ -10,7 +9,6 @@ from inheritscan.storage.runtime_json.runtime_json_loaders import load_metadata
 from inheritscan.tools.get_graph_state import build_graph_state_from_metadata
 
 
-@streamlit.cache_resource
 def get_class_hierarchy_network_graph():
     # retrieve metadata, and copy over to
     metadata = load_metadata()

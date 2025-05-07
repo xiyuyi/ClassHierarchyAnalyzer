@@ -1,3 +1,4 @@
+from inheritscan.tools.global_graph import update_global_graph_panel_content
 from inheritscan.tools.logging.logger import get_logger
 
 log = get_logger(__name__)
@@ -60,6 +61,9 @@ def render_metadata_editor():
     # Save button
     if st.button("🛠️ Build Graph"):
         dump_metadata(metadata)
+        result = update_global_graph_panel_content(context=None)
+        if result:
+            st.session_state.update(result)
         nx_graph = st.session_state.class_hierarchy_network_graph
         GraphManager.write_global_graph(nx_graph)
 

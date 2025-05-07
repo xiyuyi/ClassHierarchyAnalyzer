@@ -1,3 +1,4 @@
+from inheritscan.storage.runtime_json.runtime_json_loaders import load_metadata
 from inheritscan.tools.logging.logger import get_logger
 
 log = get_logger(__name__)
@@ -74,12 +75,16 @@ def get_mermaid_scripts(nx_graph):
     log.info("class_table:")
     log.info(class_table)
 
-    k = {
-        "code_base_dir": "/Users/xiyuyi/github_repos/OpenHands/openhands",
-        "root_dir": "/Users/xiyuyi/github_repos/ClassHierarchyAnalyzer/sumarry_root",
-        "chain_name": "mock_chain",
-    }
-    sm = get_summary_manager(**k)
+    metadata = load_metadata()
+    root_dir = metadata["sumarry_root"]
+    code_base_dir = metadata["package_path"]
+    chain_name = metadata["class_summary_chain_name"]
+
+    sm = get_summary_manager(
+        root_dir=root_dir,
+        code_base_dir=code_base_dir,
+        chain_name=chain_name,
+    )
     class_block = _get_aggregated_class_segments(class_table, sm)
     inheritance_block = _aggregate_inheritance_segments(nx_graph, class_table)
     script = f"classDiagram\n{class_block}\n{inheritance_block}"

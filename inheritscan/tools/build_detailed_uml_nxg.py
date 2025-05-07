@@ -1,3 +1,4 @@
+from inheritscan.storage.runtime_json.runtime_json_loaders import load_metadata
 from inheritscan.tools.logging.logger import get_logger
 
 log = get_logger(__name__)
@@ -9,15 +10,14 @@ from inheritscan.tools.uml_panel.formats import format_class_label
 
 
 def build_detailed_uml_nx_graph(G: nx.DiGraph) -> nx.DiGraph:
-    # TODO use the summary manager to retrive information from the archive
-    # should enable UI parameter setting.
-    # may retrive information from .env, or something else. design later.
-    k = {
-        "code_base_dir": "/Users/xiyuyi/github_repos/OpenHands/openhands",
-        "root_dir": "/Users/xiyuyi/github_repos/ClassHierarchyAnalyzer/sumarry_root",
-        "chain_name": "mock_chain",
-    }
-    sm = get_summary_manager(**k)
+    metadata = load_metadata()
+    root_dir = metadata["sumarry_root"]
+    code_base_dir = metadata["package_path"]
+
+    sm = get_summary_manager(
+        root_dir=root_dir,
+        code_base_dir=code_base_dir,
+    )
 
     uml_g = nx.DiGraph()
     if G:
